@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ToastProvider } from "./Toast";
@@ -9,6 +10,7 @@ const NAV = [
   { href: "/admin/events", label: "Events", icon: "◈" },
   { href: "/admin/news", label: "News", icon: "◇" },
   { href: "/admin/institutions", label: "Institutions", icon: "◆" },
+  { href: "/admin/members", label: "Members", icon: "◉" },
   { href: "/admin/contacts", label: "Contacts", icon: "✉" },
   { href: "/admin/signups", label: "Signups", icon: "→" },
 ];
@@ -22,6 +24,15 @@ export default function AdminShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [pendingMembers, setPendingMembers] = useState(0);
+
+  // Badge the Members link with the number of applications awaiting review.
+  useEffect(() => {
+    fetch("/api/admin/members?status=pending")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => setPendingMembers(j?.counts?.pending ?? 0))
+      .catch(() => {});
+  }, [pathname]);
 
   function handleLogout() {
     document.cookie = "sb-access-token=; path=/; max-age=0";
@@ -57,6 +68,11 @@ export default function AdminShell({
                 >
                   <span className="text-xs">{item.icon}</span>
                   {item.label}
+                  {item.href === "/admin/members" && pendingMembers > 0 && (
+                    <span className="ml-auto rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                      {pendingMembers}
+                    </span>
+                  )}
                 </Link>
               );
             })}
