@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Calendar, { type CalendarView } from "./Calendar";
 import { formatDateRange } from "@/lib/site";
@@ -231,8 +232,20 @@ export default function CalendarExplorer({ events }: { events: CrescentEvent[] }
                     {items.map((e) => (
                       <li
                         key={e.id}
-                        className="grid gap-3 rounded-card border border-slate-200 bg-white p-5 sm:grid-cols-[8.5rem_1fr]"
+                        className="overflow-hidden rounded-card border border-slate-200 bg-white"
                       >
+                        {e.image_url && (
+                          <div className="relative aspect-video w-full bg-slate-100 sm:aspect-[3/1]">
+                            <Image
+                              src={e.image_url}
+                              alt=""
+                              fill
+                              sizes="(min-width: 768px) 66vw, 100vw"
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="grid gap-3 p-5 sm:grid-cols-[8.5rem_1fr]">
                         <div className="text-sm font-semibold text-crescent-700">
                           <time dateTime={e.date_start}>
                             {formatDateRange(e.date_start, e.date_end)}
@@ -260,9 +273,10 @@ export default function CalendarExplorer({ events }: { events: CrescentEvent[] }
                           <p className="mt-1 text-sm text-slate-600">
                             {e.institution_name} · {e.location}
                           </p>
-                          <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                          <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-500">
                             {e.description}
                           </p>
+                        </div>
                         </div>
                       </li>
                     ))}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { formatDateRange } from "@/lib/site";
@@ -33,8 +34,20 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
           {list.map((e, idx) => (
             <Reveal key={e.id} as="li" delay={idx * 0.05}>
               <article
-                className={`flex h-full flex-col rounded-card border border-l-4 border-slate-200 bg-white p-5 ${eventCategoryBorderL[e.category]}`}
+                className={`flex h-full flex-col overflow-hidden rounded-card border border-l-4 border-slate-200 bg-white ${eventCategoryBorderL[e.category]}`}
               >
+                {e.image_url && (
+                  <div className="relative aspect-video w-full bg-slate-100">
+                    <Image
+                      src={e.image_url}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col p-5">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-crescent-600">
                   <time dateTime={e.date_start}>
                     {formatDateRange(e.date_start, e.date_end)}
@@ -46,10 +59,11 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
                   {e.title}
                 </h3>
                 <p className="mt-1 text-sm text-slate-600">{e.institution_name}</p>
-                <p className="mt-3 line-clamp-2 flex-1 text-sm leading-relaxed text-slate-500">
+                <p className="mt-3 line-clamp-2 flex-1 whitespace-pre-line text-sm leading-relaxed text-slate-500">
                   {e.description}
                 </p>
                 <p className="mt-3 text-xs text-slate-400">{e.location}</p>
+                </div>
               </article>
             </Reveal>
           ))}

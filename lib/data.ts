@@ -44,7 +44,7 @@ export async function getEvents(): Promise<CrescentEvent[]> {
       const { data, error } = await supabase
         .from("events")
         .select(
-          "id, title, date_start, date_end, institution_id, category, location, description, is_featured, institutions(name)"
+          "id, title, date_start, date_end, institution_id, category, location, description, is_featured, image_url, institutions(name)"
         )
         .order("date_start", { ascending: true });
       if (!error && data && data.length) {
@@ -59,6 +59,7 @@ export async function getEvents(): Promise<CrescentEvent[]> {
           location: row.location,
           description: row.description,
           is_featured: row.is_featured,
+          image_url: row.image_url ?? null,
         }));
       }
       if (error) warnFallback("events", error);
@@ -113,6 +114,7 @@ interface RawEvent {
   location: string;
   description: string;
   is_featured: boolean;
+  image_url: string | null;
   institutions: { name: string } | null;
 }
 

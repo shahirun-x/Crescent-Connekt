@@ -1,28 +1,52 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "@/components/admin/Toast";
-import type { NewsItem } from "@/lib/types";
+import ImageUpload from "@/components/admin/ImageUpload";
+import { Field, TextareaField, InstitutionSelect } from "@/components/admin/fields";
+import type { Institution } from "@/lib/types";
 
-const EMPTY: Partial<NewsItem> = {
-  title: "", summary: "", content: "", institution_name: "",
-  published_at: new Date().toISOString().split("T")[0], image_url: "",
+/**
+ * A row exactly as stored in public.news — there is no
+ * `institution_name` column; the name is resolved client-side from
+ * the institutions list for display only.
+ */
+interface NewsRow {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  institution_id: string | null;
+  published_at: string;
+  image_url: string | null;
+}
+
+const EMPTY: Partial<NewsRow> = {
+  title: "", summary: "", content: "", institution_id: null,
+  published_at: new Date().toISOString().split("T")[0], image_url: null,
 };
 
 export default function NewsManager() {
   const { toast } = useToast();
-  const [items, setItems] = useState<NewsItem[]>([]);
+  const [items, setItems] = useState<NewsRow[]>([]);
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState<Partial<NewsItem> | null>(null);
+  const [editing, setEditing] = useState<Partial<NewsRow> | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const instMap = useMemo(
+    () => new Map(institutions.map((i) => [i.id, i.name])),
+    [institutions]
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/news");
-    if (res.ok) {
-      const { data } = await res.json();
-      setItems(data ?? []);
-    }
+    const [newsRes, instRes] = await Promise.all([
+      fetch("/api/admin/news"),
+      fetch("/api/admin/institutions"),
+    ]);
+    if (newsRes.ok) setItems((await newsRes.json()).data ?? []);
+    if (instRes.ok) setInstitutions((await instRes.json()).data ?? []);
     setLoading(false);
   }, []);
 
@@ -30,6 +54,10 @@ export default function NewsManager() {
 
   async function handleSave() {
     if (!editing) return;
+    if (!editing.title?.trim()) {
+      toast("Title is required.", "error");
+      return;
+    }
     setSaving(true);
     const isNew = !editing.id;
     const res = await fetch("/api/admin/news", {
@@ -69,34 +97,41 @@ export default function NewsManager() {
       </div>
 
       {editing && (
-        <div className="fixed inset-0 z-40 flex items-start justify-center bg-black/30 pt-20">
-          <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-40 overflow-y-auto bg-black/30 py-10">
+          <div className="mx-auto w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
             <h2 className="mb-4 text-lg font-semibold">
               {editing.id ? "Edit Article" : "New Article"}
             </h2>
             <div className="space-y-3">
               <Field label="Title" value={editing.title ?? ""} onChange={(v) => setEditing({ ...editing, title: v })} />
-              <Field label="Institution" value={editing.institution_name ?? ""} onChange={(v) => setEditing({ ...editing, institution_name: v })} />
+
+              <InstitutionSelect
+                value={editing.institution_id}
+                onChange={(id) => setEditing({ ...editing, institution_id: id })}
+                institutions={institutions}
+              />
+
               <Field label="Published Date" type="date" value={editing.published_at ?? ""} onChange={(v) => setEditing({ ...editing, published_at: v })} />
-              <Field label="Image URL" value={editing.image_url ?? ""} onChange={(v) => setEditing({ ...editing, image_url: v })} />
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-600">Summary</label>
-                <textarea
-                  value={editing.summary ?? ""}
-                  onChange={(e) => setEditing({ ...editing, summary: e.target.value })}
-                  rows={2}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-600">Content</label>
-                <textarea
-                  value={editing.content ?? ""}
-                  onChange={(e) => setEditing({ ...editing, content: e.target.value })}
-                  rows={5}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                />
-              </div>
+
+              <TextareaField
+                label="Summary"
+                rows={3}
+                value={editing.summary ?? ""}
+                onChange={(v) => setEditing({ ...editing, summary: v })}
+              />
+
+              <TextareaField
+                label="Content"
+                value={editing.content ?? ""}
+                onChange={(v) => setEditing({ ...editing, content: v })}
+              />
+
+              <ImageUpload
+                label="Article Image"
+                folder="news"
+                value={editing.image_url}
+                onChange={(url) => setEditing({ ...editing, image_url: url })}
+              />
             </div>
             <div className="mt-5 flex justify-end gap-2">
               <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
@@ -128,8 +163,19 @@ export default function NewsManager() {
             <tbody className="divide-y divide-slate-100">
               {items.map((n) => (
                 <tr key={n.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium">{n.title}</td>
-                  <td className="px-4 py-3 text-slate-500">{n.institution_name}</td>
+                  <td className="px-4 py-3 font-medium">
+                    <span className="flex items-center gap-2">
+                      {n.image_url && (
+                        <span className="text-xs text-slate-400" title="Has image">▣</span>
+                      )}
+                      {n.title}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-slate-500">
+                    {n.institution_id
+                      ? instMap.get(n.institution_id) ?? "—"
+                      : "Network-wide"}
+                  </td>
                   <td className="px-4 py-3 text-slate-500">{n.published_at}</td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => setEditing({ ...n })} className="text-crescent-700 hover:underline">
@@ -145,24 +191,6 @@ export default function NewsManager() {
           </table>
         )}
       </div>
-    </div>
-  );
-}
-
-function Field({
-  label, value, onChange, type = "text",
-}: {
-  label: string; value: string; onChange: (v: string) => void; type?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block text-xs font-medium text-slate-600">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-      />
     </div>
   );
 }

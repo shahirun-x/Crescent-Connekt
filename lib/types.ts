@@ -39,6 +39,7 @@ export interface CrescentEvent {
   location: string;
   description: string;
   is_featured: boolean;
+  image_url: string | null;
 }
 
 export interface NewsItem {

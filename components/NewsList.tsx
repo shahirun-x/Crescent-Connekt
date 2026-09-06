@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { NewsItem } from "@/lib/types";
 
@@ -53,7 +54,19 @@ export default function NewsList({ items }: { items: NewsItem[] }) {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: Math.min(idx * 0.04, 0.25) }}
           >
-            <article className="flex h-full flex-col rounded-card border border-slate-200 bg-white p-6">
+            <article className="flex h-full flex-col overflow-hidden rounded-card border border-slate-200 bg-white">
+              {item.image_url && (
+                <div className="relative aspect-video w-full bg-slate-100">
+                  <Image
+                    src={item.image_url}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex flex-1 flex-col p-6">
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-crescent-600">
                 <time dateTime={item.published_at}>
                   {formatDate(item.published_at)}
@@ -66,17 +79,18 @@ export default function NewsList({ items }: { items: NewsItem[] }) {
               <h2 className="mt-3 text-lg font-semibold leading-snug text-crescent-800">
                 {item.title}
               </h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+              <p className="mt-2 flex-1 whitespace-pre-line text-sm leading-relaxed text-slate-600">
                 {item.summary}
               </p>
               <details className="mt-4 text-sm">
                 <summary className="cursor-pointer font-semibold text-crescent-600 hover:text-crescent-800">
                   Read more
                 </summary>
-                <p className="mt-2 leading-relaxed text-slate-600">
+                <p className="mt-2 whitespace-pre-line leading-relaxed text-slate-600">
                   {item.content}
                 </p>
               </details>
+              </div>
             </article>
           </motion.li>
         ))}

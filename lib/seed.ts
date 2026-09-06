@@ -366,6 +366,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Annual commemoration of the founding of the Crescent movement, with alumni, faculty and students from across the network.",
     is_featured: true,
+    image_url: null,
   },
   {
     id: "evt-alumni-global-meet-2026",
@@ -379,6 +380,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "A worldwide gathering of Crescent alumni to connect chapters, mentor students and shape the next phase of Crescent Connect.",
     is_featured: true,
+    image_url: null,
   },
   {
     id: "evt-inter-school-sports-2026",
@@ -392,6 +394,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Athletics, football and kabaddi tournaments bringing together every Crescent school across Tamil Nadu.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-health-camp-kilakarai-2026",
@@ -405,6 +408,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "General medicine, eye and dental screening for families in Kilakarai and neighbouring villages.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-research-conclave-2026",
@@ -418,6 +422,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Startup showcase, research paper presentations and industry mentoring across the Crescent network.",
     is_featured: true,
+    image_url: null,
   },
   {
     id: "evt-cultural-fest-2026",
@@ -431,6 +436,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Music, elocution, art and literary events hosted by TBAK College and open to all Crescent colleges.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-nursing-orientation-2026",
@@ -445,6 +451,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Induction week for the incoming nursing cohort, including hospital rotations and community-health briefings.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-teachers-workshop-2026",
@@ -458,6 +465,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Professional development on activity-based learning and assessment for teachers from every Crescent school.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-community-iftar-drive-2027",
@@ -471,6 +479,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Ration kits, scholarships and support for the children of the Al Mumin home and other families across the network.",
     is_featured: false,
+    image_url: null,
   },
   {
     id: "evt-academic-year-open-2026",
@@ -484,6 +493,7 @@ export const EVENTS: CrescentEvent[] = [
     description:
       "Synchronised opening assembly across the network, with a shared message from the Crescent Global Outreach Mission.",
     is_featured: false,
+    image_url: null,
   },
 ];
 

@@ -1,33 +1,61 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "@/components/admin/Toast";
-import type { CrescentEvent, EventCategory } from "@/lib/types";
+import ImageUpload from "@/components/admin/ImageUpload";
+import { Field, TextareaField, InstitutionSelect } from "@/components/admin/fields";
+import type { EventCategory, Institution } from "@/lib/types";
 
 const CATEGORIES: EventCategory[] = [
   "Schools", "Colleges", "University", "Healthcare",
   "Alumni", "Community", "Sports", "Cultural", "Conferences",
 ];
 
-const EMPTY: Partial<CrescentEvent> = {
-  title: "", date_start: "", date_end: "", institution_name: "",
-  category: "Community", location: "", description: "", is_featured: false,
+/**
+ * A row exactly as stored in public.events — note there is no
+ * `institution_name` column; the name is resolved client-side from
+ * the institutions list for display only.
+ */
+interface EventRow {
+  id: string;
+  title: string;
+  date_start: string;
+  date_end: string | null;
+  institution_id: string | null;
+  category: EventCategory;
+  location: string;
+  description: string;
+  is_featured: boolean;
+  image_url: string | null;
+}
+
+const EMPTY: Partial<EventRow> = {
+  title: "", date_start: "", date_end: "", institution_id: null,
+  category: "Community", location: "", description: "",
+  is_featured: false, image_url: null,
 };
 
 export default function EventsManager() {
   const { toast } = useToast();
-  const [items, setItems] = useState<CrescentEvent[]>([]);
+  const [items, setItems] = useState<EventRow[]>([]);
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState<Partial<CrescentEvent> | null>(null);
+  const [editing, setEditing] = useState<Partial<EventRow> | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const instMap = useMemo(
+    () => new Map(institutions.map((i) => [i.id, i.name])),
+    [institutions]
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/events");
-    if (res.ok) {
-      const { data } = await res.json();
-      setItems(data ?? []);
-    }
+    const [evRes, instRes] = await Promise.all([
+      fetch("/api/admin/events"),
+      fetch("/api/admin/institutions"),
+    ]);
+    if (evRes.ok) setItems((await evRes.json()).data ?? []);
+    if (instRes.ok) setInstitutions((await instRes.json()).data ?? []);
     setLoading(false);
   }, []);
 
@@ -35,6 +63,10 @@ export default function EventsManager() {
 
   async function handleSave() {
     if (!editing) return;
+    if (!editing.title?.trim() || !editing.date_start) {
+      toast("Title and start date are required.", "error");
+      return;
+    }
     setSaving(true);
     const isNew = !editing.id;
     const res = await fetch("/api/admin/events", {
@@ -73,10 +105,9 @@ export default function EventsManager() {
         </button>
       </div>
 
-      {/* Form Modal */}
       {editing && (
-        <div className="fixed inset-0 z-40 flex items-start justify-center bg-black/30 pt-20">
-          <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-40 overflow-y-auto bg-black/30 py-10">
+          <div className="mx-auto w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
             <h2 className="mb-4 text-lg font-semibold">
               {editing.id ? "Edit Event" : "New Event"}
             </h2>
@@ -86,27 +117,39 @@ export default function EventsManager() {
                 <Field label="Start Date" type="date" value={editing.date_start ?? ""} onChange={(v) => setEditing({ ...editing, date_start: v })} />
                 <Field label="End Date" type="date" value={editing.date_end ?? ""} onChange={(v) => setEditing({ ...editing, date_end: v })} />
               </div>
-              <Field label="Institution" value={editing.institution_name ?? ""} onChange={(v) => setEditing({ ...editing, institution_name: v })} />
+
+              <InstitutionSelect
+                value={editing.institution_id}
+                onChange={(id) => setEditing({ ...editing, institution_id: id })}
+                institutions={institutions}
+              />
+
               <div>
                 <label className="mb-1 block text-xs font-medium text-slate-600">Category</label>
                 <select
                   value={editing.category ?? "Community"}
                   onChange={(e) => setEditing({ ...editing, category: e.target.value as EventCategory })}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
                 >
                   {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
                 </select>
               </div>
+
               <Field label="Location" value={editing.location ?? ""} onChange={(v) => setEditing({ ...editing, location: v })} />
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-600">Description</label>
-                <textarea
-                  value={editing.description ?? ""}
-                  onChange={(e) => setEditing({ ...editing, description: e.target.value })}
-                  rows={3}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-                />
-              </div>
+
+              <TextareaField
+                label="Description"
+                value={editing.description ?? ""}
+                onChange={(v) => setEditing({ ...editing, description: v })}
+              />
+
+              <ImageUpload
+                label="Cover Image"
+                folder="events"
+                value={editing.image_url}
+                onChange={(url) => setEditing({ ...editing, image_url: url })}
+              />
+
               <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
@@ -128,7 +171,6 @@ export default function EventsManager() {
         </div>
       )}
 
-      {/* Table */}
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         {loading ? (
           <p className="p-6 text-center text-sm text-slate-400">Loading...</p>
@@ -139,19 +181,30 @@ export default function EventsManager() {
             <thead className="border-b bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-3">Title</th>
+                <th className="px-4 py-3">Institution</th>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3">Category</th>
-                <th className="px-4 py-3">Featured</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {items.map((ev) => (
                 <tr key={ev.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium">{ev.title}</td>
+                  <td className="px-4 py-3 font-medium">
+                    <span className="flex items-center gap-2">
+                      {ev.image_url && (
+                        <span className="text-xs text-slate-400" title="Has cover image">▣</span>
+                      )}
+                      {ev.title}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-slate-500">
+                    {ev.institution_id
+                      ? instMap.get(ev.institution_id) ?? "—"
+                      : "Network-wide"}
+                  </td>
                   <td className="px-4 py-3 text-slate-500">{ev.date_start}</td>
                   <td className="px-4 py-3 text-slate-500">{ev.category}</td>
-                  <td className="px-4 py-3">{ev.is_featured ? "Yes" : ""}</td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => setEditing({ ...ev })} className="text-crescent-700 hover:underline">
                       Edit
@@ -166,24 +219,6 @@ export default function EventsManager() {
           </table>
         )}
       </div>
-    </div>
-  );
-}
-
-function Field({
-  label, value, onChange, type = "text",
-}: {
-  label: string; value: string; onChange: (v: string) => void; type?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block text-xs font-medium text-slate-600">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-      />
     </div>
   );
 }
