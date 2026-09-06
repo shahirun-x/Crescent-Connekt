@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import CalendarExplorer from "@/components/CalendarExplorer";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbJsonLd, eventListJsonLd } from "@/lib/jsonld";
 import { getEvents } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -18,6 +20,15 @@ export default async function CalendarPage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          eventListJsonLd(events),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Central Calendar", path: "/calendar" },
+          ]),
+        ]}
+      />
       <PageHeader
         eyebrow="Coordination Layer"
         title="Central Calendar"

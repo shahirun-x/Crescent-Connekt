@@ -4,6 +4,8 @@ import "./globals.css";
 import MotionProvider from "@/components/MotionProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { site, SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -61,6 +63,8 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        {/* Site-wide identity. Referenced by @id from the per-page blocks. */}
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <MotionProvider>
           <Navbar />
           <main id="main" className="flex-1">

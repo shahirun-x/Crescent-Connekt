@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import NewsEventsStream from "@/components/NewsEventsStream";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbJsonLd, eventListJsonLd, newsListJsonLd } from "@/lib/jsonld";
 import { getEvents, getNews } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -17,6 +19,17 @@ export default async function NewsPage() {
 
   return (
     <>
+      {/* The page shows a merged stream, so both lists are described. */}
+      <JsonLd
+        data={[
+          newsListJsonLd(news),
+          eventListJsonLd(events),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "News & Events", path: "/news" },
+          ]),
+        ]}
+      />
       <PageHeader
         eyebrow="Across the Network"
         title="News & Events"

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import InstitutionsExplorer from "@/components/InstitutionsExplorer";
 import InstitutionMapCard from "@/components/InstitutionMapCard";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbJsonLd, institutionListJsonLd } from "@/lib/jsonld";
 import { getInstitutions } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -19,6 +21,15 @@ export default async function InstitutionsPage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          institutionListJsonLd(institutions),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Institutions", path: "/institutions" },
+          ]),
+        ]}
+      />
       <PageHeader
         eyebrow="The Network"
         title="Institutions of the Crescent ecosystem"
