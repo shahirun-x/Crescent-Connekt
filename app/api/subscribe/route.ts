@@ -11,16 +11,6 @@ function sanitize(str: string): string {
 }
 
 export async function POST(request: Request) {
-  // Rate limit: 3 per IP per hour
-  const ip = getClientIP(request);
-  const rl = checkRateLimit(`subscribe:${ip}`, 3);
-  if (!rl.ok) {
-    return NextResponse.json(
-      { ok: false, error: "Too many submissions. Please try again later." },
-      { status: 429 }
-    );
-  }
-
   let body: { name?: string; email?: string; role?: string };
   try {
     body = await request.json();
@@ -35,42 +25,74 @@ export async function POST(request: Request) {
   const email = sanitize(body.email ?? "");
   const role = sanitize(body.role ?? "");
 
+  // Validate before consuming a rate-limit slot, so typos don't lock anyone out.
   if (!emailRe.test(email)) {
     return NextResponse.json(
-      { ok: false, error: "Please enter a valid email address." },
+      {
+        ok: false,
+        error: "Please enter a valid email address.",
+        fieldErrors: { email: "Please enter a valid email address." },
+      },
       { status: 422 }
+    );
+  }
+
+  const ip = getClientIP(request);
+  const rl = checkRateLimit(`subscribe:${ip}`, 3);
+  if (!rl.ok) {
+    const mins = Math.max(1, Math.ceil(rl.retryAfterMs / 60000));
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `You've signed up a few times already. Please try again in about ${mins} minute${mins === 1 ? "" : "s"}.`,
+      },
+      { status: 429 }
     );
   }
 
   const supabase = getSupabase();
   if (!supabase) {
-    return NextResponse.json({ ok: true, stored: false });
+    console.error(
+      "[subscribe] Supabase is not configured — NEXT_PUBLIC_SUPABASE_URL and/or NEXT_PUBLIC_SUPABASE_ANON_KEY are missing at runtime."
+    );
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Sign-ups are temporarily unavailable. Please try again shortly.",
+      },
+      { status: 503 }
+    );
   }
 
-  // Check for duplicate
-  const { data: existing } = await supabase
-    .from("connect_signups")
-    .select("id")
-    .eq("email", email)
-    .maybeSingle();
-
-  if (existing) {
-    return NextResponse.json({
-      ok: true,
-      stored: true,
-      message: "You're already registered! We'll be in touch.",
-    });
-  }
-
+  // NOTE: we do NOT pre-check for an existing row. Anonymous visitors have
+  // INSERT but no SELECT policy on connect_signups, so a lookup silently
+  // returns [] and never detects a duplicate. Instead we let the unique
+  // constraint on `email` do the work and translate 23505 into a friendly
+  // "already registered" response.
   const { error } = await supabase
     .from("connect_signups")
     .insert({ name: name || null, email, role: role || null });
 
   if (error) {
+    if (error.code === "23505") {
+      return NextResponse.json({
+        ok: true,
+        stored: true,
+        message: "You're already on the list — we'll be in touch.",
+      });
+    }
+
+    console.error("[subscribe] Supabase insert failed", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
     return NextResponse.json(
       {
         ok: false,
-        error: "Could not add you right now. Please try again later.",
+        error: `We couldn't add you right now (${error.message}). Please try again later.`,
       },
       { status: 500 }
     );

@@ -17,6 +17,7 @@ type Status = "idle" | "sending" | "ok" | "error";
 export default function EarlyAccessForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -35,6 +36,7 @@ export default function EarlyAccessForm() {
       });
       const json = await res.json();
       if (!res.ok || !json.ok) throw new Error(json.error ?? "Something went wrong.");
+      setNotice(json.message ?? "");
       setStatus("ok");
       form.reset();
     } catch (err) {
@@ -46,7 +48,9 @@ export default function EarlyAccessForm() {
   if (status === "ok") {
     return (
       <div className="rounded-card border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-800">
-        <p className="font-semibold">You&apos;re on the early-access list.</p>
+        <p className="font-semibold">
+          {notice || "You're on the early-access list."}
+        </p>
         <p className="mt-1">We&apos;ll be in touch when Crescent Connect opens.</p>
       </div>
     );

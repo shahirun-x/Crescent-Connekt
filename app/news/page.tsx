@@ -1,29 +1,29 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
-import NewsList from "@/components/NewsList";
-import { getNews } from "@/lib/data";
+import NewsEventsStream from "@/components/NewsEventsStream";
+import { getEvents, getNews } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "News & Events",
   description:
-    "A unified news stream from across the Crescent ecosystem — announcements, achievements and updates from every institution.",
+    "A unified news and events stream from across the Crescent ecosystem — announcements, achievements and upcoming gatherings from every institution.",
   alternates: { canonical: "/news" },
 };
 
 export const revalidate = 600;
 
 export default async function NewsPage() {
-  const news = await getNews();
+  const [news, events] = await Promise.all([getNews(), getEvents()]);
 
   return (
     <>
       <PageHeader
         eyebrow="Across the Network"
         title="News & Events"
-        description="One place for updates from every Crescent institution. For event dates and coordination, see the Central Calendar."
+        description="One place for updates and gatherings from every Crescent institution. For full event dates and coordination, see the Central Calendar."
       />
       <div className="container-page py-14">
-        <NewsList items={news} />
+        <NewsEventsStream news={news} events={events} />
       </div>
     </>
   );

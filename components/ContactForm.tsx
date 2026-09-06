@@ -8,6 +8,7 @@ type Status = "idle" | "sending" | "ok" | "error";
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,6 +22,7 @@ export default function ContactForm() {
 
     setStatus("sending");
     setError("");
+    setFieldErrors({});
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -29,16 +31,8 @@ export default function ContactForm() {
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
+        setFieldErrors(json.fieldErrors ?? {});
         throw new Error(json.error ?? "Something went wrong.");
-      }
-      if (json.stored === false) {
-        // No database — hand off to the user's mail client.
-        const body = encodeURIComponent(
-          `${payload.message}\n\n— ${payload.name} (${payload.email})`
-        );
-        window.location.href = `mailto:${site.contactEmail}?subject=${encodeURIComponent(
-          "Crescent Global enquiry"
-        )}&body=${body}`;
       }
       setStatus("ok");
       form.reset();
@@ -47,6 +41,13 @@ export default function ContactForm() {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     }
   }
+
+  const fieldClass = (field: string) =>
+    `mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none ${
+      fieldErrors[field]
+        ? "border-accent-500 focus:border-accent-600"
+        : "border-slate-300 focus:border-crescent-400"
+    }`;
 
   if (status === "ok") {
     return (
@@ -70,8 +71,14 @@ export default function ContactForm() {
             required
             minLength={2}
             autoComplete="name"
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+            aria-invalid={!!fieldErrors.name}
+            className={fieldClass("name")}
           />
+          {fieldErrors.name && (
+            <span className="mt-1 block text-xs font-normal text-accent-600">
+              {fieldErrors.name}
+            </span>
+          )}
         </label>
         <label className="block text-sm font-medium text-slate-700">
           Email
@@ -80,8 +87,14 @@ export default function ContactForm() {
             type="email"
             required
             autoComplete="email"
-            className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+            aria-invalid={!!fieldErrors.email}
+            className={fieldClass("email")}
           />
+          {fieldErrors.email && (
+            <span className="mt-1 block text-xs font-normal text-accent-600">
+              {fieldErrors.email}
+            </span>
+          )}
         </label>
       </div>
       <label className="block text-sm font-medium text-slate-700">
@@ -91,14 +104,33 @@ export default function ContactForm() {
           required
           minLength={10}
           rows={5}
-          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+          aria-invalid={!!fieldErrors.message}
+          className={fieldClass("message")}
         />
+        {fieldErrors.message && (
+          <span className="mt-1 block text-xs font-normal text-accent-600">
+            {fieldErrors.message}
+          </span>
+        )}
       </label>
 
       {status === "error" && (
-        <p className="text-sm text-accent-600" role="alert">
-          {error}
-        </p>
+        <div
+          className="rounded-lg border border-accent-200 bg-accent-50/60 p-3 text-sm text-accent-700"
+          role="alert"
+        >
+          <p>{error}</p>
+          <p className="mt-1 text-xs">
+            You can also email us directly at{" "}
+            <a
+              href={`mailto:${site.contactEmail}`}
+              className="font-semibold underline"
+            >
+              {site.contactEmail}
+            </a>
+            .
+          </p>
+        </div>
       )}
 
       <button
