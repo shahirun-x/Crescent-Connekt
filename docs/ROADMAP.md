@@ -68,10 +68,10 @@ Current tiers will not carry a live institutional network.
       pagination degrades; consider keyset.
 - [ ] **Email deliverability.** Resend needs a verified sending domain, SPF and
       DKIM, or approval mails land in spam.
-- [ ] **Enforce upload limits server-side.** `ImageUpload` validates type and
-      size in the browser only; the storage policy accepts any authenticated
-      INSERT. Set `allowed_mime_types` and `file_size_limit` on the `media`
-      bucket. See `docs/SECURITY.md` → *Known gap*.
+- [x] **Enforce upload limits server-side.** Done — `media` now carries
+      `file_size_limit` 5 MB and `allowed_mime_types` (jpeg, png, webp, gif),
+      enforced by Supabase Storage. Applied live and captured in
+      `supabase/migration-images.sql`. See `docs/SECURITY.md` → *Upload limits*.
 
 ---
 

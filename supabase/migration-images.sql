@@ -13,11 +13,28 @@ alter table public.news   add column if not exists image_url text;
 -- ---------------------------------------------------------------------------
 -- Storage bucket: "media"
 -- Public read, authenticated write.
+--
+-- file_size_limit and allowed_mime_types are enforced by Supabase Storage
+-- server-side, on the bucket itself. This is the real boundary: the checks in
+-- components/admin/ImageUpload.tsx are for fast feedback only and are
+-- bypassable, since the browser uploads straight to Storage. Do not rely on
+-- the client alone — keep these bucket settings in place.
+--
+-- 5242880 bytes = 5 MB, matching MAX_BYTES in ImageUpload.tsx.
 -- ---------------------------------------------------------------------------
 
-insert into storage.buckets (id, name, public)
-values ('media', 'media', true)
-on conflict (id) do update set public = true;
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'media',
+  'media',
+  true,
+  5242880,
+  array['image/jpeg','image/png','image/webp','image/gif']
+)
+on conflict (id) do update set
+  public             = excluded.public,
+  file_size_limit    = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 -- Drop existing policies so this migration stays re-runnable
 drop policy if exists "media public read"          on storage.objects;

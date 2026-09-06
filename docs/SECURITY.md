@@ -102,31 +102,42 @@ limit.
 - Protected API routes return **401**, not an empty array. An empty array is
   indistinguishable from "no results" and hides broken auth.
 - Sanitise free-text (`bio`, `headline`, `message`) before storage.
-- Uploads: image types only, 5 MB cap — **client-side only today.** See below.
+- Uploads: image types only, 5 MB cap, enforced at the storage bucket. See below.
 
-## Known gap — upload validation is not enforced server-side
+## Upload limits — enforced at the bucket
 
-`components/admin/ImageUpload.tsx` checks MIME type and the 5 MB cap in the
-browser, then uploads **directly** from the browser to Supabase Storage. There
-is no server-side upload route, so those checks are trivially bypassable by
-anyone with an authenticated session calling the Storage API directly.
+The browser uploads **directly** to Supabase Storage; there is no server-side
+upload route. So the checks in `components/admin/ImageUpload.tsx` are for fast
+feedback only — anyone with an authenticated session can call the Storage API
+directly and skip them.
 
-The only server-side control is the storage RLS policy, which allows *any*
-authenticated INSERT into `media` with no type or size restriction:
+The real boundary is the bucket itself. `media` carries:
+
+| Setting | Value |
+|---|---|
+| `file_size_limit` | `5242880` (5 MB) |
+| `allowed_mime_types` | `image/jpeg`, `image/png`, `image/webp`, `image/gif` |
+
+Supabase enforces both server-side and rejects a non-conforming upload
+regardless of what the client sends. This is set in
+`supabase/migration-images.sql`, so a fresh environment gets it on first run,
+and the `on conflict` clause re-applies it if the bucket already exists.
+
+**Do not remove these settings.** The storage RLS policy alone does not
+constrain type or size — it only checks that the caller is authenticated and
+targeting the right bucket:
 
 ```sql
 create policy "media authenticated insert" on storage.objects
   for insert to authenticated with check (bucket_id = 'media');
 ```
 
-Exposure is currently limited — uploading requires an approved member or admin
-session, and `media` is a public-read bucket holding content that is meant to
-be public. The realistic risks are storage-quota abuse and hosting arbitrary
-file types on the project's domain.
+Without the bucket settings, that policy accepts a 2 GB executable. Tightening
+the client is not a substitute; the client is the part an attacker controls.
 
-To close it: set per-bucket `allowed_mime_types` and `file_size_limit` on the
-`media` bucket (Supabase enforces both server-side), or route uploads through
-an API route that validates before writing. Tracked in `docs/ROADMAP.md`.
+> The bucket permits `image/gif`, which `ImageUpload` does not offer. The
+> bucket is deliberately the wider boundary — widen the client to match if GIF
+> support is ever wanted, rather than narrowing the bucket to the client.
 
 ## Deliberately accepted
 
