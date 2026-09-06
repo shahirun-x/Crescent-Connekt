@@ -1,0 +1,101 @@
+<!--
+  Supabase → Authentication → Emails → Confirm signup
+  Variables: {{ .ConfirmationURL }}, {{ .Email }}, {{ .SiteURL }}
+  Table layout + inline styles only — see README.md for why.
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0;padding:0;background-color:#f1f5f9;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color:#1a3a6b;padding:28px 32px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="width:40px;height:40px;background-color:#ffffff;border-radius:50%;text-align:center;vertical-align:middle;font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:bold;color:#1a3a6b;line-height:40px;">C</td>
+                <td style="padding-left:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+                  <div style="font-size:17px;font-weight:bold;color:#ffffff;letter-spacing:-0.2px;">Crescent Global</div>
+                  <div style="font-size:10px;font-weight:600;color:#a9c0e6;letter-spacing:2px;text-transform:uppercase;padding-top:2px;">One Network</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:36px 32px 8px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <h1 style="margin:0 0 16px;font-size:22px;line-height:1.3;font-weight:bold;color:#142d54;">Confirm your email address</h1>
+
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#475569;">
+              Assalamu alaikum,
+            </p>
+            <p style="margin:0 0 16px;font-size:15px;line-height:1.65;color:#475569;">
+              You&rsquo;re one step away from joining <strong style="color:#142d54;">Crescent Connect</strong>, the members-only network for students, alumni, faculty, management, parents, entrepreneurs and well-wishers across the Crescent family.
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#475569;">
+              Confirm <strong style="color:#142d54;">{{ .Email }}</strong> to continue, then set up your member profile.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Button -->
+        <tr>
+          <td align="center" style="padding:0 32px 28px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background-color:#1a3a6b;border-radius:9999px;">
+                  <a href="{{ .ConfirmationURL }}"
+                     style="display:inline-block;padding:14px 34px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:9999px;">
+                    Confirm my email
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Plain-text fallback -->
+        <tr>
+          <td style="padding:0 32px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <p style="margin:0 0 6px;font-size:13px;line-height:1.6;color:#64748b;">
+              If the button doesn&rsquo;t work, copy this link into your browser:
+            </p>
+            <p style="margin:0;font-size:12px;line-height:1.6;word-break:break-all;">
+              <a href="{{ .ConfirmationURL }}" style="color:#1a3a6b;">{{ .ConfirmationURL }}</a>
+            </p>
+          </td>
+        </tr>
+
+        <!-- Note -->
+        <tr>
+          <td style="padding:0 32px 32px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f8fafc;border-radius:10px;">
+              <tr>
+                <td style="padding:14px 18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.6;color:#64748b;">
+                  Every profile is reviewed by the Crescent Global team before it joins the directory, so the network stays genuinely Crescent. We&rsquo;ll email you once you&rsquo;re approved.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background-color:#f8fafc;border-top:1px solid #e2e8f0;padding:22px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+            <p style="margin:0 0 6px;font-size:12px;line-height:1.6;color:#94a3b8;">
+              If you didn&rsquo;t create this account, you can safely ignore this email &mdash; nothing will happen.
+            </p>
+            <p style="margin:0;font-size:12px;line-height:1.6;color:#94a3b8;">
+              Crescent Global Outreach Mission &middot; <a href="{{ .SiteURL }}" style="color:#1a3a6b;text-decoration:none;">{{ .SiteURL }}</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
