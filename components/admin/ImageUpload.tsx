@@ -159,7 +159,7 @@ export default function ImageUpload({
               <p className="text-sm font-medium text-slate-600">
                 Drop an image here, or click to browse
               </p>
-              <p className="mt-1 text-xs text-slate-400">
+              <p className="mt-1 text-xs text-slate-500">
                 JPG, PNG or WebP · max 5MB
               </p>
             </>

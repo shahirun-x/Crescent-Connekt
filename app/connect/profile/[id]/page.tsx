@@ -157,7 +157,7 @@ export default async function MemberProfilePage({
 
             {m.bio && (
               <div className="mt-7 border-t border-slate-100 pt-6">
-                <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   About
                 </h2>
                 <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-700">
@@ -181,7 +181,7 @@ export default async function MemberProfilePage({
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
         {label}
       </dt>
       <dd className="mt-0.5 text-slate-700">{children}</dd>

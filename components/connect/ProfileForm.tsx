@@ -259,7 +259,7 @@ export default function ProfileForm({
                   placeholder="e.g. 2019"
                   className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
                 />
-                <span className="mt-1 block text-xs font-normal text-slate-400">
+                <span className="mt-1 block text-xs font-normal text-slate-500">
                   Year of graduation, or expected graduation.
                 </span>
               </label>
@@ -308,13 +308,13 @@ export default function ProfileForm({
                 placeholder="Software engineer at Zoho · Crescent CSE 2019"
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
-              <span className="mt-1 block text-xs font-normal text-slate-400">
+              <span className="mt-1 block text-xs font-normal text-slate-500">
                 One line, shown on your directory card. {draft.headline.length}/160
               </span>
             </label>
 
             <label className="block text-sm font-medium text-slate-700">
-              About you <span className="font-normal text-slate-400">(optional)</span>
+              About you <span className="font-normal text-slate-500">(optional)</span>
               <textarea
                 value={draft.bio}
                 onChange={(e) => set("bio", e.target.value)}
@@ -322,13 +322,13 @@ export default function ProfileForm({
                 maxLength={2000}
                 className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
-              <span className="mt-1 block text-xs font-normal text-slate-400">
+              <span className="mt-1 block text-xs font-normal text-slate-500">
                 {draft.bio.length}/2000 · Line breaks are preserved.
               </span>
             </label>
 
             <label className="block text-sm font-medium text-slate-700">
-              LinkedIn <span className="font-normal text-slate-400">(optional)</span>
+              LinkedIn <span className="font-normal text-slate-500">(optional)</span>
               <input
                 type="url"
                 value={draft.linkedin_url}
@@ -339,7 +339,7 @@ export default function ProfileForm({
             </label>
 
             <label className="block text-sm font-medium text-slate-700">
-              Phone <span className="font-normal text-slate-400">(optional)</span>
+              Phone <span className="font-normal text-slate-500">(optional)</span>
               <input
                 type="tel"
                 value={draft.phone}

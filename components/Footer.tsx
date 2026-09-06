@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container-page grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo className="[&_span]:text-white [&_span:last-child]:text-crescent-300" />
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-500">
             {site.description}
           </p>
           <p className="mt-4 text-xs text-slate-500">
@@ -27,7 +27,7 @@ export default function Footer() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-slate-400 transition-colors hover:text-white"
+                  className="text-slate-500 transition-colors hover:text-white"
                 >
                   {item.label}
                 </Link>
@@ -40,7 +40,7 @@ export default function Footer() {
           <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
             Contact
           </h3>
-          <ul className="mt-4 space-y-2 text-sm text-slate-400">
+          <ul className="mt-4 space-y-2 text-sm text-slate-500">
             <li>
               <a
                 href={`mailto:${site.contactEmail}`}

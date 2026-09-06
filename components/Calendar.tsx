@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   addDays,
@@ -41,6 +41,107 @@ function useIsMobile() {
     return () => mq.removeEventListener("change", sync);
   }, []);
   return mobile;
+}
+
+/**
+ * Roving tabindex for the month grid.
+ *
+ * The grid is one tab stop, not 42. Arrow keys move focus between days,
+ * Home/End jump to the ends of a row, PageUp/PageDown change month. This is
+ * the APG grid pattern — without it a keyboard user would either tab through
+ * every cell or, since empty days are not activatable, be unable to reach
+ * most of the month at all.
+ */
+function useRovingGrid(
+  days: Date[],
+  anchor: Date,
+  onAnchorChange: (d: Date) => void
+) {
+  const [focusedIso, setFocusedIso] = useState<string | null>(null);
+  const refs = useRef(new Map<string, HTMLButtonElement>());
+  const pendingFocus = useRef<string | null>(null);
+
+  const register = useCallback((iso: string, el: HTMLButtonElement | null) => {
+    if (el) refs.current.set(iso, el);
+    else refs.current.delete(iso);
+  }, []);
+
+  // After the month changes, focus the day we navigated to once it exists.
+  useEffect(() => {
+    const want = pendingFocus.current;
+    if (!want) return;
+    const el = refs.current.get(want);
+    if (el) {
+      el.focus();
+      setFocusedIso(want);
+      pendingFocus.current = null;
+    }
+  }, [days]);
+
+  const moveTo = useCallback(
+    (target: Date) => {
+      const iso = toISODate(target);
+      const el = refs.current.get(iso);
+      if (el) {
+        el.focus();
+        setFocusedIso(iso);
+      } else {
+        // Off the rendered grid — change month, then focus after it renders.
+        pendingFocus.current = iso;
+        onAnchorChange(target);
+      }
+    },
+    [onAnchorChange]
+  );
+
+  const onKeyDown = useCallback(
+    (e: React.KeyboardEvent, current: Date) => {
+      const deltas: Record<string, number> = {
+        ArrowLeft: -1,
+        ArrowRight: 1,
+        ArrowUp: -7,
+        ArrowDown: 7,
+      };
+
+      if (e.key in deltas) {
+        e.preventDefault();
+        moveTo(addDays(current, deltas[e.key]));
+        return;
+      }
+      if (e.key === "Home") {
+        e.preventDefault();
+        moveTo(mondayOf(current));
+        return;
+      }
+      if (e.key === "End") {
+        e.preventDefault();
+        moveTo(addDays(mondayOf(current), 6));
+        return;
+      }
+      if (e.key === "PageUp") {
+        e.preventDefault();
+        moveTo(addMonths(current, -1));
+        return;
+      }
+      if (e.key === "PageDown") {
+        e.preventDefault();
+        moveTo(addMonths(current, 1));
+      }
+    },
+    [moveTo]
+  );
+
+  // The single tab stop: whatever is focused, else today if it's on screen,
+  // else the first day of the grid.
+  const tabStopIso = useMemo(() => {
+    if (focusedIso && refs.current.has(focusedIso)) return focusedIso;
+    const todayIso = toISODate(startOfDay(new Date()));
+    if (days.some((d) => toISODate(d) === todayIso)) return todayIso;
+    const firstOfMonth = days.find((d) => d.getMonth() === anchor.getMonth());
+    return toISODate(firstOfMonth ?? days[0]);
+  }, [focusedIso, days, anchor]);
+
+  return { register, onKeyDown, tabStopIso, setFocusedIso };
 }
 
 /** Tooltip + caret placement so it never clips the calendar edges. */
@@ -112,6 +213,8 @@ export default function Calendar({
     () => toISODate(mondayOf(parseISODate(today))),
     [today]
   );
+
+  const grid = useRovingGrid(monthDays, anchor, onAnchorChange);
 
   function step(delta: number) {
     setDir(delta);
@@ -225,7 +328,7 @@ export default function Calendar({
             {WEEKDAYS.map((w, i) => (
               <div
                 key={w}
-                className={`px-1 py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wide text-slate-400 ${
+                className={`px-1 py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wide text-slate-500 ${
                   i >= 5 ? "bg-slate-100/70" : ""
                 }`}
               >
@@ -253,7 +356,11 @@ export default function Calendar({
             }}
           >
             {view === "month" ? (
-              <div className="grid grid-cols-7 divide-x divide-y divide-slate-100">
+              <div
+                role="grid"
+                aria-label="Month view. Use arrow keys to move between days."
+                className="grid grid-cols-7 divide-x divide-y divide-slate-100"
+              >
                 {monthDays.map((d, i) => {
                   const iso = toISODate(d);
                   const col = i % 7;
@@ -284,18 +391,27 @@ export default function Calendar({
                           ? "bg-crescent-700 text-white"
                           : inMonth
                             ? "font-semibold text-slate-800"
-                            : "font-normal text-slate-300";
+                            : "font-normal text-slate-500";
 
                   const tip = tipPlacement(row, col);
 
                   return (
-                    <div key={iso} className={`relative ${cellBg}`}>
+                    <div key={iso} role="gridcell" className={`relative ${cellBg}`}>
                       <motion.button
                         type="button"
-                        disabled={!clickable}
+                        ref={(el) => grid.register(iso, el)}
+                        // aria-disabled rather than disabled: an empty day has
+                        // nothing to activate, but it must still be reachable
+                        // by arrow keys or most of the month is unnavigable.
+                        aria-disabled={!clickable}
+                        tabIndex={grid.tabStopIso === iso ? 0 : -1}
+                        onFocus={() => grid.setFocusedIso(iso)}
+                        onKeyDown={(e) => grid.onKeyDown(e, d)}
                         whileTap={clickable ? { scale: 0.95 } : undefined}
                         transition={{ duration: 0.15 }}
-                        onClick={() => onSelectDay(isSelected ? null : iso)}
+                        onClick={() =>
+                          clickable && onSelectDay(isSelected ? null : iso)
+                        }
                         onMouseEnter={() => setHovered(iso)}
                         onMouseLeave={() =>
                           setHovered((h) => (h === iso ? null : h))
@@ -331,7 +447,7 @@ export default function Calendar({
                               />
                             ))}
                             {dayEvents.length > 3 && (
-                              <span className="hidden text-[0.6rem] font-medium text-slate-400 sm:inline">
+                              <span className="hidden text-[0.6rem] font-medium text-slate-500 sm:inline">
                                 +{dayEvents.length - 3}
                               </span>
                             )}
@@ -346,7 +462,7 @@ export default function Calendar({
                           <span
                             className={`absolute h-2 w-2 rotate-45 border-slate-200 bg-white ${tip.caret}`}
                           />
-                          <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-slate-400">
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-slate-500">
                             {d.toLocaleDateString("en-IN", {
                               weekday: "short",
                               day: "numeric",
@@ -369,7 +485,7 @@ export default function Calendar({
                             ))}
                           </ul>
                           {dayEvents.length > 5 && (
-                            <p className="mt-1 text-[0.7rem] text-slate-400">
+                            <p className="mt-1 text-[0.7rem] text-slate-500">
                               +{dayEvents.length - 5} more
                             </p>
                           )}
@@ -412,7 +528,7 @@ export default function Calendar({
                         </button>
                         <div className="flex-1 space-y-1.5 overflow-y-auto p-2">
                           {dayEvents.length === 0 && (
-                            <p className="pt-3 text-center text-[0.7rem] text-slate-300">
+                            <p className="pt-3 text-center text-[0.7rem] text-slate-500">
                               —
                             </p>
                           )}
@@ -469,7 +585,7 @@ export default function Calendar({
                           <span className="text-sm font-semibold text-crescent-800">
                             {d.toLocaleDateString("en-IN", { weekday: "long" })}
                           </span>
-                          <span className="text-xs text-slate-400">
+                          <span className="text-xs text-slate-500">
                             {d.toLocaleDateString("en-IN", {
                               day: "numeric",
                               month: "short",
@@ -477,7 +593,7 @@ export default function Calendar({
                           </span>
                         </button>
                         {dayEvents.length === 0 ? (
-                          <p className="mt-2 pl-10 text-xs text-slate-400">
+                          <p className="mt-2 pl-10 text-xs text-slate-500">
                             No events
                           </p>
                         ) : (
@@ -512,7 +628,7 @@ export default function Calendar({
         </AnimatePresence>
       </div>
 
-      <p className="mt-2 text-center text-[0.7rem] text-slate-400 md:hidden">
+      <p className="mt-2 text-center text-[0.7rem] text-slate-500 md:hidden">
         Swipe left or right to change {view === "month" ? "month" : "week"}
       </p>
     </section>

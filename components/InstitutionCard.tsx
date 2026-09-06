@@ -19,7 +19,7 @@ export default function InstitutionCard({ inst }: { inst: Institution }) {
         <div className="flex items-start justify-between gap-3">
           <CategoryBadge category={inst.category} />
           {inst.established_year && (
-            <span className="text-xs font-medium text-slate-400">
+            <span className="text-xs font-medium text-slate-500">
               Est. {inst.established_year}
             </span>
           )}

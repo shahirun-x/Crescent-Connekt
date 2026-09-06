@@ -45,7 +45,7 @@ export function TextareaField({
     <div>
       <div className="mb-1 flex items-baseline justify-between">
         <label className="block text-xs font-medium text-slate-600">{label}</label>
-        <span className="text-xs tabular-nums text-slate-400">
+        <span className="text-xs tabular-nums text-slate-500">
           {value.length} characters
         </span>
       </div>
@@ -55,7 +55,7 @@ export function TextareaField({
         rows={rows}
         className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
       />
-      <p className="mt-1 text-xs text-slate-400">Line breaks are preserved.</p>
+      <p className="mt-1 text-xs text-slate-500">Line breaks are preserved.</p>
     </div>
   );
 }

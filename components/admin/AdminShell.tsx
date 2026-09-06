@@ -79,9 +79,10 @@ export default function AdminShell({
           </nav>
           <div className="border-t border-slate-700 px-4 py-3">
             <p className="truncate text-xs text-slate-400">{email}</p>
+            {/* slate-500 on slate-900 is 3.75:1 — below AA. slate-400 is 6.96:1. */}
             <button
               onClick={handleLogout}
-              className="mt-1 text-xs text-slate-500 hover:text-white"
+              className="mt-1 text-xs text-slate-400 hover:text-white"
             >
               Sign out
             </button>

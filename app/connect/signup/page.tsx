@@ -121,7 +121,7 @@ export default function ConnectSignupPage() {
 
       <div className="my-5 flex items-center gap-3">
         <span className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs uppercase tracking-wider text-slate-400">or</span>
+        <span className="text-xs uppercase tracking-wider text-slate-500">or</span>
         <span className="h-px flex-1 bg-slate-200" />
       </div>
 
@@ -149,7 +149,7 @@ export default function ConnectSignupPage() {
             autoComplete="new-password"
             className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
           />
-          <span className="mt-1 block text-xs font-normal text-slate-400">
+          <span className="mt-1 block text-xs font-normal text-slate-500">
             At least 8 characters.
           </span>
         </label>

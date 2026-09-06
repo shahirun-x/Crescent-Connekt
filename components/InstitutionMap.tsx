@@ -103,7 +103,7 @@ function PopupCard({ inst }: { inst: Institution }) {
         {inst.established_year ? ` · Est. ${inst.established_year}` : ""}
       </p>
       {inst.parent_org && (
-        <p className="mt-0.5 text-[0.7rem] text-slate-400">{inst.parent_org}</p>
+        <p className="mt-0.5 text-[0.7rem] text-slate-500">{inst.parent_org}</p>
       )}
       <span
         className="mt-1.5 inline-block rounded-full px-2 py-0.5 text-[0.65rem] font-semibold capitalize text-white"
@@ -235,8 +235,18 @@ export default function InstitutionMap({
 
   return (
     <div
+      role="figure"
+      aria-label={`Map of ${withCoords.length} Crescent institutions across Tamil Nadu. The same institutions are listed as cards below this map, which is the accessible equivalent.`}
       className={`relative overflow-hidden rounded-2xl border border-slate-200 ${className}`}
     >
+      {/*
+        The Leaflet canvas is decorative for assistive tech: its markers are
+        divIcons with no reachable text, and panning a map by keyboard is a
+        poor experience. The institution cards below carry the same data in a
+        navigable form, so the map is hidden from the accessibility tree and
+        the wrapper's aria-label points there instead.
+      */}
+      <div aria-hidden="true" className="h-full w-full">
       <MapContainer
         center={TN_CENTER}
         zoom={DEFAULT_ZOOM}
@@ -253,6 +263,7 @@ export default function InstitutionMap({
         <GestureManager onHint={setHint} />
         <Markers institutions={withCoords} zoom={zoom} />
       </MapContainer>
+      </div>
 
       {hint && (
         <div className="pointer-events-none absolute inset-0 z-[1000] flex items-center justify-center bg-crescent-950/45">
@@ -262,7 +273,10 @@ export default function InstitutionMap({
         </div>
       )}
 
-      <div className="pointer-events-none absolute bottom-2 left-2 z-[600] flex flex-wrap gap-x-3 gap-y-1 rounded-lg bg-white/90 px-2.5 py-1.5 text-[0.65rem] font-medium text-slate-600 shadow">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-2 left-2 z-[600] flex flex-wrap gap-x-3 gap-y-1 rounded-lg bg-white/90 px-2.5 py-1.5 text-[0.65rem] font-medium text-slate-600 shadow"
+      >
         {CATS.map((c) => (
           <span key={c} className="flex items-center gap-1 capitalize">
             <span

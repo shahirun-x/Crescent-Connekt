@@ -48,9 +48,9 @@ export default function SignupsViewer() {
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         {loading ? (
-          <p className="p-6 text-center text-sm text-slate-400">Loading...</p>
+          <p className="p-6 text-center text-sm text-slate-500">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="p-6 text-center text-sm text-slate-400">No signups yet.</p>
+          <p className="p-6 text-center text-sm text-slate-500">No signups yet.</p>
         ) : (
           <table className="w-full text-left text-sm">
             <thead className="border-b bg-slate-50 text-xs uppercase text-slate-500">

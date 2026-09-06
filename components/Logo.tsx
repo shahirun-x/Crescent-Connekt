@@ -33,7 +33,7 @@ export default function Logo({ className, withWordmark = true }: LogoProps) {
           <span className="text-[1.05rem] font-bold tracking-tight text-crescent-800">
             Crescent Global
           </span>
-          <span className="text-[0.66rem] font-medium uppercase tracking-[0.18em] text-crescent-400">
+          <span className="text-[0.66rem] font-medium uppercase tracking-[0.18em] text-crescent-600">
             One Network
           </span>
         </span>

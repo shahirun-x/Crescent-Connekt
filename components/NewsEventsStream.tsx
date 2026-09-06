@@ -96,7 +96,7 @@ export default function NewsEventsStream({
             {t}
             <span
               className={`ml-1.5 text-xs ${
-                type === t ? "text-white/70" : "text-slate-400"
+                type === t ? "text-white/70" : "text-slate-500"
               }`}
             >
               {counts[t]}

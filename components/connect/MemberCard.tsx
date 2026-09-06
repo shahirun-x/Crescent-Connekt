@@ -48,7 +48,7 @@ export function Avatar({
         />
       ) : (
         <span
-          className="flex h-full w-full items-center justify-center font-bold text-crescent-400"
+          className="flex h-full w-full items-center justify-center font-bold text-crescent-600"
           style={{ fontSize: size * 0.38 }}
         >
           {name.charAt(0).toUpperCase()}
@@ -95,7 +95,7 @@ export default function MemberCard({ member }: { member: DirectoryMember }) {
           </p>
         )}
         {location && (
-          <p className="mt-0.5 truncate text-xs text-slate-400">{location}</p>
+          <p className="mt-0.5 truncate text-xs text-slate-500">{location}</p>
         )}
       </div>
     </Link>

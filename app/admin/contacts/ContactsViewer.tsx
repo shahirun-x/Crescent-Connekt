@@ -63,9 +63,9 @@ export default function ContactsViewer() {
 
       <div className="mt-4 space-y-2">
         {loading ? (
-          <p className="p-6 text-center text-sm text-slate-400">Loading...</p>
+          <p className="p-6 text-center text-sm text-slate-500">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="p-6 text-center text-sm text-slate-400">No messages yet.</p>
+          <p className="p-6 text-center text-sm text-slate-500">No messages yet.</p>
         ) : (
           items.map((c) => (
             <div
@@ -84,10 +84,10 @@ export default function ContactsViewer() {
                   )}
                   <div>
                     <span className="font-medium text-slate-800">{c.name}</span>
-                    <span className="ml-2 text-sm text-slate-400">{c.email}</span>
+                    <span className="ml-2 text-sm text-slate-500">{c.email}</span>
                   </div>
                 </div>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   {new Date(c.created_at).toLocaleDateString()}
                 </span>
               </button>

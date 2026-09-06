@@ -62,7 +62,7 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
                 <p className="mt-3 line-clamp-2 flex-1 whitespace-pre-line text-sm leading-relaxed text-slate-500">
                   {e.description}
                 </p>
-                <p className="mt-3 text-xs text-slate-400">{e.location}</p>
+                <p className="mt-3 text-xs text-slate-500">{e.location}</p>
                 </div>
               </article>
             </Reveal>

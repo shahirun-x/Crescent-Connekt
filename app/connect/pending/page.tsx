@@ -66,7 +66,7 @@ export default async function ConnectPendingPage() {
                     className="object-cover"
                   />
                 ) : (
-                  <span className="flex h-full w-full items-center justify-center text-2xl font-bold text-slate-400">
+                  <span className="flex h-full w-full items-center justify-center text-2xl font-bold text-slate-500">
                     {p.full_name.charAt(0).toUpperCase()}
                   </span>
                 )}
@@ -128,7 +128,7 @@ export default async function ConnectPendingPage() {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-500">
         {label}
       </dt>
       <dd className="mt-0.5 text-slate-700">{children}</dd>

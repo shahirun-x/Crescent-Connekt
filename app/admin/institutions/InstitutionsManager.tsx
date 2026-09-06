@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useToast } from "@/components/admin/Toast";
+import Modal from "@/components/admin/Modal";
 import type { Institution, Category } from "@/lib/types";
 
 const CATEGORIES: Category[] = ["education", "healthcare", "community", "innovation"];
@@ -47,9 +48,20 @@ export default function InstitutionsManager() {
       <p className="mt-1 text-sm text-slate-500">Edit existing institutions (add/delete disabled).</p>
 
       {editing && (
-        <div className="fixed inset-0 z-40 flex items-start justify-center bg-black/30 pt-20">
-          <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="mb-4 text-lg font-semibold">Edit Institution</h2>
+        <Modal
+          title="Edit Institution"
+          onClose={() => setEditing(null)}
+          footer={
+            <>
+              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
+                Cancel
+              </button>
+              <button onClick={handleSave} disabled={saving} className="rounded-lg bg-crescent-700 px-4 py-2 text-sm font-medium text-white hover:bg-crescent-800 disabled:opacity-60">
+                {saving ? "Saving..." : "Save"}
+              </button>
+            </>
+          }
+        >
             <div className="space-y-3">
               <Field label="Name" value={editing.name ?? ""} onChange={(v) => setEditing({ ...editing, name: v })} />
               <Field label="Location" value={editing.location ?? ""} onChange={(v) => setEditing({ ...editing, location: v })} />
@@ -82,23 +94,14 @@ export default function InstitutionsManager() {
                 <Field label="Longitude" type="number" value={String(editing.longitude ?? "")} onChange={(v) => setEditing({ ...editing, longitude: v ? Number(v) : null })} />
               </div>
             </div>
-            <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
-                Cancel
-              </button>
-              <button onClick={handleSave} disabled={saving} className="rounded-lg bg-crescent-700 px-4 py-2 text-sm font-medium text-white hover:bg-crescent-800 disabled:opacity-60">
-                {saving ? "Saving..." : "Save"}
-              </button>
-            </div>
-          </div>
-        </div>
+        </Modal>
       )}
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         {loading ? (
-          <p className="p-6 text-center text-sm text-slate-400">Loading...</p>
+          <p className="p-6 text-center text-sm text-slate-500">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="p-6 text-center text-sm text-slate-400">No institutions.</p>
+          <p className="p-6 text-center text-sm text-slate-500">No institutions.</p>
         ) : (
           <table className="w-full text-left text-sm">
             <thead className="border-b bg-slate-50 text-xs uppercase text-slate-500">

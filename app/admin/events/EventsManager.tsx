@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "@/components/admin/Toast";
 import ImageUpload from "@/components/admin/ImageUpload";
+import Modal from "@/components/admin/Modal";
 import { Field, TextareaField, InstitutionSelect } from "@/components/admin/fields";
 import type { EventCategory, Institution } from "@/lib/types";
 
@@ -115,11 +116,20 @@ export default function EventsManager() {
       </div>
 
       {editing && (
-        <div className="fixed inset-0 z-40 overflow-y-auto bg-black/30 py-10">
-          <div className="mx-auto w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="mb-4 text-lg font-semibold">
-              {editing.id ? "Edit Event" : "New Event"}
-            </h2>
+        <Modal
+          title={editing.id ? "Edit Event" : "New Event"}
+          onClose={() => setEditing(null)}
+          footer={
+            <>
+              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
+                Cancel
+              </button>
+              <button onClick={handleSave} disabled={saving} className="rounded-lg bg-crescent-700 px-4 py-2 text-sm font-medium text-white hover:bg-crescent-800 disabled:opacity-60">
+                {saving ? "Saving..." : "Save"}
+              </button>
+            </>
+          }
+        >
             <div className="space-y-3">
               <Field label="Title" value={editing.title ?? ""} onChange={(v) => setEditing({ ...editing, title: v })} />
               <div className="grid grid-cols-2 gap-3">
@@ -168,23 +178,14 @@ export default function EventsManager() {
                 Featured event
               </label>
             </div>
-            <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-100">
-                Cancel
-              </button>
-              <button onClick={handleSave} disabled={saving} className="rounded-lg bg-crescent-700 px-4 py-2 text-sm font-medium text-white hover:bg-crescent-800 disabled:opacity-60">
-                {saving ? "Saving..." : "Save"}
-              </button>
-            </div>
-          </div>
-        </div>
+        </Modal>
       )}
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         {loading ? (
-          <p className="p-6 text-center text-sm text-slate-400">Loading...</p>
+          <p className="p-6 text-center text-sm text-slate-500">Loading...</p>
         ) : items.length === 0 ? (
-          <p className="p-6 text-center text-sm text-slate-400">No events yet.</p>
+          <p className="p-6 text-center text-sm text-slate-500">No events yet.</p>
         ) : (
           <table className="w-full text-left text-sm">
             <thead className="border-b bg-slate-50 text-xs uppercase text-slate-500">
@@ -202,7 +203,7 @@ export default function EventsManager() {
                   <td className="px-4 py-3 font-medium">
                     <span className="flex items-center gap-2">
                       {ev.image_url && (
-                        <span className="text-xs text-slate-400" title="Has cover image">▣</span>
+                        <span className="text-xs text-slate-500" title="Has cover image">▣</span>
                       )}
                       {ev.title}
                     </span>

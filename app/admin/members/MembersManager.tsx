@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { useToast } from "@/components/admin/Toast";
+import Modal from "@/components/admin/Modal";
 import { roleMeta, statusMeta, type MemberRole, type MemberStatus } from "@/lib/roles";
 
 interface MemberRow {
@@ -94,6 +95,7 @@ export default function MembersManager() {
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search members by name or headline"
           placeholder="Search name or headline…"
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
         />
@@ -115,7 +117,7 @@ export default function MembersManager() {
             {counts[t] ? (
               <span
                 className={`ml-1.5 text-xs ${
-                  tab === t ? "text-white/70" : "text-slate-400"
+                  tab === t ? "text-white/70" : "text-slate-500"
                 }`}
               >
                 {counts[t]}
@@ -127,24 +129,14 @@ export default function MembersManager() {
 
       {/* Reject dialog */}
       {rejecting && (
-        <div className="fixed inset-0 z-40 flex items-start justify-center bg-black/30 pt-24">
-          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold">
-              Reject {rejecting.full_name}?
-            </h2>
-            <p className="mt-1 text-sm text-slate-500">
-              You can add a reason. It is stored on the profile and included in
-              the notification the member sees.
-            </p>
-            <textarea
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              rows={4}
-              maxLength={500}
-              placeholder="Optional reason…"
-              className="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
-            />
-            <div className="mt-4 flex justify-end gap-2">
+        <Modal
+          title={`Reject ${rejecting.full_name}?`}
+          onClose={() => {
+            setRejecting(null);
+            setReason("");
+          }}
+          footer={
+            <>
               <button
                 onClick={() => {
                   setRejecting(null);
@@ -161,13 +153,26 @@ export default function MembersManager() {
               >
                 {busy === rejecting.id ? "Rejecting…" : "Reject"}
               </button>
-            </div>
-          </div>
-        </div>
+            </>
+          }
+        >
+          <label className="block text-sm text-slate-500">
+            You can add a reason. It is stored on the profile and included in
+            the notification the member sees.
+            <textarea
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              rows={4}
+              maxLength={500}
+              placeholder="Optional reason…"
+              className="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800"
+            />
+          </label>
+        </Modal>
       )}
 
       {loading ? (
-        <p className="mt-8 text-center text-sm text-slate-400">Loading…</p>
+        <p className="mt-8 text-center text-sm text-slate-500">Loading…</p>
       ) : items.length === 0 ? (
         <EmptyState tab={tab} />
       ) : tab === "pending" ? (
@@ -258,7 +263,7 @@ function ApplicantCard({
           {m.avatar_url ? (
             <Image src={m.avatar_url} alt="" fill sizes="64px" className="object-cover" />
           ) : (
-            <span className="flex h-full w-full items-center justify-center text-xl font-bold text-slate-400">
+            <span className="flex h-full w-full items-center justify-center text-xl font-bold text-slate-500">
               {m.full_name.charAt(0).toUpperCase()}
             </span>
           )}
@@ -312,7 +317,7 @@ function ApplicantCard({
             </div>
           )}
 
-          <p className="mt-3 text-xs text-slate-400">
+          <p className="mt-3 text-xs text-slate-500">
             Applied {new Date(m.created_at).toLocaleDateString()}
           </p>
         </div>
@@ -341,7 +346,7 @@ function ApplicantCard({
 function Item({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <dt className="inline text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <dt className="inline text-xs font-semibold uppercase tracking-wide text-slate-500">
         {label}:{" "}
       </dt>
       <dd className="inline text-slate-700">{children}</dd>

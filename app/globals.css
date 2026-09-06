@@ -67,10 +67,28 @@ body {
 
 a:focus-visible,
 button:focus-visible,
-[tabindex]:focus-visible {
+[tabindex]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
   outline: 2px solid var(--color-crescent-500);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/*
+ * Focus ring on dark surfaces.
+ *
+ * crescent-500 (#2f57a6) against slate-900 / crescent-900 / crescent-950 is
+ * roughly 1.5:1 — the ring is effectively invisible exactly where keyboard
+ * users need it most (admin sidebar, hero, footer). Switch to white there,
+ * which clears AA against all three.
+ */
+.bg-slate-900 :is(a, button, [tabindex], input, select, textarea):focus-visible,
+.bg-crescent-900 :is(a, button, [tabindex], input, select, textarea):focus-visible,
+.bg-crescent-950 :is(a, button, [tabindex], input, select, textarea):focus-visible {
+  outline-color: #ffffff;
 }
 
 /* Leaflet: strip the default white box behind custom divIcon markers. */

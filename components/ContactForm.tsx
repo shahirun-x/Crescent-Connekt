@@ -72,10 +72,14 @@ export default function ContactForm() {
             minLength={2}
             autoComplete="name"
             aria-invalid={!!fieldErrors.name}
+            aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
             className={fieldClass("name")}
           />
           {fieldErrors.name && (
-            <span className="mt-1 block text-xs font-normal text-accent-600">
+            <span
+              id="contact-name-error"
+              className="mt-1 block text-xs font-normal text-accent-600"
+            >
               {fieldErrors.name}
             </span>
           )}
@@ -88,10 +92,14 @@ export default function ContactForm() {
             required
             autoComplete="email"
             aria-invalid={!!fieldErrors.email}
+            aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
             className={fieldClass("email")}
           />
           {fieldErrors.email && (
-            <span className="mt-1 block text-xs font-normal text-accent-600">
+            <span
+              id="contact-email-error"
+              className="mt-1 block text-xs font-normal text-accent-600"
+            >
               {fieldErrors.email}
             </span>
           )}
@@ -105,10 +113,14 @@ export default function ContactForm() {
           minLength={10}
           rows={5}
           aria-invalid={!!fieldErrors.message}
+          aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
           className={fieldClass("message")}
         />
         {fieldErrors.message && (
-          <span className="mt-1 block text-xs font-normal text-accent-600">
+          <span
+            id="contact-message-error"
+            className="mt-1 block text-xs font-normal text-accent-600"
+          >
             {fieldErrors.message}
           </span>
         )}

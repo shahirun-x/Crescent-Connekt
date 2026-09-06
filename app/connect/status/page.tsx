@@ -38,7 +38,7 @@ export default async function ConnectStatusPage() {
           <div className="rounded-card border border-slate-200 bg-white p-6 sm:p-7">
             {rejection_reason ? (
               <>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
                   Reason given
                 </h2>
                 <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-slate-700">

@@ -27,7 +27,7 @@ export default function AuthShell({
         {footer && (
           <div className="mt-4 text-center text-sm text-slate-500">{footer}</div>
         )}
-        <p className="mt-4 text-center text-xs text-slate-400">
+        <p className="mt-4 text-center text-xs text-slate-500">
           <Link href="/connect" className="hover:text-slate-600">
             ← Back to Crescent Connect
           </Link>
