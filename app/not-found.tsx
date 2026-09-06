@@ -1,32 +1,50 @@
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function NotFound() {
   return (
-    <section className="container-page flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+    <section className="container-page flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
+      <Logo withWordmark={false} className="mb-6 scale-150" />
+
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent-600">
         404
       </p>
       <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-crescent-800 sm:text-4xl">
         This page isn&apos;t part of the network
       </h1>
-      <p className="mt-3 max-w-md text-slate-600">
-        The page you&apos;re looking for may have moved. Try the Central Calendar
-        or the Institutions directory.
+      <p className="mt-3 max-w-md text-balance leading-relaxed text-slate-600">
+        The page you&apos;re looking for may have moved or never existed. These
+        are the places most people are headed.
       </p>
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Link
-          href="/"
-          className="rounded-full bg-crescent-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-crescent-800"
-        >
-          Back home
-        </Link>
-        <Link
-          href="/institutions"
-          className="rounded-full border border-crescent-300 px-5 py-2.5 text-sm font-semibold text-crescent-700 hover:bg-crescent-50"
-        >
-          Browse institutions
-        </Link>
-      </div>
+
+      <nav aria-label="Suggested pages" className="mt-8">
+        <ul className="flex flex-wrap justify-center gap-3">
+          <li>
+            <Link
+              href="/"
+              className="inline-block rounded-full bg-crescent-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-crescent-800"
+            >
+              Back home
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/institutions"
+              className="inline-block rounded-full border border-crescent-300 px-5 py-2.5 text-sm font-semibold text-crescent-700 transition-colors hover:bg-crescent-50"
+            >
+              Browse institutions
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/calendar"
+              className="inline-block rounded-full border border-crescent-300 px-5 py-2.5 text-sm font-semibold text-crescent-700 transition-colors hover:bg-crescent-50"
+            >
+              Central Calendar
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </section>
   );
 }
