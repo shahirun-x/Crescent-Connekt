@@ -216,7 +216,7 @@ export default function CalendarExplorer({ events }: { events: CrescentEvent[] }
               transition={{ duration: 0.2 }}
             >
               {groups.length === 0 && (
-                <p className="rounded-card border border-dashed border-slate-300 p-10 text-center text-sm text-slate-500">
+                <p className="rounded-card border border-dashed border-control p-10 text-center text-sm text-slate-500">
                   {selectedDay
                     ? "No events on this day. Clear the selection to see the full range."
                     : "No events in this range. Try widening the time range or clearing the filter."}

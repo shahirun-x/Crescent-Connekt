@@ -128,7 +128,7 @@ export default function DirectoryBrowser() {
             onChange={(e) => setSearch(e.target.value)}
             aria-label="Search members by name, headline or institution"
             placeholder="Search by name, headline or institution…"
-            className="w-full rounded-full border border-slate-300 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-crescent-400"
+            className="w-full rounded-full border border-control py-2.5 pl-10 pr-4 text-sm outline-none focus:border-crescent-400"
           />
           <span
             aria-hidden="true"
@@ -141,7 +141,7 @@ export default function DirectoryBrowser() {
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value as "recent" | "name")}
-          className="rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-crescent-400"
+          className="rounded-full border border-control bg-white px-4 py-2.5 text-sm outline-none focus:border-crescent-400"
         >
           <option value="recent">Recently joined</option>
           <option value="name">Name A–Z</option>
@@ -153,7 +153,7 @@ export default function DirectoryBrowser() {
           className={`rounded-full border px-4 py-2.5 text-sm font-semibold transition-colors ${
             activeFilters
               ? "border-crescent-300 bg-crescent-50 text-crescent-800"
-              : "border-slate-300 text-slate-600 hover:bg-slate-50"
+              : "border-control text-slate-600 hover:bg-slate-50"
           }`}
         >
           Filters{activeFilters ? ` (${activeFilters})` : ""}
@@ -179,7 +179,7 @@ export default function DirectoryBrowser() {
                     className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
                       active
                         ? "bg-crescent-700 text-white"
-                        : "border border-slate-300 bg-white text-slate-600 hover:border-crescent-300"
+                        : "border border-control bg-white text-slate-600 hover:border-crescent-300"
                     }`}
                   >
                     {roleMeta[r].label}
@@ -195,7 +195,7 @@ export default function DirectoryBrowser() {
               <select
                 value={institution}
                 onChange={(e) => setInstitution(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control bg-white px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
               >
                 <option value="">All institutions</option>
                 {institutions.map((i) => (
@@ -212,7 +212,7 @@ export default function DirectoryBrowser() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Any city"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
               />
             </label>
 
@@ -223,7 +223,7 @@ export default function DirectoryBrowser() {
                 value={yearFrom}
                 onChange={(e) => setYearFrom(e.target.value)}
                 placeholder="1990"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
               />
             </label>
 
@@ -234,7 +234,7 @@ export default function DirectoryBrowser() {
                 value={yearTo}
                 onChange={(e) => setYearTo(e.target.value)}
                 placeholder="2026"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm font-normal normal-case tracking-normal text-slate-700 outline-none focus:border-crescent-400"
               />
             </label>
           </div>
@@ -325,7 +325,7 @@ function EmptyState({
   onClear: () => void;
 }) {
   return (
-    <div className="mt-5 rounded-card border border-dashed border-slate-300 bg-white p-12 text-center">
+    <div className="mt-5 rounded-card border border-dashed border-control bg-white p-12 text-center">
       <div
         aria-hidden="true"
         className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-crescent-50 text-2xl text-crescent-400"

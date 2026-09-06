@@ -102,7 +102,7 @@ export default function ImageUpload({
       </label>
 
       {value ? (
-        <div className="flex items-center gap-3 rounded-lg border border-slate-300 p-2">
+        <div className="flex items-center gap-3 rounded-lg border border-control p-2">
           <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded bg-slate-100">
             <Image
               src={value}
@@ -121,7 +121,7 @@ export default function ImageUpload({
               onChange(null);
               setError("");
             }}
-            className="shrink-0 rounded-lg border border-slate-300 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+            className="shrink-0 rounded-lg border border-control px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
           >
             Remove
           </button>
@@ -138,7 +138,7 @@ export default function ImageUpload({
           className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-6 text-center transition-colors ${
             dragging
               ? "border-crescent-500 bg-crescent-50"
-              : "border-slate-300 hover:border-crescent-400 hover:bg-slate-50"
+              : "border-control hover:border-crescent-400 hover:bg-slate-50"
           }`}
         >
           {uploading ? (

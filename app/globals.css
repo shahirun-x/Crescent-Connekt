@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+  /* ---------------------------------------------------------------------
+   * Crescent blue — primary. Unchanged; the brand rests on it.
+   * ------------------------------------------------------------------- */
   --color-crescent-50: #eef3fb;
   --color-crescent-100: #d6e2f5;
   --color-crescent-200: #adc4ea;
@@ -13,19 +16,129 @@
   --color-crescent-900: #0f2140;
   --color-crescent-950: #091428;
 
+  /* Accent red — sparingly, for emphasis and errors. */
+  --color-accent-50: #fef2f3;
+  --color-accent-100: #fde3e5;
+  --color-accent-200: #fbccd1;
+  --color-accent-300: #f7a3ac;
+  --color-accent-400: #f06f80;
   --color-accent-500: #d7263d;
   --color-accent-600: #b71d31;
+  --color-accent-700: #9a1a2b;
+  --color-accent-800: #801a29;
+  --color-accent-900: #6d1a27;
+
+  /* ---------------------------------------------------------------------
+   * Sand — warm neutral. Alternating section grounds, so the page reads as
+   * warm paper rather than a stack of white boxes. Deliberately low
+   * chroma: at 50–100 it should register as warmth, not as a colour.
+   * ------------------------------------------------------------------- */
+  --color-sand-50: #fdfbf7;
+  --color-sand-100: #faf5ea;
+  --color-sand-200: #f3e9d6;
+  --color-sand-300: #e7d6b8;
+  --color-sand-400: #d6bd94;
+  --color-sand-500: #bfa070;
+  --color-sand-600: #9e8153;
+  --color-sand-700: #7b6440;
+  --color-sand-800: #5e4d33;
+  --color-sand-900: #443829;
+  --color-sand-950: #241d15;
+
+  /* ---------------------------------------------------------------------
+   * Teal — secondary accent. Sits beside navy without competing, and gives
+   * healthcare and community surfaces an identity of their own.
+   * ------------------------------------------------------------------- */
+  --color-teal-50: #eefaf8;
+  --color-teal-100: #d0f2ed;
+  --color-teal-200: #a4e4dc;
+  --color-teal-300: #6bcec4;
+  --color-teal-400: #34b0a6;
+  --color-teal-500: #17938b;
+  --color-teal-600: #0d7670;
+  --color-teal-700: #0e5f5b;
+  --color-teal-800: #104c49;
+  --color-teal-900: #113f3d;
+  --color-teal-950: #042523;
+
+  /* ---------------------------------------------------------------------
+   * Gold — highlight and emphasis. Ceremonial rather than decorative; used
+   * for eyebrows, rules and small marks of significance.
+   * ------------------------------------------------------------------- */
+  --color-gold-50: #fdf8ec;
+  --color-gold-100: #f9edc9;
+  --color-gold-200: #f3d994;
+  --color-gold-300: #ebbf57;
+  --color-gold-400: #e4a62c;
+  --color-gold-500: #c9860f;
+  --color-gold-600: #a8670c;
+  --color-gold-700: #874c10;
+  --color-gold-800: #6f3d14;
+  --color-gold-900: #5e3315;
+  --color-gold-950: #361a09;
+
+  /* Boundary colour for interactive controls — inputs, selects, textareas,
+     outlined buttons, drop zones. Exposed as a Tailwind colour so components
+     can write `border-control`. Clears WCAG 1.4.11 (3:1) on white and sand;
+     the slate-300 it replaces was 1.48:1. */
+  --color-control: #7b8697;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
 
-  --radius-card: 1rem;
+  --radius-card: 1.125rem;
+
+  /* Layered shadows. Two stacked shadows read as depth; one reads as a
+     drop shadow. Tinted with the brand navy rather than neutral black so
+     they sit in the palette instead of greying it. */
+  --shadow-card: 0 1px 2px rgba(15, 33, 64, 0.05),
+    0 4px 12px -2px rgba(15, 33, 64, 0.06);
+  --shadow-card-hover: 0 2px 4px rgba(15, 33, 64, 0.06),
+    0 12px 28px -6px rgba(15, 33, 64, 0.14);
+  --shadow-raised: 0 1px 3px rgba(15, 33, 64, 0.06),
+    0 8px 24px -8px rgba(15, 33, 64, 0.12);
 }
 
+/* -----------------------------------------------------------------------
+ * Semantic tokens.
+ *
+ * Components should reach for these rather than raw slate values, so a
+ * future palette change is one edit here instead of a sweep. Every pairing
+ * below is verified by `node scripts/check-contrast.mjs`, which fails the
+ * build-adjacent check if any drops under WCAG AA.
+ * --------------------------------------------------------------------- */
 :root {
   color-scheme: light;
   --background: #ffffff;
   --foreground: #0f2140;
+
+  /* Surfaces */
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #fdfbf7; /* sand-50 */
+  --surface-warm: #faf5ea; /* sand-100 */
+  --surface-inverse: #0f2140; /* crescent-900 */
+
+  /* Borders.
+     Decorative borders (card outlines, dividers) carry no WCAG contrast
+     requirement — 1.4.11 covers boundaries needed to IDENTIFY a control.
+     --border-interactive is the one that does: it is for form inputs and
+     control outlines and clears 3:1 on both white and sand. The previous
+     input border, slate-300, was 1.48:1 — visible, but not to everyone. */
+  --border-subtle: #e8eaef;
+  --border-default: #d7dbe3;
+  --border-strong: #b9c0cd;
+  --border-interactive: #7b8697; /* 3.68:1 on white, 3.39:1 on sand-100 */
+  --border-inverse: rgba(255, 255, 255, 0.14);
+
+  /* Text on light surfaces */
+  --text-primary: #0f2140; /* crescent-900  — 15.8:1 on white */
+  --text-secondary: #44506a; /*              — 8.6:1  on white */
+  --text-muted: #5c6880; /*                  — 6.0:1  on white */
+
+  /* Text on the inverse (navy) surface */
+  --text-on-inverse: #ffffff;
+  --text-on-inverse-muted: #b9c8e0;
 }
 
 html {

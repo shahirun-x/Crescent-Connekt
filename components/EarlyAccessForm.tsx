@@ -66,14 +66,14 @@ export default function EarlyAccessForm() {
           required
           autoComplete="email"
           placeholder="you@example.com"
-          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+          className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
         />
       </label>
       <label className="block text-sm font-medium text-slate-700 sm:w-48">
         I am a…
         <select
           name="role"
-          className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-crescent-400"
+          className="mt-1 w-full rounded-lg border border-control bg-white px-3 py-2 text-sm outline-none focus:border-crescent-400"
         >
           <option value="">Select</option>
           {roles.map((r) => (

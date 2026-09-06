@@ -46,7 +46,7 @@ export default function ContactForm() {
     `mt-1 w-full rounded-lg border px-3 py-2 text-sm outline-none ${
       fieldErrors[field]
         ? "border-accent-500 focus:border-accent-600"
-        : "border-slate-300 focus:border-crescent-400"
+        : "border-control focus:border-crescent-400"
     }`;
 
   if (status === "ok") {

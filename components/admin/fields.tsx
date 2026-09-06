@@ -20,7 +20,7 @@ export function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
+        className="w-full rounded-lg border border-control px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
       />
     </div>
   );
@@ -53,7 +53,7 @@ export function TextareaField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
+        className="w-full rounded-lg border border-control px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
       />
       <p className="mt-1 text-xs text-slate-500">Line breaks are preserved.</p>
     </div>
@@ -83,7 +83,7 @@ export function InstitutionSelect({
       <select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value || null)}
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
+        className="w-full rounded-lg border border-control bg-white px-3 py-2 text-sm focus:border-crescent-500 focus:outline-none focus:ring-2 focus:ring-crescent-500/20"
       >
         <option value="">— No specific institution (network-wide) —</option>
         {sorted.map((inst) => (

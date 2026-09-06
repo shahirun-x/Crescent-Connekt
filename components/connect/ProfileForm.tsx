@@ -182,7 +182,7 @@ export default function ProfileForm({
                 value={draft.full_name}
                 onChange={(e) => set("full_name", e.target.value)}
                 required
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
             </label>
 
@@ -234,7 +234,7 @@ export default function ProfileForm({
               <select
                 value={draft.institution_id ?? ""}
                 onChange={(e) => set("institution_id", e.target.value || null)}
-                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control bg-white px-3 py-2 text-sm outline-none focus:border-crescent-400"
               >
                 <option value="">
                   Not affiliated with a specific institution
@@ -257,7 +257,7 @@ export default function ProfileForm({
                   min={1950}
                   max={new Date().getFullYear() + 10}
                   placeholder="e.g. 2019"
-                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                  className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
                 />
                 <span className="mt-1 block text-xs font-normal text-slate-500">
                   Year of graduation, or expected graduation.
@@ -272,7 +272,7 @@ export default function ProfileForm({
                   value={draft.current_city}
                   onChange={(e) => set("current_city", e.target.value)}
                   placeholder="Chennai"
-                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                  className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
                 />
               </label>
               <label className="block text-sm font-medium text-slate-700">
@@ -280,7 +280,7 @@ export default function ProfileForm({
                 <input
                   value={draft.current_country}
                   onChange={(e) => set("current_country", e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                  className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
                 />
               </label>
             </div>
@@ -306,7 +306,7 @@ export default function ProfileForm({
                 onChange={(e) => set("headline", e.target.value)}
                 maxLength={160}
                 placeholder="Software engineer at Zoho · Crescent CSE 2019"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
               <span className="mt-1 block text-xs font-normal text-slate-500">
                 One line, shown on your directory card. {draft.headline.length}/160
@@ -320,7 +320,7 @@ export default function ProfileForm({
                 onChange={(e) => set("bio", e.target.value)}
                 rows={5}
                 maxLength={2000}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
               <span className="mt-1 block text-xs font-normal text-slate-500">
                 {draft.bio.length}/2000 · Line breaks are preserved.
@@ -334,7 +334,7 @@ export default function ProfileForm({
                 value={draft.linkedin_url}
                 onChange={(e) => set("linkedin_url", e.target.value)}
                 placeholder="https://linkedin.com/in/yourname"
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
             </label>
 
@@ -344,7 +344,7 @@ export default function ProfileForm({
                 type="tel"
                 value={draft.phone}
                 onChange={(e) => set("phone", e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-crescent-400"
+                className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
               />
             </label>
 
@@ -390,7 +390,7 @@ export default function ProfileForm({
               setError("");
               setStep((s) => s - 1);
             }}
-            className="rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+            className="rounded-full border border-control px-5 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50"
           >
             Back
           </button>
@@ -448,7 +448,7 @@ function Toggle({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-crescent-700"
+        className="mt-0.5 h-4 w-4 rounded border-control accent-crescent-700"
       />
       <span className="leading-snug">{label}</span>
     </label>

@@ -148,7 +148,7 @@ export default function EventsManager() {
                 <select
                   value={editing.category ?? "Community"}
                   onChange={(e) => setEditing({ ...editing, category: e.target.value as EventCategory })}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-control bg-white px-3 py-2 text-sm"
                 >
                   {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
                 </select>

@@ -72,7 +72,7 @@ export default function InstitutionsManager() {
                 <select
                   value={editing.category ?? "education"}
                   onChange={(e) => setEditing({ ...editing, category: e.target.value as Category })}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-control px-3 py-2 text-sm"
                 >
                   {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
                 </select>
@@ -86,7 +86,7 @@ export default function InstitutionsManager() {
                   value={editing.description ?? ""}
                   onChange={(e) => setEditing({ ...editing, description: e.target.value })}
                   rows={3}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  className="w-full rounded-lg border border-control px-3 py-2 text-sm"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -147,7 +147,7 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+        className="w-full rounded-lg border border-control px-3 py-2 text-sm"
       />
     </div>
   );

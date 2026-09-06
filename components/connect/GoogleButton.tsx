@@ -28,7 +28,7 @@ export default function GoogleButton({
     <button
       type="button"
       onClick={signIn}
-      className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+      className="flex w-full items-center justify-center gap-2.5 rounded-lg border border-control bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
     >
       <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
         <path

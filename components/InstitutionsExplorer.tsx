@@ -99,7 +99,7 @@ export default function InstitutionsExplorer({
       </motion.ul>
 
       {results.length === 0 && (
-        <p className="mt-10 rounded-card border border-dashed border-slate-300 p-10 text-center text-sm text-slate-500">
+        <p className="mt-10 rounded-card border border-dashed border-control p-10 text-center text-sm text-slate-500">
           No institutions match that filter yet.
         </p>
       )}

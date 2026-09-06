@@ -97,7 +97,7 @@ export default function MembersManager() {
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search members by name or headline"
           placeholder="Search name or headline…"
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          className="rounded-lg border border-control px-3 py-2 text-sm"
         />
       </div>
 
@@ -165,7 +165,7 @@ export default function MembersManager() {
               rows={4}
               maxLength={500}
               placeholder="Optional reason…"
-              className="mt-3 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-800"
+              className="mt-3 w-full rounded-lg border border-control px-3 py-2 text-sm text-slate-800"
             />
           </label>
         </Modal>
@@ -327,7 +327,7 @@ function ApplicantCard({
         <button
           onClick={onReject}
           disabled={busy}
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+          className="rounded-lg border border-control px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
         >
           Reject
         </button>
@@ -376,7 +376,7 @@ function EmptyState({ tab }: { tab: MemberStatus }) {
   const c = copy[tab];
 
   return (
-    <div className="mt-5 rounded-xl border border-dashed border-slate-300 bg-white p-12 text-center">
+    <div className="mt-5 rounded-xl border border-dashed border-control bg-white p-12 text-center">
       <h3 className="text-base font-semibold text-slate-700">{c.title}</h3>
       <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
         {c.body}
