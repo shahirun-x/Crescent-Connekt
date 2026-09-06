@@ -26,18 +26,19 @@ export const metadata: Metadata = {
     "CGOM",
   ],
   authors: [{ name: "Crescent Global Outreach Mission" }],
+  // og:title and og:description are deliberately NOT set here. When a parent
+  // defines them, every child inherits the same value and each page shares as
+  // the homepage. Left unset, Next fills them from each page's own title and
+  // description, so /calendar shares as "Central Calendar" rather than the
+  // site tagline.
   openGraph: {
     type: "website",
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
     url: SITE_URL,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "/" },

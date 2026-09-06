@@ -8,6 +8,19 @@ import Reveal from "@/components/Reveal";
 import Pipeline from "@/components/Pipeline";
 import InstitutionMapCard from "@/components/InstitutionMapCard";
 import { getEvents, getInstitutions, getTimeline } from "@/lib/data";
+import type { Metadata } from "next";
+
+/**
+ * The layout's default title is "Crescent Global — One Crescent. One Community.
+ * One Global Network." at 66 characters, which Google truncates. `absolute`
+ * bypasses the "%s · Crescent Global" template so the homepage gets a title
+ * that fits, while the full tagline stays as the OG title for social cards,
+ * where the length limit is far more generous.
+ */
+export const metadata: Metadata = {
+  title: { absolute: "Crescent Global — One Network, Many Institutions" },
+  alternates: { canonical: "/" },
+};
 
 export const revalidate = 3600;
 

@@ -12,7 +12,7 @@ import { getTimeline } from "@/lib/data";
 export const metadata: Metadata = {
   title: "About CGOM",
   description:
-    "The Crescent Global Outreach Mission (CGOM) — vision, mission, three strategic streams and the School-to-Start-up continuum that unifies the Crescent ecosystem.",
+    "The Crescent Global Outreach Mission (CGOM) — vision, mission, strategic streams and the School-to-Start-up continuum behind the network.",
   alternates: { canonical: "/about" },
 };
 

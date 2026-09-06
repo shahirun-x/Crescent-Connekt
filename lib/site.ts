@@ -25,8 +25,15 @@ export const SITE_URL = resolveSiteUrl();
 export const site = {
   name: "Crescent Global",
   tagline: "One Crescent. One Community. One Global Network.",
+  /**
+   * Used as the site-wide meta description and OG description.
+   *
+   * Kept under 155 characters: Google truncates around there, and a sentence
+   * cut mid-word reads as neglect. The longer positioning statement lives on
+   * /about, where there is room for it.
+   */
   description:
-    "A unified digital portal for the Crescent ecosystem — a glossary, guide and coordination layer across educational, healthcare and community institutions in India and beyond.",
+    "A unified portal for the Crescent ecosystem — a guide and coordination layer across its educational, healthcare and community institutions.",
   url: SITE_URL,
   contactEmail: "connect@crescentglobal.org",
 };

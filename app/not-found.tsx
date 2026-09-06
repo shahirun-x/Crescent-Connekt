@@ -1,5 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Logo from "@/components/Logo";
+
+/**
+ * Without its own metadata the 404 inherited the homepage title and
+ * description verbatim, so a soft-404 could be indexed as a duplicate of the
+ * home page. Distinct title, and explicitly noindex.
+ */
+export const metadata: Metadata = {
+  title: { absolute: "Page not found · Crescent Global" },
+  description: "This page isn't part of the Crescent Global network.",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (
