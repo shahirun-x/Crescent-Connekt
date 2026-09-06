@@ -33,6 +33,9 @@ export default function NewsManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<NewsRow> | null>(null);
   const [saving, setSaving] = useState(false);
+  // Row currently being deleted — guards against a double-click firing two
+  // DELETE requests for the same id.
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const instMap = useMemo(
     () => new Map(institutions.map((i) => [i.id, i.name])),
@@ -74,14 +77,20 @@ export default function NewsManager() {
   }
 
   async function handleDelete(id: string) {
+    if (busyId) return;
     if (!confirm("Delete this article?")) return;
-    const res = await fetch("/api/admin/news", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    if (res.ok) { toast("Article deleted"); load(); }
-    else toast("Delete failed", "error");
+    setBusyId(id);
+    try {
+      const res = await fetch("/api/admin/news", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) { toast("Article deleted"); load(); }
+      else toast("Delete failed", "error");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   return (
@@ -178,11 +187,19 @@ export default function NewsManager() {
                   </td>
                   <td className="px-4 py-3 text-slate-500">{n.published_at}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setEditing({ ...n })} className="text-crescent-700 hover:underline">
+                    <button
+                      onClick={() => setEditing({ ...n })}
+                      disabled={busyId === n.id}
+                      className="text-crescent-700 hover:underline disabled:opacity-50"
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(n.id)} className="ml-3 text-red-600 hover:underline">
-                      Delete
+                    <button
+                      onClick={() => handleDelete(n.id)}
+                      disabled={busyId === n.id}
+                      className="ml-3 text-red-600 hover:underline disabled:opacity-50"
+                    >
+                      {busyId === n.id ? "Deleting…" : "Delete"}
                     </button>
                   </td>
                 </tr>

@@ -42,6 +42,9 @@ export default function EventsManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<EventRow> | null>(null);
   const [saving, setSaving] = useState(false);
+  // Row currently being deleted — guards against a double-click firing two
+  // DELETE requests for the same id.
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const instMap = useMemo(
     () => new Map(institutions.map((i) => [i.id, i.name])),
@@ -83,14 +86,20 @@ export default function EventsManager() {
   }
 
   async function handleDelete(id: string) {
+    if (busyId) return;
     if (!confirm("Delete this event?")) return;
-    const res = await fetch("/api/admin/events", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    if (res.ok) { toast("Event deleted"); load(); }
-    else toast("Delete failed", "error");
+    setBusyId(id);
+    try {
+      const res = await fetch("/api/admin/events", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) { toast("Event deleted"); load(); }
+      else toast("Delete failed", "error");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   return (
@@ -206,11 +215,19 @@ export default function EventsManager() {
                   <td className="px-4 py-3 text-slate-500">{ev.date_start}</td>
                   <td className="px-4 py-3 text-slate-500">{ev.category}</td>
                   <td className="px-4 py-3 text-right">
-                    <button onClick={() => setEditing({ ...ev })} className="text-crescent-700 hover:underline">
+                    <button
+                      onClick={() => setEditing({ ...ev })}
+                      disabled={busyId === ev.id}
+                      className="text-crescent-700 hover:underline disabled:opacity-50"
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(ev.id)} className="ml-3 text-red-600 hover:underline">
-                      Delete
+                    <button
+                      onClick={() => handleDelete(ev.id)}
+                      disabled={busyId === ev.id}
+                      className="ml-3 text-red-600 hover:underline disabled:opacity-50"
+                    >
+                      {busyId === ev.id ? "Deleting…" : "Delete"}
                     </button>
                   </td>
                 </tr>

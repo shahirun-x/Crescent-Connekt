@@ -17,6 +17,8 @@ export default function ContactsViewer() {
   const [items, setItems] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
+  // Guards against a double-click firing two read/unread writes.
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -31,16 +33,22 @@ export default function ContactsViewer() {
   useEffect(() => { load(); }, [load]);
 
   async function toggleRead(id: string, currentlyRead: boolean) {
-    const res = await fetch("/api/admin/contacts", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, is_read: !currentlyRead }),
-    });
-    if (res.ok) {
-      toast(currentlyRead ? "Marked unread" : "Marked read");
-      load();
-    } else {
-      toast("Update failed", "error");
+    if (busyId) return;
+    setBusyId(id);
+    try {
+      const res = await fetch("/api/admin/contacts", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_read: !currentlyRead }),
+      });
+      if (res.ok) {
+        toast(currentlyRead ? "Marked unread" : "Marked read");
+        load();
+      } else {
+        toast("Update failed", "error");
+      }
+    } finally {
+      setBusyId(null);
     }
   }
 
@@ -89,9 +97,12 @@ export default function ContactsViewer() {
                   <div className="mt-3 flex gap-2">
                     <button
                       onClick={() => toggleRead(c.id, c.is_read)}
-                      className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                      disabled={busyId === c.id}
+                      className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                     >
-                      Mark {c.is_read ? "unread" : "read"}
+                      {busyId === c.id
+                        ? "Saving…"
+                        : `Mark ${c.is_read ? "unread" : "read"}`}
                     </button>
                   </div>
                 </div>
