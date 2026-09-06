@@ -10,8 +10,15 @@ parent trusts. It is a glossary, a guide, and a coordination layer that unifies
 and channels their collective efforts for the betterment of the alma mater.
 
 Live: https://crescent-global-calender.vercel.app
-Repo: https://github.com/shahirun-x/Crescent-Global-Calender
+Repo: https://github.com/shahirun-x/Crescent-Connekt
 Supabase project ref: `zxffaohxxzbthspeelpj` (ap-south-1)
+
+The repo was renamed to **Crescent-Connekt** — the generic name, which the
+domain will follow. The Vercel URL still carries the old project slug and is
+**correct as-is** until a custom domain is bought. Do not "fix" it to match the
+repo name: it is the live deployment, and `PRODUCTION_URL` in `lib/site.ts`
+feeds canonical and OG tags. When the domain lands, set `NEXT_PUBLIC_SITE_URL`
+rather than editing that constant.
 
 Built by one person (Shahirun) directing coding agents. There is no second
 engineer to ask. Write code and docs accordingly.
