@@ -14,7 +14,8 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
   const list = upcoming.length ? upcoming : events.slice(0, 6);
 
   return (
-    <section className="border-y border-slate-200 bg-slate-50 py-20">
+    <section className="relative isolate border-y border-sand-200 bg-sand-100 py-20 lg:py-24">
+      <div aria-hidden="true" className="texture-dots pointer-events-none absolute inset-0 -z-10" />
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeading

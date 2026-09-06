@@ -7,6 +7,8 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import Pipeline from "@/components/Pipeline";
 import InstitutionMapCard from "@/components/InstitutionMapCard";
+import Section from "@/components/Section";
+import SectionDivider from "@/components/SectionDivider";
 import { getEvents, getInstitutions, getTimeline } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -56,108 +58,122 @@ export default async function HomePage() {
 
       <EcosystemGrid institutions={institutions} />
 
-      <section className="border-t border-slate-200 bg-slate-50 py-20">
-        <div className="container-page">
-          <SectionHeading
-            eyebrow="The CGOM Pipeline"
-            title="From classroom learning to global entrepreneurial impact"
-            description="A structured School-to-Start-up continuum — the backbone of the Crescent Global Outreach Mission."
-          />
-          <div className="mt-12 rounded-card border border-slate-200 bg-white p-6 sm:p-10">
+      {/*
+        Section rhythm, top to bottom:
+          hero (deep) → ecosystem (white) → pipeline (warm) → map (white)
+          → events (sand) → audiences (navy) → journey (warm) → CTA (navy)
+        Never two identical tones in a row; the navy audiences block gives the
+        middle of the page a strong break so it does not read as one long
+        white scroll.
+      */}
+      <SectionDivider shape="curve" fill="text-sand-50" />
+
+      <Section tone="warm" className="py-20 lg:py-24">
+        <SectionHeading
+          eyebrow="The CGOM Pipeline"
+          title="From classroom learning to global entrepreneurial impact"
+          description="A structured School-to-Start-up continuum — the backbone of the Crescent Global Outreach Mission."
+        />
+        <Reveal>
+          <div className="mt-12 rounded-card border border-sand-200 bg-white p-6 shadow-card sm:p-10">
             <Pipeline />
           </div>
-          <p className="mt-6 text-sm font-medium text-slate-600">
-            A continuous pathway from classroom learning to global entrepreneurial
-            impact.
-          </p>
-          <Link
-            href="/about#strategic-streams"
-            className="mt-4 inline-flex rounded-full border border-crescent-300 px-4 py-2 text-sm font-semibold text-crescent-700 transition-colors hover:bg-crescent-50"
-          >
-            See the three strategic streams →
-          </Link>
-        </div>
-      </section>
+        </Reveal>
+        <p className="type-body mt-6 text-sm font-medium text-slate-600">
+          A continuous pathway from classroom learning to global entrepreneurial
+          impact.
+        </p>
+        <Link
+          href="/about#strategic-streams"
+          className="mt-4 inline-flex rounded-full border border-crescent-300 px-4 py-2 text-sm font-semibold text-crescent-700 transition-all hover:bg-crescent-50 hover:shadow-card active:scale-[0.98]"
+        >
+          See the three strategic streams →
+        </Link>
+      </Section>
 
-      <section className="border-t border-slate-200 bg-white py-20">
-        <div className="container-page">
-          <SectionHeading
-            eyebrow="Our Presence"
-            title="Our Presence Across Tamil Nadu"
-            description="From Chennai to Kilakarai — institutions serving communities across the state."
-          />
-          <div className="mt-10">
+      <SectionDivider shape="curve" fill="text-white" />
+
+      <Section tone="white" className="pb-20 pt-8 lg:pb-24">
+        <SectionHeading
+          eyebrow="Our Presence"
+          title="Our Presence Across Tamil Nadu"
+          description="From Chennai to Kilakarai — institutions serving communities across the state."
+        />
+        <Reveal>
+          <div className="mt-10 overflow-hidden rounded-card shadow-raised">
             <InstitutionMapCard
               institutions={institutions}
               className="h-[350px] md:h-[450px]"
             />
           </div>
-        </div>
-      </section>
+        </Reveal>
+      </Section>
 
       <EventsStrip events={events} />
 
-      <section className="container-page py-20">
+      {/* Dark break. The one place mid-page where the eye resets. */}
+      <SectionDivider shape="arch" fill="text-crescent-900" />
+
+      <Section tone="navy" className="py-20 lg:py-24">
         <SectionHeading
           eyebrow="One Network. Many Opportunities."
           title="Built to connect people, not just list institutions"
           description="Crescent Global is a coordination layer — a glossary and guide that helps the whole family move together."
+          onDark
         />
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {audiences.map((a, idx) => (
             <Reveal key={a.title} delay={idx * 0.06} as="article">
-              <div className="h-full rounded-card bg-slate-50 p-6">
-                <h3 className="text-base font-semibold text-crescent-800">
-                  {a.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              <div className="surface-inner-glow h-full rounded-card border border-white/10 bg-white/[0.06] p-6 transition-colors hover:bg-white/[0.1]">
+                <h3 className="type-h3 text-white">{a.title}</h3>
+                {/* crescent-100 on crescent-900 is 12.4:1 */}
+                <p className="mt-2 text-sm leading-relaxed text-crescent-100">
                   {a.body}
                 </p>
               </div>
             </Reveal>
           ))}
         </div>
-      </section>
+      </Section>
 
-      <section className="border-t border-slate-200 bg-slate-50 py-20">
-        <div className="container-page">
-          <SectionHeading
-            eyebrow="Our Journey"
-            title="From one school in 1968 to a global network"
-            description="Five decades of steady growth across Tamil Nadu — and, through alumni, far beyond it."
-          />
-          <div className="mt-12 max-w-3xl">
-            <Timeline entries={timeline} />
-          </div>
-          <Link
-            href="/about"
-            className="mt-8 inline-flex rounded-full border border-crescent-300 px-4 py-2 text-sm font-semibold text-crescent-700 transition-colors hover:bg-crescent-50"
-          >
-            Read the full story →
-          </Link>
-        </div>
-      </section>
+      <SectionDivider shape="curve" fill="text-sand-50" flip />
 
-      <section className="bg-crescent-700 py-20 text-white">
-        <div className="container-page flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-xl">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Help channel the collective effort
-            </h2>
-            <p className="mt-3 text-crescent-100">
-              Crescent Connect will link students, alumni, faculty, management,
-              parents, entrepreneurs and well-wishers. Register your interest for
-              early access.
-            </p>
-          </div>
-          <Link
-            href="/connect"
-            className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-crescent-800 transition-colors hover:bg-crescent-50"
-          >
-            Join Crescent Connect
-          </Link>
+      <Section tone="warm" className="py-20 lg:py-24">
+        <SectionHeading
+          eyebrow="Our Journey"
+          title="From one school in 1968 to a global network"
+          description="Five decades of steady growth across Tamil Nadu — and, through alumni, far beyond it."
+        />
+        <div className="mt-12 max-w-3xl">
+          <Timeline entries={timeline} />
         </div>
-      </section>
+        <Link
+          href="/about"
+          className="mt-8 inline-flex rounded-full border border-crescent-300 px-4 py-2 text-sm font-semibold text-crescent-700 transition-all hover:bg-crescent-50 hover:shadow-card active:scale-[0.98]"
+        >
+          Read the full story →
+        </Link>
+      </Section>
+
+      <Section
+        tone="navy"
+        className="py-20"
+        containerClassName="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between"
+      >
+        <div className="max-w-xl">
+          <h2 className="type-h2 text-white">Help channel the collective effort</h2>
+          <p className="mt-3 leading-relaxed text-crescent-100">
+            Crescent Connect links students, alumni, faculty, management,
+            parents, entrepreneurs and well-wishers across the whole family.
+          </p>
+        </div>
+        <Link
+          href="/connect"
+          className="inline-flex shrink-0 items-center justify-center rounded-full bg-gold-300 px-6 py-3 text-sm font-bold text-crescent-950 shadow-raised transition-all hover:bg-gold-200 active:scale-[0.98]"
+        >
+          Join Crescent Connect
+        </Link>
+      </Section>
     </>
   );
 }

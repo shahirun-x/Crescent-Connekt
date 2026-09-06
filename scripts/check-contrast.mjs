@@ -113,6 +113,13 @@ const PAIRS = [
   ["accent-700 on accent-50", "accent-50", "accent-700", 4.5],
   ["accent-300 on crescent-900", "crescent-900", "accent-300", 4.5],
 
+  // --- On-navy section content (the dark break on the homepage) ----------
+  ["crescent-100 body on crescent-900", "crescent-900", "crescent-100", 4.5],
+  ["gold-300 eyebrow on crescent-900", "crescent-900", "gold-300", 4.5],
+  ["gold-300 eyebrow on crescent-700", "crescent-700", "gold-300", 4.5],
+  ["crescent-950 on gold-300 (CTA button)", "gold-300", "crescent-950", 4.5],
+  ["crescent-950 on gold-200 (CTA hover)", "gold-200", "crescent-950", 4.5],
+
   // --- Non-text: UI component boundaries (WCAG 1.4.11, 3:1) --------------
   //
   // Only boundaries needed to IDENTIFY a control are in scope. A card outline
