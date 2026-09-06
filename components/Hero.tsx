@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { HERO_CAMPUS } from "@/lib/images";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
@@ -18,12 +19,15 @@ export default function Hero() {
         className="absolute inset-x-0 -top-24 z-0 h-[calc(100%+12rem)]"
       >
         <Image
-          src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1920&q=80"
-          alt=""
+          src={HERO_CAMPUS.src}
+          alt={HERO_CAMPUS.alt}
           fill
-          priority
+          priority={HERO_CAMPUS.priority}
           sizes="100vw"
-          className="object-cover"
+          /* Ken Burns: a very slow zoom so the hero is never quite still.
+             1.0 -> 1.08 over 24s. Frozen under prefers-reduced-motion by the
+             global rule in globals.css. */
+          className="hero-kenburns object-cover"
         />
       </motion.div>
       {/* z-10: dim the photo so white text stays readable */}

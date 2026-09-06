@@ -84,6 +84,23 @@ export const eventCategoryColor: Record<
 export const catDot = (c: EventCategory) => eventCategoryColor[c].dot;
 export const catGlow = (c: EventCategory) => eventCategoryColor[c].glow;
 
+/**
+ * Raw hex per category, for places that need a colour value rather than a
+ * class — the CSS custom property behind the no-image card fallback, and any
+ * inline SVG. Mirrors the `dot` shade above; keep the two in step.
+ */
+export const eventCategoryHex: Record<EventCategory, string> = {
+  Schools: "#0ea5e9",
+  Colleges: "#6366f1",
+  University: "#2563eb",
+  Healthcare: "#10b981",
+  Alumni: "#f59e0b",
+  Community: "#f97316",
+  Sports: "#65a30d",
+  Cultural: "#d946ef",
+  Conferences: "#8b5cf6",
+};
+
 /** Full `border-l-*` class per category — for the event-card accent border. */
 export const eventCategoryBorderL: Record<EventCategory, string> = {
   Schools: "border-l-sky-500",

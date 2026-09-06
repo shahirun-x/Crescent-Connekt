@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { formatDateRange } from "@/lib/site";
-import { eventCategoryColor } from "@/lib/eventCategories";
+import { eventCategoryColor, eventCategoryHex } from "@/lib/eventCategories";
 import type { CrescentEvent, NewsItem } from "@/lib/types";
 
 type TypeFilter = "All" | "News" | "Events";
@@ -157,22 +157,60 @@ export default function NewsEventsStream({
 
 function CardImage({ src }: { src: string }) {
   return (
-    <div className="relative aspect-video w-full bg-slate-100">
+    <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
       <Image
         src={src}
         alt=""
         fill
         sizes="(min-width: 768px) 50vw, 100vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
       />
+      {/* Slight scrim at the base so a light photo still separates from the
+          card body below it. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/15 to-transparent"
+      />
+    </div>
+  );
+}
+
+/**
+ * Shown when an item has no image_url.
+ *
+ * A designed panel in the item's own colour rather than an empty box, so a
+ * grid of mixed items still reads as a grid. The monogram is decorative —
+ * the title sits directly below it.
+ */
+function CardFallback({
+  accent,
+  label,
+}: {
+  accent: string;
+  label: string;
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className="card-fallback relative flex aspect-video w-full items-center justify-center overflow-hidden"
+      style={{ ["--card-accent" as string]: accent }}
+    >
+      <span className="select-none text-4xl font-black tracking-tight text-white/25">
+        {label}
+      </span>
+      <div className="absolute inset-0 opacity-[0.07] [background-image:radial-gradient(#fff_1px,transparent_1px)] [background-size:18px_18px]" />
     </div>
   );
 }
 
 function NewsCard({ item }: { item: NewsItem }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-card border border-slate-200 bg-white">
-      {item.image_url && <CardImage src={item.image_url} />}
+    <article className="group flex h-full flex-col overflow-hidden rounded-card border border-slate-200 bg-gradient-to-b from-white to-sand-50/60 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+      {item.image_url ? (
+        <CardImage src={item.image_url} />
+      ) : (
+        <CardFallback accent="#2f57a6" label="NEWS" />
+      )}
       <div className="flex flex-1 flex-col p-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-200">
@@ -213,8 +251,15 @@ function EventCard({ item }: { item: CrescentEvent }) {
   const colors = eventCategoryColor[item.category];
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-card border border-slate-200 bg-white">
-      {item.image_url && <CardImage src={item.image_url} />}
+    <article className="group flex h-full flex-col overflow-hidden rounded-card border border-slate-200 bg-gradient-to-b from-white to-sand-50/60 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+      {item.image_url ? (
+        <CardImage src={item.image_url} />
+      ) : (
+        <CardFallback
+          accent={eventCategoryHex[item.category]}
+          label={item.category.slice(0, 3).toUpperCase()}
+        />
+      )}
       <div className="flex flex-1 flex-col p-6">
         <div className="flex flex-wrap items-center gap-2">
           <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${colors.soft}`}>

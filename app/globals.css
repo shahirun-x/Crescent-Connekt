@@ -290,6 +290,31 @@ summary:focus-visible {
   max-width: 62ch;
 }
 
+/* Hero Ken Burns — a slow drift so the image is never quite still. Long and
+   small on purpose: 8% over 24 seconds is felt rather than seen. The global
+   prefers-reduced-motion rule collapses the duration, freezing it. */
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.08) translate3d(0, -1.2%, 0);
+  }
+}
+.hero-kenburns {
+  animation: hero-kenburns 24s ease-out forwards;
+  will-change: transform;
+}
+
+/* Card fallback when a news or event item has no image_url. A designed
+   gradient in the category colour, not an empty box. The tint is supplied by
+   the component as --card-accent. */
+.card-fallback {
+  background-image:
+    radial-gradient(18rem 10rem at 22% 12%, var(--card-accent, #2f57a6), transparent 68%),
+    linear-gradient(135deg, #142d54 0%, #0f2140 60%, #091428 100%);
+}
+
 /* Leaflet: strip the default white box behind custom divIcon markers. */
 .leaflet-div-icon {
   background: transparent;
