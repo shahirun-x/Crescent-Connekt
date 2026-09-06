@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getAdminUser } from "@/lib/admin-auth";
 import { getServiceSupabase } from "@/lib/supabase-server";
 import { isMemberStatus } from "@/lib/roles";
+import { buildApprovalEmail } from "@/lib/email";
 import { SITE_URL } from "@/lib/site";
 
 export const runtime = "nodejs";
@@ -75,6 +76,14 @@ async function notifyApproved(
     const email = u?.user?.email;
     if (!email) return;
 
+    // Multipart: html when the template loads, text always. A message with
+    // both parts fares better with spam filters than HTML alone, and if the
+    // template cannot be read the member still gets a readable email.
+    const { subject, html, text } = await buildApprovalEmail(
+      fullName,
+      `${SITE_URL}/connect/directory`
+    );
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -84,14 +93,9 @@ async function notifyApproved(
       body: JSON.stringify({
         from: "Crescent Connect <noreply@crescentglobal.org>",
         to: email,
-        subject: "Your Crescent Connect profile is approved",
-        text: `Assalamu alaikum ${fullName},
-
-Your Crescent Connect profile has been approved. You can now browse the member directory and connect with students, alumni, faculty and well-wishers across the Crescent network.
-
-Open the directory: ${SITE_URL}/connect/directory
-
-— Crescent Global Outreach Mission`,
+        subject,
+        ...(html ? { html } : {}),
+        text,
       }),
     });
     if (!res.ok) {

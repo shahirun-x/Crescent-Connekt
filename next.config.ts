@@ -13,6 +13,16 @@ const supabaseHost = (() => {
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // lib/email.ts reads the approval template from disk at runtime. Next's
+  // dependency tracer only follows imports, so a path built at runtime is
+  // invisible to it — without this the read would work locally and throw
+  // ENOENT on Vercel. Keeping the .html as the single source of truth (rather
+  // than duplicating it into a TS string) is worth the explicit trace entry.
+  outputFileTracingIncludes: {
+    "/api/admin/members/[id]/status": [
+      "./supabase/email-templates/approval-notification.html",
+    ],
+  },
   async headers() {
     return [
       {
