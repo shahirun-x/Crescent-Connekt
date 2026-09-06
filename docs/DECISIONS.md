@@ -110,3 +110,39 @@ Also ignores any `localhost` value. An empty or wrong env var was emitting
 **25. Docs written before the Connect migration was applied.**
 The security model changed materially in one session. Writing it down while the
 reasoning was fresh, rather than after, was the point.
+
+**26. A `"use client"` page cannot export `metadata` — it silently inherits.**
+This is the quiet one. A client component cannot export `metadata`, and Next
+does not warn: the page simply inherits the root layout's values, including
+`robots: { index: true, follow: true }`.
+
+Three routes were therefore live and crawlable, each emitting
+`<meta name="robots" content="index, follow">`: `/connect/login`,
+`/connect/signup` and `/connect/callback`. The last is the serious one —
+Supabase returns the session in the URL fragment, so that URL is one that has
+carried credentials and must never be indexed or cached.
+
+The fix is a thin `layout.tsx` beside the page, exporting the metadata the page
+cannot. See `app/connect/login/layout.tsx`.
+
+The general rule, both directions:
+
+- Any **new** client-component route that should not be indexed needs its own
+  `layout.tsx` with `robots: { index: false, follow: false }`. There is no
+  other way to attach metadata to it.
+- **Converting an existing server page to a client component silently drops its
+  metadata** — title, description, canonical and robots all revert to the
+  parent's. Nothing fails, nothing warns; the page just starts advertising the
+  wrong thing. If you add `"use client"` to a page that had a `metadata`
+  export, move that export to a sibling layout in the same commit.
+
+Because this fails silently, do not verify it by reading source. Build and grep
+the output:
+
+```
+grep -o '<meta name="robots" content="[^"]*"' .next/server/app/<route>.html
+```
+
+Defence in depth: `next.config.ts` also sets `X-Robots-Tag` on `/api/:path*`,
+`/admin/:path*` and `/connect/:path+`, which covers JSON responses and
+redirects that never render a meta tag at all.
