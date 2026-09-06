@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
+import Image from "next/image";
+import { PILLAR_IMAGES } from "@/lib/images";
 import { categoryMeta, institutionCategoryStyle } from "@/lib/site";
 import type { Institution } from "@/lib/types";
 
@@ -44,26 +46,51 @@ export default function EcosystemGrid({
                     ? "/about#strategic-streams"
                     : `/institutions?category=${cat}`
                 }
-                className={`group flex h-full flex-col rounded-card border border-slate-200 p-6 transition-all hover:-translate-y-0.5 hover:border-crescent-300 hover:shadow-lg hover:shadow-crescent-900/5 ${institutionCategoryStyle[cat].cardGradient}`}
+                className={`group flex h-full flex-col overflow-hidden rounded-card border border-slate-200 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-crescent-300 hover:shadow-card-hover ${institutionCategoryStyle[cat].cardGradient}`}
               >
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-crescent-50 text-crescent-700">
-                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor">
-                    <path d={icons[cat]} />
-                  </svg>
+                {/*
+                  Pillar photograph. Short band rather than a hero crop so the
+                  card stays a card — the image supports the label, it is not
+                  the subject. Decorative: the pillar name sits directly below.
+                */}
+                <span className="relative block aspect-[16/7] w-full overflow-hidden bg-crescent-900">
+                  <Image
+                    src={PILLAR_IMAGES[cat].src}
+                    alt={PILLAR_IMAGES[cat].alt}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-t from-crescent-950/75 via-crescent-950/25 to-transparent"
+                  />
+                  {/* Icon overlaps the image edge, tying the two halves together. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-5 left-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white text-crescent-700 shadow-raised ring-1 ring-slate-200"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor">
+                      <path d={icons[cat]} />
+                    </svg>
+                  </span>
                 </span>
-                <h3 className="mt-4 text-lg font-semibold text-crescent-800">
-                  {categoryMeta[cat].label}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
-                  {categoryMeta[cat].blurb}
-                </p>
+
+                <span className="flex flex-1 flex-col p-6 pt-9">
+                  <h3 className="type-h3 text-crescent-800">
+                    {categoryMeta[cat].label}
+                  </h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
+                    {categoryMeta[cat].blurb}
+                  </p>
                 <p className="mt-4 text-sm font-semibold text-crescent-600 group-hover:text-crescent-700">
                   {isStrategic
                     ? "Explore the strategic streams →"
                     : `${counts[cat] ?? 0} institution${
                         (counts[cat] ?? 0) === 1 ? "" : "s"
                       } →`}
-                </p>
+                  </p>
+                </span>
               </Link>
             </Reveal>
           );
@@ -86,8 +113,8 @@ export default function EcosystemGrid({
                 well-wishers worldwide.
               </p>
             </div>
-            <p className="mt-4 text-sm font-semibold text-white">
-              Coming soon — join the early list →
+            <p className="mt-4 text-sm font-semibold text-gold-300">
+              Join Crescent Connect →
             </p>
           </Link>
         </Reveal>

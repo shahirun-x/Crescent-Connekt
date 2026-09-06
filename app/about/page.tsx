@@ -3,6 +3,8 @@ import AboutHero from "@/components/about/AboutHero";
 import VisionSection from "@/components/about/VisionSection";
 import MissionSection from "@/components/about/MissionSection";
 import StrategicStreamsSection from "@/components/about/StrategicStreamsSection";
+import PhotoBreak from "@/components/PhotoBreak";
+import { BANNER_ABOUT_MISSION } from "@/lib/images";
 import PhilosophySection from "@/components/about/PhilosophySection";
 import OutcomeSection from "@/components/about/OutcomeSection";
 import ClosingTagline from "@/components/about/ClosingTagline";
@@ -27,6 +29,14 @@ export default async function AboutPage() {
       <AboutHero />
       <VisionSection />
       <MissionSection />
+
+      {/* Breathing space between the two heaviest text sections on the site. */}
+      <PhotoBreak
+        image={BANNER_ABOUT_MISSION}
+        quote="Supplementing, never replacing — channelling the collective effort of the whole Crescent family."
+        attribution="Crescent Global Outreach Mission"
+      />
+
       <StrategicStreamsSection />
       <PhilosophySection />
       <OutcomeSection />

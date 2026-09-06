@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
+import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
+import { CONTACT_VISUAL } from "@/lib/images";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -33,7 +35,30 @@ export default function ContactPage() {
         </div>
 
         <aside className="space-y-6 text-sm">
-          <div className="rounded-card bg-slate-50 p-6">
+          {/*
+            Visual anchor beside the form. Sits above the address so the
+            column has a subject rather than opening on a grey box. Hidden
+            below lg, where the aside stacks under the form and an image
+            would only push the contact details further down the page.
+          */}
+          <div className="relative hidden aspect-[4/3] overflow-hidden rounded-card shadow-raised lg:block">
+            <Image
+              src={CONTACT_VISUAL.src}
+              alt={CONTACT_VISUAL.alt}
+              fill
+              sizes="(min-width: 1024px) 30vw, 0px"
+              className="object-cover"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-gradient-to-t from-crescent-950/70 via-crescent-950/10 to-transparent"
+            />
+            <p className="absolute inset-x-0 bottom-0 p-5 text-sm font-semibold leading-snug text-white">
+              Vandalur, Chennai
+            </p>
+          </div>
+
+          <div className="rounded-card bg-sand-100 p-6">
             <h2 className="text-base font-semibold text-crescent-800">
               Crescent Global Outreach Mission
             </h2>
@@ -43,7 +68,7 @@ export default function ContactPage() {
               Chennai 600048, Tamil Nadu, India
             </p>
           </div>
-          <div className="rounded-card bg-slate-50 p-6">
+          <div className="rounded-card bg-sand-100 p-6">
             <h2 className="text-base font-semibold text-crescent-800">Email</h2>
             <a
               href={`mailto:${site.contactEmail}`}
@@ -52,7 +77,7 @@ export default function ContactPage() {
               {site.contactEmail}
             </a>
           </div>
-          <div className="rounded-card bg-slate-50 p-6">
+          <div className="rounded-card bg-sand-100 p-6">
             <h2 className="text-base font-semibold text-crescent-800">
               Looking for a specific institution?
             </h2>

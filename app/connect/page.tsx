@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { CONNECT_COMMUNITY } from "@/lib/images";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { getMemberSession } from "@/lib/connect-auth";
@@ -126,9 +128,36 @@ export default async function ConnectPage() {
           )}
         </div>
 
-        <h2 className="mt-14 text-xl font-bold text-crescent-800">
-          Who it&apos;s for
-        </h2>
+        {/*
+          Warm image supporting the community message. Full width of the
+          container so it acts as a band rather than a card, and short enough
+          on mobile that it does not push the role list off the first screen.
+        */}
+        <figure className="relative mt-14 overflow-hidden rounded-card shadow-raised">
+          <div className="relative aspect-[16/7] w-full sm:aspect-[16/6] lg:aspect-[16/5]">
+            <Image
+              src={CONNECT_COMMUNITY.src}
+              alt={CONNECT_COMMUNITY.alt}
+              fill
+              sizes="(min-width: 1280px) 1216px, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-r from-crescent-950/85 via-crescent-950/45 to-transparent"
+          />
+          <figcaption className="absolute inset-y-0 left-0 flex max-w-md flex-col justify-center p-6 sm:p-10">
+            <p className="text-balance text-lg font-bold leading-snug text-white sm:text-xl md:text-2xl">
+              One family, across every campus and every generation.
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-crescent-100">
+              Crescent Connect exists to make that practical — not just true.
+            </p>
+          </figcaption>
+        </figure>
+
+        <h2 className="type-h2 mt-14 text-crescent-800">Who it&apos;s for</h2>
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {MEMBER_ROLES.map((r) => (
             <li

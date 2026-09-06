@@ -67,30 +67,51 @@ export default function MemberCard({ member }: { member: DirectoryMember }) {
   return (
     <Link
       href={`/connect/profile/${member.id}`}
-      className="group flex h-full flex-col items-center rounded-card border border-slate-200 bg-white p-6 text-center transition-all duration-200 hover:-translate-y-1 hover:border-crescent-300 hover:shadow-lg"
+      className="group relative flex h-full flex-col items-center overflow-hidden rounded-card border border-slate-200 bg-gradient-to-b from-white to-sand-50/70 pb-6 pt-0 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-crescent-300 hover:shadow-card-hover"
     >
-      <Avatar src={member.avatar_url} name={member.full_name} size={80} />
-
-      <h3 className="mt-4 text-base font-bold leading-snug text-crescent-800 group-hover:text-crescent-900">
-        {member.full_name}
-      </h3>
-
+      {/*
+        Tinted crown behind the avatar. Gives the card a top edge to sit
+        against so the portrait reads as the subject rather than as an icon
+        floating in whitespace, and carries the member's role colour.
+      */}
       <span
-        className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${meta.badge}`}
-      >
-        {meta.label}
-        {member.batch_year ? ` · ${member.batch_year}` : ""}
-      </span>
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-crescent-50 to-transparent"
+      />
 
-      {member.headline && (
-        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">
-          {member.headline}
-        </p>
-      )}
+      <div className="relative mt-6">
+        {/* Soft ring bloom on hover — the avatar is the card's subject. */}
+        <span
+          aria-hidden="true"
+          className="absolute -inset-1.5 rounded-full bg-crescent-200/0 blur-md transition-colors duration-300 group-hover:bg-crescent-300/40"
+        />
+        <span className="relative block rounded-full ring-4 ring-white shadow-raised">
+          <Avatar src={member.avatar_url} name={member.full_name} size={88} />
+        </span>
+      </div>
 
-      <div className="mt-auto w-full pt-4">
+      <div className="w-full px-6">
+        <h3 className="mt-4 text-base font-bold leading-snug text-crescent-800">
+          {member.full_name}
+        </h3>
+
+        <span
+          className={`mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${meta.badge}`}
+        >
+          {meta.label}
+          {member.batch_year ? ` · ${member.batch_year}` : ""}
+        </span>
+
+        {member.headline && (
+          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-slate-600">
+            {member.headline}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-auto w-full px-6 pt-4">
         {member.institution_name && (
-          <p className="truncate text-xs font-medium text-crescent-600">
+          <p className="truncate border-t border-slate-100 pt-3 text-xs font-semibold text-crescent-600">
             {member.institution_name}
           </p>
         )}
