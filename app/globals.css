@@ -315,6 +315,42 @@ summary:focus-visible {
     linear-gradient(135deg, #142d54 0%, #0f2140 60%, #091428 100%);
 }
 
+/* -----------------------------------------------------------------------
+ * Micro-interactions.
+ *
+ * Applied globally rather than per-component so every control feels the same
+ * without touching sixty files. Press feedback is the one interaction users
+ * notice the absence of — a button that does not acknowledge the tap reads
+ * as broken on touch.
+ *
+ * Guarded so it never applies to disabled controls, and the global
+ * reduced-motion rule collapses the duration to nothing.
+ * --------------------------------------------------------------------- */
+button:not(:disabled),
+a[role="button"],
+[role="tab"]:not([aria-disabled="true"]) {
+  transition:
+    transform 0.12s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+button:not(:disabled):active,
+a[role="button"]:active {
+  transform: scale(0.97);
+}
+
+/* Touch targets. 44px is the floor; this catches controls that would
+   otherwise be sized only by their text. */
+@media (pointer: coarse) {
+  button:not(:disabled),
+  a[role="button"],
+  [role="tab"] {
+    min-height: 44px;
+  }
+}
+
 /* Leaflet: strip the default white box behind custom divIcon markers. */
 .leaflet-div-icon {
   background: transparent;

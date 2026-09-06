@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import Reveal from "./Reveal";
+import { RevealGroup, RevealItem } from "./Reveal";
 import SectionHeading from "./SectionHeading";
 import { formatDateRange } from "@/lib/site";
 import { eventCategoryBorderL } from "@/lib/eventCategories";
@@ -31,9 +31,9 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
           </Link>
         </div>
 
-        <ul className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {list.map((e, idx) => (
-            <Reveal key={e.id} as="li" delay={idx * 0.05}>
+        <RevealGroup as="ul" className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {list.map((e) => (
+            <RevealItem key={e.id} as="li">
               <article
                 className={`flex h-full flex-col overflow-hidden rounded-card border border-l-4 border-slate-200 bg-white ${eventCategoryBorderL[e.category]}`}
               >
@@ -66,9 +66,9 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
                 <p className="mt-3 text-xs text-slate-500">{e.location}</p>
                 </div>
               </article>
-            </Reveal>
+            </RevealItem>
           ))}
-        </ul>
+        </RevealGroup>
       </div>
     </section>
   );
