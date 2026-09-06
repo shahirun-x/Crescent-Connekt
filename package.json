@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "npm run check:contrast",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:contrast": "node scripts/check-contrast.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",

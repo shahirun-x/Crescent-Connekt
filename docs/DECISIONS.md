@@ -146,3 +146,44 @@ grep -o '<meta name="robots" content="[^"]*"' .next/server/app/<route>.html
 Defence in depth: `next.config.ts` also sets `X-Robots-Tag` on `/api/:path*`,
 `/admin/:path*` and `/connect/:path+`, which covers JSON responses and
 redirects that never render a meta tag at all.
+
+**27. Decorative borders are deliberately exempt from WCAG 1.4.11.**
+`scripts/check-contrast.mjs` checks `--border-interactive` at 3:1 but does
+**not** check `--border-subtle` or `--border-default`. That is on purpose, not
+an oversight.
+
+WCAG 1.4.11 (Non-text Contrast) applies to *"visual information required to
+identify user interface components"*. A form input's boundary qualifies: if you
+cannot see where the field is, you cannot use it. A card outline or a section
+divider does not — the card is identified by its content, and removing the
+border entirely would cost nothing in usability.
+
+Holding decorative borders to 3:1 would force every hairline on the site to
+roughly `#7b8697`. That reads as a wireframe, not as an institutional site, and
+buys no accessibility whatsoever. The design instead spends its contrast budget
+where it does work: text, control boundaries, and focus rings.
+
+So:
+
+- Form inputs, selects, textareas, outlined buttons and drop zones use
+  `border-control` (#7b8697 — 3.68:1 on white, 3.39:1 on sand-100). This
+  replaced `slate-300`, which was **1.48:1** and a genuine failure.
+- Card outlines and dividers keep `slate-200` / `--border-subtle` and are
+  correctly absent from the checker.
+
+If a future pass "finds" that card borders fail contrast: they do not fail,
+because they are not in scope. Adding them to `PAIRS` would turn a green build
+red for no user benefit. The reasoning is also recorded in the script itself,
+next to the list.
+
+**28. Contrast is a build gate, not a review step.**
+`prebuild` runs the checker before `next build`, so a failing pair stops the
+build rather than being noticed weeks later in an audit. Verified by injecting
+a deliberate failure: `npm run build` exited 1 and `next build` never started.
+
+The script reads its hex values out of `app/globals.css` rather than keeping
+its own copy, so the check cannot drift from the theme it is checking. The
+corollary is that **a new colour pair must be added to `PAIRS` to be covered** —
+the gate proves the listed pairs pass, not that every pair on the site is
+listed. Adding a pairing to the design and not to the script is the one way to
+get an unchecked colour into production.

@@ -69,6 +69,23 @@ No UI component library. No CSS-in-JS. No state library.
 - Client components only where interactivity requires it. Pages stay static/ISR.
 - Category colours live in `lib/eventCategories.ts`. One source, used by calendar
   dots, filter pills, map markers and badges.
+- **Colour contrast is enforced by the build.** `npm run build` runs
+  `prebuild` → `scripts/check-contrast.mjs` first; a failing pair exits
+  non-zero and `next build` never starts. Do not bypass it, and do not remove
+  the `prebuild` hook to get a build through.
+  - The script reads hex values straight out of `app/globals.css`, so it can
+    never drift from the theme.
+  - **Adding a colour pair to the design means adding it to `PAIRS` in that
+    script.** An unlisted pair is an unchecked pair.
+  - Run it alone with `npm run check:contrast`.
+  - Decorative borders are deliberately exempt — see `docs/DECISIONS.md` #27
+    before "fixing" that.
+- Colours come from the semantic tokens in `globals.css` (`--surface-*`,
+  `--text-*`, `--border-*`) and the sand / teal / gold scales. Reach for those
+  rather than raw `slate-*` values.
+- Every photograph on the site is a named constant in `lib/images.ts`. Add new
+  images there, not inline in a component — swapping placeholders for real
+  client photography must stay a one-line change per image.
 - Motion: entrance animations use `whileInView`. Respect `prefers-reduced-motion`
   except where `MotionProvider` deliberately overrides it (see DECISIONS #9).
 
