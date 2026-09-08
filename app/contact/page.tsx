@@ -42,17 +42,28 @@ export default function ContactPage() {
             would only push the contact details further down the page.
           */}
           <div className="relative hidden aspect-[4/3] overflow-hidden rounded-card shadow-raised lg:block">
-            <Image
-              src={CONTACT_VISUAL.src}
-              alt={CONTACT_VISUAL.alt}
-              fill
-              sizes="(min-width: 1024px) 30vw, 0px"
-              className="object-cover"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-crescent-950/70 via-crescent-950/10 to-transparent"
-            />
+            {/* Gradient while this slot has no honest photograph — see
+                lib/images.ts. Every candidate interior was empty and cold. */}
+            {CONTACT_VISUAL.src ? (
+              <>
+                <Image
+                  src={CONTACT_VISUAL.src}
+                  alt={CONTACT_VISUAL.alt}
+                  fill
+                  sizes="(min-width: 1024px) 30vw, 0px"
+                  className="object-cover"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-crescent-950/70 via-crescent-950/10 to-transparent"
+                />
+              </>
+            ) : (
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 ${CONTACT_VISUAL.gradient}`}
+              />
+            )}
             <p className="absolute inset-x-0 bottom-0 p-5 text-sm font-semibold leading-snug text-white">
               Vandalur, Chennai
             </p>

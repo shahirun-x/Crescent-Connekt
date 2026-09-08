@@ -19,7 +19,7 @@ export default function Hero() {
         className="absolute inset-x-0 -top-24 z-0 h-[calc(100%+12rem)]"
       >
         <Image
-          src={HERO_CAMPUS.src}
+          src={HERO_CAMPUS.src as string}
           alt={HERO_CAMPUS.alt}
           fill
           priority={HERO_CAMPUS.priority}

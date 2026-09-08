@@ -29,13 +29,17 @@ export default function PhotoBreak({
       className={`relative isolate overflow-hidden bg-crescent-950 ${className}`}
       aria-label={quote ? undefined : "Photograph"}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        sizes="100vw"
-        className="-z-10 object-cover"
-      />
+      {image.src ? (
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes="100vw"
+          className="-z-10 object-cover"
+        />
+      ) : (
+        <div aria-hidden="true" className={`absolute inset-0 -z-10 ${image.gradient}`} />
+      )}
 
       {/* Scrim. crescent-950/72 keeps white text above 7:1 even over a bright
           sky, which is the worst case for a campus photograph. */}

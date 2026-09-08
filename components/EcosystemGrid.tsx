@@ -54,13 +54,15 @@ export default function EcosystemGrid({
                   the subject. Decorative: the pillar name sits directly below.
                 */}
                 <span className="relative block aspect-[16/7] w-full overflow-hidden bg-crescent-900">
-                  <Image
-                    src={PILLAR_IMAGES[cat].src}
-                    alt={PILLAR_IMAGES[cat].alt}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-                  />
+                  {PILLAR_IMAGES[cat].src && (
+                    <Image
+                      src={PILLAR_IMAGES[cat].src as string}
+                      alt={PILLAR_IMAGES[cat].alt}
+                      fill
+                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                    />
+                  )}
                   <span
                     aria-hidden="true"
                     className="absolute inset-0 bg-gradient-to-t from-crescent-950/75 via-crescent-950/25 to-transparent"

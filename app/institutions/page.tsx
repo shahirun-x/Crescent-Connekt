@@ -34,17 +34,27 @@ export default async function InstitutionsPage() {
       {/* Header band: photograph behind the heading, dimmed enough that white
           text clears AA against the darkest part of any photo that lands here. */}
       <section className="relative isolate overflow-hidden bg-crescent-900">
-        <Image
-          src={BANNER_INSTITUTIONS.src}
-          alt={BANNER_INSTITUTIONS.alt}
-          fill
-          sizes="100vw"
-          className="-z-10 object-cover"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-crescent-900/85"
-        />
+        {/* Renders a designed gradient while this slot has no honest photo. */}
+        {BANNER_INSTITUTIONS.src ? (
+          <>
+            <Image
+              src={BANNER_INSTITUTIONS.src}
+              alt={BANNER_INSTITUTIONS.alt}
+              fill
+              sizes="100vw"
+              className="-z-10 object-cover"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-crescent-900/85"
+            />
+          </>
+        ) : (
+          <div
+            aria-hidden="true"
+            className={`absolute inset-0 -z-10 ${BANNER_INSTITUTIONS.gradient}`}
+          />
+        )}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 -z-10 opacity-40"

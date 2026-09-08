@@ -136,7 +136,7 @@ export default async function ConnectPage() {
         <figure className="relative mt-14 overflow-hidden rounded-card shadow-raised">
           <div className="relative aspect-[16/7] w-full sm:aspect-[16/6] lg:aspect-[16/5]">
             <Image
-              src={CONNECT_COMMUNITY.src}
+              src={CONNECT_COMMUNITY.src as string}
               alt={CONNECT_COMMUNITY.alt}
               fill
               sizes="(min-width: 1280px) 1216px, 100vw"
