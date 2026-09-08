@@ -5,14 +5,37 @@ import Image from "next/image";
 import { HERO_CAMPUS } from "@/lib/images";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+const STATS = [
+  { k: "1968", v: "Founded in Chennai" },
+  { k: "16", v: "Institutions in the network" },
+  { k: "5", v: "Ecosystem pillars" },
+  { k: "Global", v: "Alumni across continents" },
+];
+
+/**
+ * Homepage hero — full-bleed editorial.
+ *
+ * Two things were wrong before and are deliberately not coming back:
+ *
+ *  1. The stats were frosted-glass panels (bg-white/10 + backdrop-blur)
+ *     floating over the photograph with no relationship to it. They are now a
+ *     band along the bottom edge, separated by hairlines — part of the
+ *     composition rather than objects on top of it.
+ *
+ *  2. The scrim was a flat crescent-900/80 across the whole image, which made
+ *     the photograph muddy and pointless — if you dim everything evenly you
+ *     may as well not have a photo. It is now DIRECTIONAL: near-opaque behind
+ *     the headline on the left, clearing to almost nothing on the right so the
+ *     image is actually visible where no text sits.
+ */
 export default function Hero() {
   // Lightweight parallax — the background image drifts as the page scrolls.
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 80]);
 
   return (
-    <section className="relative overflow-hidden bg-crescent-900 text-white">
-      {/* z-0: parallax background photo */}
+    <section className="relative overflow-hidden bg-crescent-950 text-white">
+      {/* Background photograph */}
       <motion.div
         style={{ y }}
         aria-hidden
@@ -24,77 +47,104 @@ export default function Hero() {
           fill
           priority={HERO_CAMPUS.priority}
           sizes="100vw"
-          /* Ken Burns: a very slow zoom so the hero is never quite still.
-             1.0 -> 1.08 over 24s. Frozen under prefers-reduced-motion by the
-             global rule in globals.css. */
           className="hero-kenburns object-cover"
         />
       </motion.div>
-      {/* z-10: dim the photo so white text stays readable */}
-      <div aria-hidden className="absolute inset-0 z-10 bg-crescent-900/80" />
+
+      {/*
+        Directional scrim. Horizontal on wide screens so the right side stays
+        legible as a photograph; vertical on mobile, where text spans the full
+        width and a left-right ramp would put pale type over a bright sky.
+      */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-10 opacity-30"
+        className="absolute inset-0 z-10 bg-gradient-to-b from-crescent-950/92 via-crescent-950/75 to-crescent-950/88 lg:bg-gradient-to-r lg:from-crescent-950/95 lg:via-crescent-950/70 lg:to-crescent-950/25"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-10 opacity-40"
         style={{
           backgroundImage:
-            "radial-gradient(60rem 30rem at 15% -10%, rgba(255,255,255,0.25), transparent), radial-gradient(40rem 24rem at 110% 20%, rgba(215,38,61,0.35), transparent)",
+            "radial-gradient(46rem 26rem at 8% 0%, rgba(47,87,166,0.5), transparent 62%), radial-gradient(34rem 22rem at 104% 88%, rgba(13,118,112,0.4), transparent 62%)",
         }}
       />
-      {/* z-20: content */}
-      <div className="container-page relative z-20 grid gap-10 py-20 md:py-28 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-        <div>
-          <p className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">
+
+      <div className="container-page relative z-20">
+        <div className="max-w-4xl pb-14 pt-20 md:pb-20 md:pt-28 lg:pb-24 lg:pt-32">
+          {/*
+            Eyebrow is a rule plus small caps — no pill, no border, no
+            translucent chip. Institutional rather than app-like.
+          */}
+          <p className="type-eyebrow flex items-center gap-3 text-gold-300">
+            <span aria-hidden="true" className="h-px w-8 bg-gold-300/70" />
             The Crescent ecosystem, unified
           </p>
-          <p className="mb-4 mt-3 max-w-lg text-sm font-medium text-crescent-100">
-            A structured School-to-Start-up continuum — from Learning to
-            Leadership, from Knowledge to Innovation.
-          </p>
-          <h1 className="text-balance text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
+
+          {/* The headline dominates: type-display tops out at 4rem. */}
+          <h1 className="type-display mt-6 text-balance">
             One Crescent.
             <br />
             One Community.
             <br />
-            <span className="text-crescent-200">One Global Network.</span>
+            <span className="text-gold-300">One Global Network.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-crescent-100">
-            A unified academic ecosystem connecting schools, colleges,
+
+          <p className="type-lead mt-7 text-crescent-100">
+            A unified academic ecosystem connecting the schools, colleges,
             university, hospitals and community initiatives of the Crescent
-            family — channelling their collective efforts into education,
-            innovation, entrepreneurship and global impact.
+            family — channelling their collective effort into education,
+            innovation and global impact.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/institutions"
-              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-crescent-800 transition-colors hover:bg-crescent-50"
+              className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3.5 text-sm font-bold text-crescent-900 transition-colors hover:bg-crescent-50"
             >
               Explore Institutions
             </Link>
             <Link
               href="/calendar"
-              className="inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              className="inline-flex items-center justify-center rounded-full border border-white/45 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
               View Central Calendar
             </Link>
           </div>
         </div>
+      </div>
 
-        <ul className="grid grid-cols-2 gap-4 text-sm">
-          {[
-            { k: "1968", v: "Founded in Chennai" },
-            { k: "16+", v: "Institutions in the network" },
-            { k: "5", v: "Ecosystem pillars" },
-            { k: "Global", v: "Alumni across continents" },
-          ].map((s) => (
-            <li
-              key={s.v}
-              className="rounded-card border border-white/15 bg-white/10 p-5 backdrop-blur-sm"
-            >
-              <p className="text-2xl font-bold">{s.k}</p>
-              <p className="mt-1 text-crescent-100">{s.v}</p>
-            </li>
-          ))}
-        </ul>
+      {/*
+        Stats band along the bottom edge. Hairline dividers, numbers large,
+        labels small beneath — a measured rule, not four floating boxes.
+        Wraps to 2x2 on narrow screens rather than cramming four columns.
+      */}
+      <div className="relative z-20 border-t border-white/15">
+        <div className="container-page">
+          <dl className="grid grid-cols-2 lg:grid-cols-4">
+            {STATS.map((s, i) => (
+              <div
+                key={s.v}
+                className={`py-6 lg:py-7 ${
+                  // Left hairline on every item except the first in its row.
+                  i % 2 === 1 ? "border-l border-white/15 pl-5" : "pr-5"
+                } ${i >= 2 ? "border-t border-white/15 lg:border-t-0" : ""} ${
+                  i > 0 ? "lg:border-l lg:border-white/15 lg:pl-6" : ""
+                }`}
+              >
+                <dt className="sr-only">{s.v}</dt>
+                <dd>
+                  <span className="block text-3xl font-extrabold leading-none tracking-tight text-white sm:text-4xl">
+                    {s.k}
+                  </span>
+                  {/* crescent-100 on crescent-950 is 14.6:1 */}
+                  <span className="mt-2 block text-xs font-medium leading-snug text-crescent-100">
+                    {s.v}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </section>
   );

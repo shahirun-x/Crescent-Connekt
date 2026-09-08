@@ -25,7 +25,11 @@ export default function Navbar() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/85 backdrop-blur">
+    // Solid, not frosted. A translucent blurred header is the same
+    // glassmorphism idiom as the old hero stat panels, and it makes whatever
+    // scrolls beneath it read as smudged. An opaque surface with a hairline
+    // and a soft shadow is calmer and more institutional.
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,33,64,0.04)]">
       <nav
         className="container-page flex h-16 items-center justify-between"
         aria-label="Primary"

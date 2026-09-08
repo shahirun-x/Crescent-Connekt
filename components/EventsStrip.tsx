@@ -31,9 +31,19 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
           </Link>
         </div>
 
-        <RevealGroup as="ul" className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup
+          as="ul"
+          /*
+            Horizontal rail. Extends past the right viewport edge so the row
+            visibly continues sideways, which a wrapped grid cannot signal.
+            Negative margin + matching padding keeps the first card aligned to
+            the container while letting the track bleed; overflow-x-auto scrolls
+            the TRACK, never the page. snap points keep it usable by touch.
+          */
+          className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-4 md:-mx-8 md:px-8"
+        >
           {list.map((e) => (
-            <RevealItem key={e.id} as="li">
+            <RevealItem key={e.id} as="li" className="w-[78vw] shrink-0 snap-start sm:w-[20rem] lg:w-[22rem]">
               <article
                 className={`flex h-full flex-col overflow-hidden rounded-card border border-l-4 border-slate-200 bg-white ${eventCategoryBorderL[e.category]}`}
               >
