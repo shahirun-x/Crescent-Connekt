@@ -79,14 +79,36 @@ export const institutionCategoryStyle: Record<
   },
 };
 
-// Free, no-API-key dark tiles from CARTO's current basemap CDN. The old
-// `cartodb-basemaps-*.global.ssl.fastly.net` endpoint is deprecated and now
-// serves an "API KEY REQUIRED" watermark — `{s}.basemaps.cartocdn.com` does not.
+/**
+ * Map tiles — OpenStreetMap standard.
+ *
+ * HISTORY, so this is not "improved" back to CARTO a third time:
+ * CARTO's free dark basemap has now started watermarking every tile with
+ * "API KEY REQUIRED", diagonally across the image. It still returns HTTP 200
+ * with a valid PNG, so nothing fails loudly — the watermark is baked into the
+ * pixels. Both the old `cartodb-basemaps-*.fastly.net` host and the newer
+ * `{s}.basemaps.cartocdn.com` host now do this.
+ *
+ * OSM standard tiles are genuinely free and keyless, with no watermark.
+ * Verified by fetching the Chennai tile (z10/740/474) and looking at it.
+ *
+ * These tiles are LIGHT, where CARTO's were dark. The map surround is styled
+ * for light tiles to match — see InstitutionMap.
+ *
+ * OSM's tile usage policy requires an identifying User-Agent or Referer.
+ * A browser sends a Referer automatically, which satisfies it for this use.
+ * If traffic ever grows past casual volume, move to a hosted provider rather
+ * than leaning harder on the volunteer-funded servers.
+ */
 export const MAP_TILE_URL =
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-export const MAP_TILE_SUBDOMAINS = ["a", "b", "c", "d"];
+  "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+// OSM serves a/b/c only. CARTO also offered "d"; leaving it in would 404 on
+// roughly a quarter of tile requests.
+export const MAP_TILE_SUBDOMAINS = ["a", "b", "c"];
+// Attribution is a licence condition, not decoration. CARTO is no longer
+// credited because CARTO tiles are no longer served.
 export const MAP_TILE_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>';
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 export const categoryMeta: Record<
   string,

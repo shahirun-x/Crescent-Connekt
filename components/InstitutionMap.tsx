@@ -72,12 +72,20 @@ function buildClusters(items: Institution[]): Cluster[] {
   return clusters;
 }
 
+/*
+ * Marker styling is tuned for LIGHT OSM tiles.
+ *
+ * On the old dark basemap a white ring alone separated a marker from the
+ * ground. Over light tiles that ring disappears into pale streets and parks,
+ * so each marker now carries a white ring PLUS an outer navy hairline. The
+ * category colour stays the fill, so the legend still reads.
+ */
 function dotIcon(hex: string) {
   return L.divIcon({
     className: "crescent-marker",
-    html: `<span style="display:block;width:12px;height:12px;border-radius:9999px;background:${hex};border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.45)"></span>`,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
+    html: `<span style="display:block;width:13px;height:13px;border-radius:9999px;background:${hex};border:2px solid #fff;box-shadow:0 0 0 1px rgba(15,33,64,.55),0 1px 4px rgba(15,33,64,.35)"></span>`,
+    iconSize: [17, 17],
+    iconAnchor: [8.5, 8.5],
     popupAnchor: [0, -10],
   });
 }
@@ -85,7 +93,7 @@ function dotIcon(hex: string) {
 function clusterIcon(count: number) {
   return L.divIcon({
     className: "crescent-cluster",
-    html: `<div style="width:34px;height:34px;border-radius:9999px;background:#1a3a6b;border:2px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.4)">${count}</div>`,
+    html: `<div style="width:34px;height:34px;border-radius:9999px;background:#1a3a6b;border:2px solid #fff;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px/1 ui-sans-serif,system-ui,sans-serif;box-shadow:0 0 0 1px rgba(15,33,64,.35),0 2px 8px rgba(15,33,64,.35)">${count}</div>`,
     iconSize: [34, 34],
     iconAnchor: [17, 17],
   });
@@ -252,7 +260,7 @@ export default function InstitutionMap({
         zoom={DEFAULT_ZOOM}
         scrollWheelZoom={false}
         zoomControl
-        className="h-full w-full bg-crescent-950"
+        className="h-full w-full bg-sand-100"
       >
         <TileLayer
           url={MAP_TILE_URL}
@@ -266,7 +274,7 @@ export default function InstitutionMap({
       </div>
 
       {hint && (
-        <div className="pointer-events-none absolute inset-0 z-[1000] flex items-center justify-center bg-crescent-950/45">
+        <div className="pointer-events-none absolute inset-0 z-[1000] flex items-center justify-center bg-crescent-950/35">
           <span className="rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-crescent-800 shadow-lg">
             Hold Ctrl and scroll to zoom
           </span>
