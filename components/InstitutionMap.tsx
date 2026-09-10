@@ -254,7 +254,16 @@ export default function InstitutionMap({
         navigable form, so the map is hidden from the accessibility tree and
         the wrapper's aria-label points there instead.
       */}
-      <div aria-hidden="true" className="h-full w-full">
+      {/*
+        `inert` as well as aria-hidden. aria-hidden alone leaves Leaflet's zoom
+        buttons and attribution link in the tab order while hiding them from
+        assistive tech — axe flags that as aria-hidden-focus, and it strands a
+        keyboard user on controls a screen reader cannot describe. `inert`
+        removes the subtree from focus AND from the accessibility tree, which
+        is what was actually intended. The institution cards below remain the
+        accessible equivalent.
+      */}
+      <div aria-hidden="true" inert className="h-full w-full">
       <MapContainer
         center={TN_CENTER}
         zoom={DEFAULT_ZOOM}

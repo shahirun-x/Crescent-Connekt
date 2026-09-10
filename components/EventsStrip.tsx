@@ -40,6 +40,17 @@ export default function EventsStrip({ events }: { events: CrescentEvent[] }) {
             the container while letting the track bleed; overflow-x-auto scrolls
             the TRACK, never the page. snap points keep it usable by touch.
           */
+          /*
+            tabIndex + a name: axe flags scrollable-region-focusable because a
+            keyboard user cannot scroll an overflow container that is not
+            focusable. Arrow keys scroll it once focused.
+
+            NOT role="group" — that overrides the <ul>'s implicit list role and
+            orphans every <li> (axe: listitem). A list can be focusable and
+            named without changing its role.
+          */
+          tabIndex={0}
+          aria-label="Upcoming events. Scroll sideways for more."
           className="-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-4 md:-mx-8 md:px-8"
         >
           {list.map((e) => (

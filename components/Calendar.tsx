@@ -273,7 +273,7 @@ export default function Calendar({
                 aria-pressed={view === v}
                 onClick={() => onViewChange(v)}
                 className={`relative rounded-full px-3 py-1 text-[0.7rem] font-semibold capitalize transition-colors duration-200 ${
-                  view === v ? "text-crescent-700" : "text-slate-500 hover:text-slate-700"
+                  view === v ? "text-crescent-700" : "text-slate-600 hover:text-slate-700"
                 }`}
               >
                 {view === v && (
@@ -328,7 +328,7 @@ export default function Calendar({
             {WEEKDAYS.map((w, i) => (
               <div
                 key={w}
-                className={`px-1 py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wide text-slate-500 ${
+                className={`px-1 py-1.5 text-center text-[0.6rem] font-semibold uppercase tracking-wide text-slate-600 ${
                   i >= 5 ? "bg-slate-100/70" : ""
                 }`}
               >
@@ -361,7 +361,24 @@ export default function Calendar({
                 aria-label="Month view. Use arrow keys to move between days."
                 className="grid grid-cols-7 divide-x divide-y divide-slate-100"
               >
-                {monthDays.map((d, i) => {
+                {/*
+                  ARIA grid requires grid > row > gridcell. The cells were
+                  previously direct children of role="grid", which axe flags as
+                  aria-required-children / aria-required-parent (critical) and
+                  which stops a screen reader announcing row and column
+                  position at all. `display: contents` lets the row exist in the
+                  accessibility tree without taking part in the CSS grid, so the
+                  7-column layout is unchanged.
+                */}
+                {Array.from({ length: Math.ceil(monthDays.length / 7) }).map(
+                  (_, weekIndex) => (
+                    <div
+                      key={`week-${weekIndex}`}
+                      role="row"
+                      style={{ display: "contents" }}
+                    >
+                {monthDays.slice(weekIndex * 7, weekIndex * 7 + 7).map((d, dayIndex) => {
+                  const i = weekIndex * 7 + dayIndex;
                   const iso = toISODate(d);
                   const col = i % 7;
                   const row = Math.floor(i / 7);
@@ -391,7 +408,7 @@ export default function Calendar({
                           ? "bg-crescent-700 text-white"
                           : inMonth
                             ? "font-semibold text-slate-800"
-                            : "font-normal text-slate-500";
+                            : "font-normal text-slate-600";
 
                   const tip = tipPlacement(row, col);
 
@@ -447,7 +464,7 @@ export default function Calendar({
                               />
                             ))}
                             {dayEvents.length > 3 && (
-                              <span className="hidden text-[0.6rem] font-medium text-slate-500 sm:inline">
+                              <span className="hidden text-[0.6rem] font-medium text-slate-600 sm:inline">
                                 +{dayEvents.length - 3}
                               </span>
                             )}
@@ -462,7 +479,7 @@ export default function Calendar({
                           <span
                             className={`absolute h-2 w-2 rotate-45 border-slate-200 bg-white ${tip.caret}`}
                           />
-                          <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-slate-500">
+                          <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-slate-600">
                             {d.toLocaleDateString("en-IN", {
                               weekday: "short",
                               day: "numeric",
@@ -485,7 +502,7 @@ export default function Calendar({
                             ))}
                           </ul>
                           {dayEvents.length > 5 && (
-                            <p className="mt-1 text-[0.7rem] text-slate-500">
+                            <p className="mt-1 text-[0.7rem] text-slate-600">
                               +{dayEvents.length - 5} more
                             </p>
                           )}
@@ -494,6 +511,9 @@ export default function Calendar({
                     </div>
                   );
                 })}
+                    </div>
+                  )
+                )}
               </div>
             ) : (
               <>
@@ -528,7 +548,7 @@ export default function Calendar({
                         </button>
                         <div className="flex-1 space-y-1.5 overflow-y-auto p-2">
                           {dayEvents.length === 0 && (
-                            <p className="pt-3 text-center text-[0.7rem] text-slate-500">
+                            <p className="pt-3 text-center text-[0.7rem] text-slate-600">
                               —
                             </p>
                           )}
@@ -585,7 +605,7 @@ export default function Calendar({
                           <span className="text-sm font-semibold text-crescent-800">
                             {d.toLocaleDateString("en-IN", { weekday: "long" })}
                           </span>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-xs text-slate-600">
                             {d.toLocaleDateString("en-IN", {
                               day: "numeric",
                               month: "short",
@@ -593,7 +613,7 @@ export default function Calendar({
                           </span>
                         </button>
                         {dayEvents.length === 0 ? (
-                          <p className="mt-2 pl-10 text-xs text-slate-500">
+                          <p className="mt-2 pl-10 text-xs text-slate-600">
                             No events
                           </p>
                         ) : (
@@ -628,7 +648,7 @@ export default function Calendar({
         </AnimatePresence>
       </div>
 
-      <p className="mt-2 text-center text-[0.7rem] text-slate-500 md:hidden">
+      <p className="mt-2 text-center text-[0.7rem] text-slate-600 md:hidden">
         Swipe left or right to change {view === "month" ? "month" : "week"}
       </p>
     </section>

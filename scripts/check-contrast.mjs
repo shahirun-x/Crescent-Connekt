@@ -120,6 +120,24 @@ const PAIRS = [
   ["crescent-950 on gold-300 (CTA button)", "gold-300", "crescent-950", 4.5],
   ["crescent-950 on gold-200 (CTA hover)", "gold-200", "crescent-950", 4.5],
 
+  // --- Muted text on real surfaces ---------------------------------------
+  //
+  // Added after the e2e axe suite caught two live failures the earlier
+  // hand-picked list had missed. This is the "unlisted pair is an unchecked
+  // pair" caveat in CLAUDE.md, demonstrated:
+  //
+  //   footer slate-500 on crescent-950  = 3.86:1  (every page)
+  //   calendar slate-500 on slate-100   = 4.35:1
+  //
+  // Both were introduced by a blanket slate-400 → slate-500 sweep, which
+  // helped on white and hurt on dark. Tailwind literals are used here because
+  // that is what the components actually render.
+  ["footer muted on crescent-950", "crescent-950", "#94a3b8", 4.5], // slate-400
+  ["footer body on crescent-950", "crescent-950", "#cbd5e1", 4.5], // slate-300
+  ["calendar muted on slate-100", "#f1f5f9", "#475569", 4.5], // slate-600
+  ["calendar muted on slate-50", "#f8fafc", "#475569", 4.5],
+  ["slate-500 on white (body muted)", WHITE, "#62748e", 4.5],
+
   // --- Non-text: UI component boundaries (WCAG 1.4.11, 3:1) --------------
   //
   // Only boundaries needed to IDENTIFY a control are in scope. A card outline

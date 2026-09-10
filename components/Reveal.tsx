@@ -63,17 +63,25 @@ export function RevealGroup({
   className,
   as = "div",
   stagger = 0.06,
+  ...rest
 }: {
   children: ReactNode;
   className?: string;
   as?: "div" | "ul" | "section";
   stagger?: number;
-}) {
+  /**
+   * Pass-through for the container's own attributes. The events rail needs
+   * tabIndex, role and aria-label on this element — a scrollable region has to
+   * be focusable or a keyboard user cannot scroll it (axe:
+   * scrollable-region-focusable) — and without this they were silently dropped.
+   */
+} & Record<string, unknown>) {
   const speed = useMobileSpeed();
   const MotionTag = motion[as];
 
   return (
     <MotionTag
+      {...rest}
       className={className}
       initial="hidden"
       whileInView="visible"
