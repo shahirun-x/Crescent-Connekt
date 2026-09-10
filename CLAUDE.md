@@ -89,6 +89,33 @@ No UI component library. No CSS-in-JS. No state library.
 - Motion: entrance animations use `whileInView`. Respect `prefers-reduced-motion`
   except where `MotionProvider` deliberately overrides it (see DECISIONS #9).
 
+## Tests
+
+There is an end-to-end suite. Use it — it exists because a week of sessions
+ended with "I could not verify this without a browser."
+
+```bash
+npm run test:e2e       # headless; builds and starts the app itself
+npm run test:e2e:ui    # debug a failure
+```
+
+- Runs against a **production build**, never `next dev`. Route-level `robots`
+  metadata, middleware and ISR only behave correctly in a production build.
+- **~34 tests need a test Supabase project** and skip with a printed reason
+  without one. Skipping is not passing — say which ones skipped when reporting.
+- **Never point it at production.** It creates and deletes real users. The
+  fixtures refuse the production ref and read `TEST_*` only. Setup is in
+  `docs/RUNBOOK.md` → Running the E2E suite.
+- When you add a feature that touches auth, privacy or the admin surface, add
+  the test in the same commit. `e2e/privacy.spec.ts` is the model: assert the
+  rendered page **and** the API payload, because a field hidden in the UI but
+  present in the JSON is still a leak.
+- `KNOWN_VIOLATIONS` in `e2e/a11y.spec.ts` is empty on purpose. Do not add to it
+  to make a failure go away, and do not drop an axe rule globally.
+- Two tests are load-bearing security regressions — read them before changing
+  auth: the non-admin-token check in `e2e/admin.spec.ts` (DECISIONS #15) and
+  the self-elevation checks in `e2e/privacy.spec.ts`.
+
 ## Working agreement
 
 - Small commits, imperative subject lines: `fix:`, `feat:`, `polish:`, `docs:`.

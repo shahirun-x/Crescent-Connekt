@@ -1,0 +1,95 @@
+name: E2E
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A push that lands while an earlier run is still going supersedes it.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: Playwright
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      # Secrets, never literals. Absent secrets are not a failure: the
+      # database-backed tests skip with a reason and the ~41 credential-free
+      # tests still run, so a fork PR gets useful signal without access to a
+      # Supabase project.
+      #
+      # Required repo secrets are documented in docs/RUNBOOK.md →
+      # Running the E2E suite. TEST_SUPABASE_URL must point at a SEPARATE
+      # test project; the fixtures refuse to run against the production ref.
+      TEST_SUPABASE_URL: ${{ secrets.TEST_SUPABASE_URL }}
+      TEST_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+      TEST_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.TEST_SUPABASE_SERVICE_ROLE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Cache the browser binaries, keyed on the resolved Playwright version so
+      # an upgrade busts the cache instead of silently reusing an old browser.
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      - name: Install Chromium
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium --with-deps
+
+      # System deps are not in the cached path, so they are installed even on a
+      # cache hit — otherwise a cached browser fails to launch.
+      - name: Install system dependencies
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Report credential status
+        run: |
+          if [ -n "$TEST_SUPABASE_URL" ]; then
+            echo "::notice::Test Supabase configured — full suite will run."
+          else
+            echo "::warning::TEST_SUPABASE_* not set. Database-backed tests will SKIP; only the credential-free tests run. See docs/RUNBOOK.md."
+          fi
+
+      # playwright.config.ts builds and starts the app itself via webServer,
+      # which also fires the contrast gate through npm's prebuild hook.
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Upload traces and videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces-${{ github.run_id }}
+          path: test-results/
+          retention-days: 14

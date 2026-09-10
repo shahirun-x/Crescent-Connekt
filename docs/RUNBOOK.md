@@ -187,6 +187,70 @@ silently when unset. If it is set, the sending domain must be verified in Resend
 with SPF and DKIM, or mail lands in spam. The `from` address is
 `noreply@crescentglobal.org`.
 
+## Running the E2E suite
+
+```bash
+npm run test:e2e          # headless
+npm run test:e2e:ui       # Playwright UI, best for debugging a failure
+npm run test:e2e:headed   # watch it drive a real browser
+```
+
+Playwright builds and starts the app itself — you do **not** need a dev server
+running, and you should not point it at one. The suite runs against a
+**production build** because route-level `robots` metadata, middleware
+redirects and ISR only behave correctly there. `npm run build` also fires the
+contrast gate first, so a failing colour pair stops the suite immediately.
+
+### Credentials
+
+Without them, ~41 tests run and ~34 **skip with a printed reason**. They do not
+silently pass. To run the full suite you need a **separate Supabase project** —
+never production:
+
+| Variable | From |
+|---|---|
+| `TEST_SUPABASE_URL` | Test project → Settings → API → Project URL |
+| `TEST_SUPABASE_ANON_KEY` | Same page → anon / public |
+| `TEST_SUPABASE_SERVICE_ROLE_KEY` | Same page → service_role |
+
+> The suite **creates and deletes real users**. `e2e/fixtures/supabase.ts`
+> refuses to run if `TEST_SUPABASE_URL` contains the production project ref, and
+> reads `TEST_*` exclusively with no fallback to the app's own variables — a
+> fallback is exactly how a suite like this ends up deleting real members.
+
+Apply the same migrations to the test project as production
+(`schema.sql` → `seed.sql` → `migration-admin.sql` → `migration-images.sql` →
+`migration-connect.sql`), or the member and admin tests will fail on missing
+tables rather than skip.
+
+Locally, export them in your shell for the run. Do not put them in `.env.local`
+— that file is read by the app, and the point of the separation is that the
+suite cannot pick up the app's credentials.
+
+### CI
+
+`.github/workflows/e2e.yml` runs on push to `main`, on PRs, and manually.
+Required **repo secrets** (Settings → Secrets and variables → Actions):
+
+- `TEST_SUPABASE_URL`
+- `TEST_SUPABASE_ANON_KEY`
+- `TEST_SUPABASE_SERVICE_ROLE_KEY`
+
+If they are unset the workflow still passes — it prints a warning annotation
+and runs the credential-free tests, so fork PRs get signal without secrets.
+
+The HTML report uploads on every run; traces and videos upload on failure.
+Download the report artifact and open `index.html`, or run
+`npx playwright show-trace <trace.zip>` for a step-by-step replay.
+
+### When a test fails
+
+1. `npm run test:e2e:ui` and re-run just that test.
+2. Accessibility failures name the axe rule and the offending selector in the
+   failure message — you should not need the report for those.
+3. Do **not** add to `KNOWN_VIOLATIONS` in `e2e/a11y.spec.ts` to make a failure
+   go away. It is empty on purpose; an entry needs a reason and a ticket.
+
 ## Password resets
 
 **Members** self-serve at `/connect/forgot-password`. Nothing to do.
