@@ -1,5 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { hasTestDb, NO_DB_REASON } from "./fixtures/supabase";
+import { createAdmin, deleteAdmin, signInAdmin } from "./fixtures/admin";
 
 /**
  * Accessibility regression suite.
@@ -188,5 +190,74 @@ test.describe("skip link", () => {
     expect(focused.text.toLowerCase()).toContain("skip");
     expect(focused.href).toBe("#main");
     await expect(page.locator("#main")).toHaveCount(1);
+  });
+});
+
+/**
+ * Modal focus management.
+ *
+ * Lives in the admin dashboard, so it needs a database. Skipped without
+ * credentials rather than silently passing.
+ */
+test.describe("admin modal focus trap", () => {
+  test.skip(!hasTestDb, NO_DB_REASON);
+
+  let admin: Awaited<ReturnType<typeof createAdmin>>;
+
+  test.beforeEach(async ({ context, baseURL }) => {
+    admin = await createAdmin();
+    await signInAdmin(context, baseURL!, admin);
+  });
+  test.afterEach(async () => {
+    await deleteAdmin(admin).catch(() => {});
+  });
+
+  test("Escape closes and focus returns to the trigger", async ({ page }) => {
+    await page.goto("/admin/events");
+
+    const trigger = page.getByRole("button", { name: /Add Event/ });
+    await trigger.click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveAttribute("aria-modal", "true");
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+
+    // Returning focus to the opener is what stops a keyboard user being
+    // dumped at the top of the document after every dialog.
+    const focusedText = await page.evaluate(
+      () => document.activeElement?.textContent?.trim() ?? ""
+    );
+    expect(focusedText).toMatch(/Add Event/);
+  });
+
+  test("Tab stays inside the dialog", async ({ page }) => {
+    await page.goto("/admin/events");
+    await page.getByRole("button", { name: /Add Event/ }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    // Tab well past the number of controls; focus must never escape.
+    for (let i = 0; i < 30; i++) {
+      await page.keyboard.press("Tab");
+      const inside = await page.evaluate(() => {
+        const dlg = document.querySelector('[role="dialog"]');
+        return !!dlg && !!document.activeElement && dlg.contains(document.activeElement);
+      });
+      expect(inside, `focus escaped the dialog after ${i + 1} tabs`).toBe(true);
+    }
+  });
+
+  test("focus moves into the dialog on open", async ({ page }) => {
+    await page.goto("/admin/events");
+    await page.getByRole("button", { name: /Add Event/ }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+
+    const inside = await page.evaluate(() => {
+      const dlg = document.querySelector('[role="dialog"]');
+      return !!dlg && !!document.activeElement && dlg.contains(document.activeElement);
+    });
+    expect(inside, "focus must move into the dialog, not stay behind it").toBe(true);
   });
 });
