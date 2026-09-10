@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import AuthShell from "@/components/connect/AuthShell";
 import GoogleButton from "@/components/connect/GoogleButton";
+import {
+  GOOGLE_AUTH_ENABLED,
+  apiErrorMessage,
+  authErrorMessage,
+} from "@/lib/auth-errors";
 
 export default function ConnectLoginPage() {
   const [email, setEmail] = useState("");
@@ -27,7 +32,11 @@ export default function ConnectLoginPage() {
       });
 
       if (authError || !data.session) {
-        setError(authError?.message ?? "Invalid email or password.");
+        setError(
+          authError
+            ? authErrorMessage(authError, "member-login")
+            : "That email and password don't match. Please check both and try again."
+        );
         setLoading(false);
         return;
       }
@@ -45,7 +54,9 @@ export default function ConnectLoginPage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error ?? "Could not start your session.");
+        setError(
+          apiErrorMessage(json, "member-login-session", "Could not start your session.")
+        );
         setLoading(false);
         return;
       }
@@ -55,8 +66,8 @@ export default function ConnectLoginPage() {
       else if (json.status === "pending") router.push("/connect/pending");
       else router.push("/connect/status");
       router.refresh();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (e) {
+      setError(authErrorMessage(e, "member-login"));
       setLoading(false);
     }
   }
@@ -77,13 +88,20 @@ export default function ConnectLoginPage() {
         </>
       }
     >
-      <GoogleButton onError={setError} />
-
-      <div className="my-5 flex items-center gap-3">
-        <span className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs uppercase tracking-wider text-slate-500">or</span>
-        <span className="h-px flex-1 bg-slate-200" />
-      </div>
+      {/* Both the button and its divider are gated — a lone "or" rule with
+          nothing above it looks like a rendering bug. */}
+      {GOOGLE_AUTH_ENABLED && (
+        <>
+          <GoogleButton onError={setError} />
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs uppercase tracking-wider text-slate-500">
+              or
+            </span>
+            <span className="h-px flex-1 bg-slate-200" />
+          </div>
+        </>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block text-sm font-medium text-slate-700">

@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
+import { authErrorMessage } from "@/lib/auth-errors";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,11 @@ export default function AdminLoginPage() {
         await supabase.auth.signInWithPassword({ email, password });
 
       if (authError || !data.session) {
-        setError(authError?.message ?? "Invalid credentials.");
+        setError(
+          authError
+            ? authErrorMessage(authError, "admin-login")
+            : "That email and password don't match. Please check both and try again."
+        );
         setLoading(false);
         return;
       }
@@ -33,8 +38,8 @@ export default function AdminLoginPage() {
       document.cookie = `sb-refresh-token=${data.session.refresh_token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
 
       router.push("/admin");
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (e) {
+      setError(authErrorMessage(e, "admin-login"));
       setLoading(false);
     }
   }

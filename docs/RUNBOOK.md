@@ -38,6 +38,35 @@ Only needed when standing the backend up from scratch. The live project
 | `REVALIDATION_SECRET` | Secret | Any random string |
 | `NEXT_PUBLIC_SITE_URL` | Config | Only after a custom domain |
 | `RESEND_API_KEY` | Secret | Optional; email skipped silently if unset |
+| `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED` | Config | Optional; defaults to `false`. See below |
+
+### `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED`
+
+Controls whether the "Continue with Google" button (and its "or" divider)
+renders on `/connect/login` and `/connect/signup`.
+
+**Leave it unset or `false` until the provider is configured in Supabase.**
+While Google is disabled there, the button renders but every click returns:
+
+```
+{"code":400,"error_code":"validation_failed",
+ "msg":"Unsupported provider: provider is not enabled"}
+```
+
+To turn it on:
+
+1. Supabase → Authentication → Providers → **Google** → enable, with client ID
+   and secret from Google Cloud.
+2. Add `https://<your-domain>/connect/callback` as an authorised redirect URI
+   in **both** Supabase and the Google Cloud OAuth client.
+3. Set `NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true` in Vercel.
+4. **Redeploy.** `NEXT_PUBLIC_*` values are inlined at build time, so changing
+   the variable alone does nothing until the next build.
+5. Sign in with Google once, end to end, before telling anyone it works.
+
+Only the literal string `"true"` enables it — `1`, `yes` and `TRUE` are all
+treated as off, deliberately, so a typo fails closed rather than shipping a
+broken button.
 
 `NEXT_PUBLIC_*` must be type **Config**. Vercel warns that public prefixes are
 browser-visible — that is correct and intended. The anon key is designed to be
@@ -144,6 +173,14 @@ or wrong in Vercel. Fix it, then redeploy — env vars are baked in at build tim
 **Redirect loop on `/admin/login`.** Middleware cannot verify the token. Check
 both `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, then confirm the
 account has a row in `public.admins`.
+
+**Raw JSON or an error code shown on a sign-in form.** Should not happen: every
+auth surface routes failures through `authErrorMessage()` / `apiErrorMessage()`
+in `lib/auth-errors.ts`, which map to plain sentences and log the full error to
+the console. If raw output appears, a new call site is setting `error` directly
+from a Supabase object — search for `.message` in the auth pages. To diagnose a
+friendly message, open the browser console and look for `[auth:<context>]`,
+which carries the untouched error.
 
 **Approval emails not arriving.** `RESEND_API_KEY` is optional and skipped
 silently when unset. If it is set, the sending domain must be verified in Resend

@@ -1,7 +1,18 @@
 "use client";
 
 import { getBrowserSupabase } from "@/lib/supabase-browser";
+import { GOOGLE_AUTH_ENABLED, authErrorMessage } from "@/lib/auth-errors";
 
+/**
+ * Google OAuth button.
+ *
+ * Renders NOTHING unless NEXT_PUBLIC_GOOGLE_AUTH_ENABLED is "true". The
+ * provider is not enabled in Supabase, so this button previously offered a
+ * route that always failed with "Unsupported provider: provider is not
+ * enabled". Gating here rather than at each call site means a single flag
+ * controls every surface, and the divider beside it is gated on the same
+ * constant so a lone "or" rule cannot be left behind.
+ */
 export default function GoogleButton({
   label = "Continue with Google",
   onError,
@@ -9,6 +20,8 @@ export default function GoogleButton({
   label?: string;
   onError?: (msg: string) => void;
 }) {
+  if (!GOOGLE_AUTH_ENABLED) return null;
+
   async function signIn() {
     try {
       const supabase = getBrowserSupabase();
@@ -18,9 +31,9 @@ export default function GoogleButton({
           redirectTo: `${window.location.origin}/connect/callback`,
         },
       });
-      if (error) onError?.(error.message);
-    } catch {
-      onError?.("Could not start Google sign-in.");
+      if (error) onError?.(authErrorMessage(error, "google-oauth"));
+    } catch (e) {
+      onError?.(authErrorMessage(e, "google-oauth"));
     }
   }
 

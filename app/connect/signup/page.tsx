@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
 import AuthShell from "@/components/connect/AuthShell";
 import GoogleButton from "@/components/connect/GoogleButton";
+import {
+  GOOGLE_AUTH_ENABLED,
+  apiErrorMessage,
+  authErrorMessage,
+} from "@/lib/auth-errors";
 
 export default function ConnectSignupPage() {
   const [email, setEmail] = useState("");
@@ -30,7 +35,13 @@ export default function ConnectSignupPage() {
       const guard = await fetch("/api/connect/signup-guard", { method: "POST" });
       if (!guard.ok) {
         const g = await guard.json().catch(() => ({}));
-        setError(g.error ?? "Too many sign-up attempts. Please try again later.");
+        setError(
+          apiErrorMessage(
+            g,
+            "signup-guard",
+            "Too many sign-up attempts. Please try again later."
+          )
+        );
         setLoading(false);
         return;
       }
@@ -45,7 +56,7 @@ export default function ConnectSignupPage() {
       });
 
       if (authError) {
-        setError(authError.message);
+        setError(authErrorMessage(authError, "member-signup"));
         setLoading(false);
         return;
       }
@@ -67,8 +78,8 @@ export default function ConnectSignupPage() {
       });
       router.push("/connect/setup");
       router.refresh();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (e) {
+      setError(authErrorMessage(e, "member-signup"));
       setLoading(false);
     }
   }
@@ -117,13 +128,19 @@ export default function ConnectSignupPage() {
         </>
       }
     >
-      <GoogleButton label="Sign up with Google" onError={setError} />
-
-      <div className="my-5 flex items-center gap-3">
-        <span className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs uppercase tracking-wider text-slate-500">or</span>
-        <span className="h-px flex-1 bg-slate-200" />
-      </div>
+      {/* Button and divider gated together — see the login page. */}
+      {GOOGLE_AUTH_ENABLED && (
+        <>
+          <GoogleButton label="Sign up with Google" onError={setError} />
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs uppercase tracking-wider text-slate-500">
+              or
+            </span>
+            <span className="h-px flex-1 bg-slate-200" />
+          </div>
+        </>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block text-sm font-medium text-slate-700">

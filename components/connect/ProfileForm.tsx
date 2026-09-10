@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiErrorMessage, authErrorMessage } from "@/lib/auth-errors";
 import ImageUpload from "@/components/admin/ImageUpload";
 import {
   MEMBER_ROLES,
@@ -121,15 +122,17 @@ export default function ProfileForm({
       const json = await res.json();
 
       if (!res.ok) {
-        setError(json.error ?? "Could not save your profile.");
+        setError(
+          apiErrorMessage(json, "profile-save", "Could not save your profile.")
+        );
         setSaving(false);
         return;
       }
 
       router.push(redirectTo);
       router.refresh();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (e) {
+      setError(authErrorMessage(e, "profile-save"));
       setSaving(false);
     }
   }

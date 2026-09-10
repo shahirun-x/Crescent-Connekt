@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getBrowserSupabase } from "@/lib/supabase-browser";
+import { apiErrorMessage, authErrorMessage } from "@/lib/auth-errors";
 import AuthShell from "@/components/connect/AuthShell";
 
 /**
@@ -28,7 +29,9 @@ export default function ConnectCallbackPage() {
 
         if (sessionError || !data.session) {
           setError(
-            "We couldn't complete your sign-in. The link may have expired — please try again."
+            sessionError
+              ? authErrorMessage(sessionError, "oauth-callback")
+              : "We couldn't complete your sign-in. The link may have expired or already been used — please request a new one."
           );
           return;
         }
@@ -46,7 +49,9 @@ export default function ConnectCallbackPage() {
         if (cancelled) return;
 
         if (!res.ok) {
-          setError(json.error ?? "Could not start your session.");
+          setError(
+            apiErrorMessage(json, "oauth-callback-session", "Could not start your session.")
+          );
           return;
         }
 
@@ -54,8 +59,8 @@ export default function ConnectCallbackPage() {
         else if (json.status === "approved") router.replace("/connect/directory");
         else if (json.status === "pending") router.replace("/connect/pending");
         else router.replace("/connect/status");
-      } catch {
-        if (!cancelled) setError("Something went wrong completing your sign-in.");
+      } catch (e) {
+        if (!cancelled) setError(authErrorMessage(e, "oauth-callback"));
       }
     })();
 
