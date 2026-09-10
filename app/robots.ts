@@ -22,11 +22,14 @@ export default function robots(): MetadataRoute.Robots {
         "/connect/setup",
         "/connect/pending",
         "/connect/status",
-        // Auth entry points. /connect/callback especially — Supabase returns
-        // the session in the URL fragment, so that URL must never be indexed.
+        // Auth entry points. /connect/callback and /connect/reset-password
+        // especially — Supabase returns the session or recovery token in the
+        // URL fragment, so those URLs must never be indexed.
         "/connect/login",
         "/connect/signup",
         "/connect/callback",
+        "/connect/forgot-password",
+        "/connect/reset-password",
       ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,

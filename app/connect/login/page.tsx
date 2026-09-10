@@ -116,9 +116,23 @@ export default function ConnectLoginPage() {
           />
         </label>
 
-        <label className="block text-sm font-medium text-slate-700">
-          Password
+        <div>
+          <div className="flex items-baseline justify-between gap-3">
+            <label
+              htmlFor="member-password"
+              className="block text-sm font-medium text-slate-700"
+            >
+              Password
+            </label>
+            <Link
+              href="/connect/forgot-password"
+              className="text-xs font-semibold text-crescent-700 hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
           <input
+            id="member-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -126,7 +140,7 @@ export default function ConnectLoginPage() {
             autoComplete="current-password"
             className="mt-1 w-full rounded-lg border border-control px-3 py-2 text-sm outline-none focus:border-crescent-400"
           />
-        </label>
+        </div>
 
         {error && (
           <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">

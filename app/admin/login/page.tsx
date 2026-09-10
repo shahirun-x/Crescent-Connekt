@@ -112,7 +112,19 @@ export default function AdminLoginPage() {
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-slate-500">
+        {/*
+          No self-service reset here, deliberately — see docs/DECISIONS.md #29.
+          Admin accounts are created by hand in Supabase and there are one or
+          two of them; a public reset endpoint for the highest-privilege
+          accounts would add attack surface to save nobody any time. Saying so
+          is better than leaving the user guessing.
+        */}
+        <p className="mt-4 text-center text-xs leading-relaxed text-slate-500">
+          Lost your password? Reset it from the Supabase dashboard —
+          Authentication → Users.
+        </p>
+
+        <p className="mt-3 text-center text-xs text-slate-500">
           <Link href="/" className="hover:text-slate-600">
             ← Back to site
           </Link>

@@ -187,3 +187,32 @@ corollary is that **a new colour pair must be added to `PAIRS` to be covered** �
 the gate proves the listed pairs pass, not that every pair on the site is
 listed. Adding a pairing to the design and not to the script is the one way to
 get an unchecked colour into production.
+
+**29. Admins reset passwords through the Supabase dashboard, not a self-service
+flow.**
+Members get a full reset flow at `/connect/forgot-password`. Admins do not, and
+that is a decision rather than an omission.
+
+Three reasons:
+
+- **Population of one or two.** Admin accounts are created by hand in Supabase
+  (Authentication → Users → Add user); there is no admin signup. A self-service
+  flow would save one person one dashboard visit, rarely.
+- **It adds public attack surface to the highest-privilege accounts.** A reset
+  endpoint is an unauthenticated way to make the system email a link that grants
+  access. For a member that risk is proportionate. For an account that can edit
+  every institution and approve every member, it is not.
+- **The member flow would not work for an admin anyway.** The two surfaces use
+  separate cookies (`cg-member-token` vs `sb-access-token`, DECISIONS #16). A
+  recovery link redirecting to `/connect/reset-password` establishes a MEMBER
+  session; the admin would change their password and still not be signed into
+  `/admin`. Making it work means a second parallel reset route — more code and
+  more surface for the same one-or-two people.
+
+`/admin/login` says so on the page, so an admin who forgets is told where to go
+instead of hunting for a link that does not exist. The dashboard procedure is in
+`docs/RUNBOOK.md`.
+
+Revisit if the admin population grows beyond a handful, or if admins stop having
+Supabase dashboard access — at that point a dedicated admin reset route, with
+its own cookie handling, becomes the smaller risk.

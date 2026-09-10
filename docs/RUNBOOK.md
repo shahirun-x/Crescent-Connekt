@@ -187,6 +187,42 @@ silently when unset. If it is set, the sending domain must be verified in Resend
 with SPF and DKIM, or mail lands in spam. The `from` address is
 `noreply@crescentglobal.org`.
 
+## Password resets
+
+**Members** self-serve at `/connect/forgot-password`. Nothing to do.
+
+**Admins do not** — that is deliberate, see `docs/DECISIONS.md` #29. To reset an
+admin password:
+
+1. Supabase → **Authentication → Users**.
+2. Find the admin, open the row menu, **Send password recovery** (or **Reset
+   password** on older dashboards).
+3. Or set a password directly from the same menu and hand it over out of band.
+
+`/admin/login` tells the admin this on the page, so nobody hunts for a link that
+does not exist.
+
+### Auth email templates still need pasting in
+
+`supabase/email-templates/` has branded replacements for the default
+Supabase-branded emails. **They are not applied automatically** — nothing in the
+app can install them. Paste each into Supabase → Authentication → Emails:
+
+| File | Template |
+|---|---|
+| `confirm-signup.html` | Confirm signup |
+| `reset-password.html` | **Reset password** — needed by the member reset flow |
+| `magic-link.html` | Magic Link (unused unless passwordless is enabled) |
+
+`reset-password.html` was written before the reset flow existed and has been
+re-checked against it: it uses `{{ .ConfirmationURL }}`, `{{ .Email }}` and
+`{{ .SiteURL }}`, which is exactly what the recovery template supplies.
+`{{ .ConfirmationURL }}` carries the `redirectTo` the app passes, so the link
+lands on `/connect/reset-password` without the template needing to know the path.
+
+Until it is pasted in, the member reset flow still works — the email is just
+Supabase's default styling rather than Crescent's.
+
 ## Rotating the service-role key
 
 Supabase → Settings → API → roll the key, update `SUPABASE_SERVICE_ROLE_KEY` in
