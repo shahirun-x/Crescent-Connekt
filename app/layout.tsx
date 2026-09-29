@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Newsreader, Figtree } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import MotionProvider from "@/components/MotionProvider";
@@ -7,6 +8,42 @@ import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { site, SITE_URL } from "@/lib/site";
+
+/**
+ * Typefaces.
+ *
+ * `next/font` downloads and self-hosts these at BUILD time — no runtime
+ * request to Google, no third-party connection, and `display: "swap"` with a
+ * matched fallback means no layout shift. It is part of Next, so this adds no
+ * dependency.
+ *
+ * Newsreader (display) is a text-first serif drawn for screen reading: real
+ * contrast and a sharp axis at 60px, still comfortable at 20px in a pull
+ * quote. It carries institutional weight without the stiffness of a
+ * transitional serif like Playfair, which collapses at body sizes.
+ *
+ * Figtree (text/UI) is a geometric humanist sans with open apertures and a
+ * tall x-height — legible at 13px metadata, neutral enough at 18px not to
+ * compete with the serif. Deliberately not Inter: Inter is the default of
+ * every generated site, and the brief was to stop reading as one.
+ *
+ * Both expose a variable weight axis, so one file per family covers the whole
+ * scale.
+ */
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-newsreader",
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-figtree",
+  weight: ["400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -56,8 +93,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="flex min-h-screen flex-col bg-white text-slate-800">
+    <html lang="en" className={`${newsreader.variable} ${figtree.variable}`}>
+      <body className="flex min-h-screen flex-col bg-paper text-ink-700">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-crescent-700 focus:px-4 focus:py-2 focus:text-white"

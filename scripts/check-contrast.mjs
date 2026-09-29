@@ -1,5 +1,5 @@
 /**
- * WCAG contrast checker for the Crescent Global palette.
+ * WCAG contrast checker for the Crescent Connekt palette.
  *
  *   node scripts/check-contrast.mjs
  *
@@ -138,6 +138,35 @@ const PAIRS = [
   ["calendar muted on slate-50", "#f8fafc", "#475569", 4.5],
   ["slate-500 on white (body muted)", WHITE, "#62748e", 4.5],
 
+  // --- Ink on paper: the editorial ground of the homepage redesign -------
+  //
+  // `ink` is the type ramp, `paper` the warm ground that replaced white.
+  // 900/700/500 carry text and are checked at 4.5:1 on every ground the
+  // redesign actually puts them on. 400 and below are rules and hairlines —
+  // decorative, exempt under 1.4.11 (DECISIONS #27) — except ink-400 when it
+  // bounds a control, which is listed in the non-text block below.
+  ["ink-900 on paper", "paper", "ink-900", 4.5],
+  ["ink-700 on paper", "paper", "ink-700", 4.5],
+  ["ink-500 on paper", "paper", "ink-500", 4.5],
+  ["ink-900 on paper-deep", "paper-deep", "ink-900", 4.5],
+  ["ink-700 on paper-deep", "paper-deep", "ink-700", 4.5],
+  ["ink-500 on paper-deep", "paper-deep", "ink-500", 4.5],
+  ["ink-900 on white", WHITE, "ink-900", 4.5],
+  ["ink-700 on white", WHITE, "ink-700", 4.5],
+  ["ink-500 on white", WHITE, "ink-500", 4.5],
+
+  // The rare red accent: an underline, a single emphasised word, a short
+  // rule. accent-600 is the lightest red that clears AA as TEXT on paper.
+  ["accent-600 on paper", "paper", "accent-600", 4.5],
+  ["accent-700 on paper", "paper", "accent-700", 4.5],
+  ["accent-600 on paper-deep", "paper-deep", "accent-600", 4.5],
+
+  // --- The one dark navy section (heritage band) -------------------------
+  ["paper on crescent-950 (heritage body)", "crescent-950", "paper", 4.5],
+  ["ink-300 on crescent-950 (heritage meta)", "crescent-950", "ink-300", 4.5],
+  ["crescent-200 on crescent-950 (wordmark)", "crescent-950", "crescent-200", 4.5],
+  ["accent-300 on crescent-950 (dark accent)", "crescent-950", "accent-300", 4.5],
+
   // --- Non-text: UI component boundaries (WCAG 1.4.11, 3:1) --------------
   //
   // Only boundaries needed to IDENTIFY a control are in scope. A card outline
@@ -151,6 +180,11 @@ const PAIRS = [
   ["focus ring on sand-100", "sand-100", "crescent-500", 3.0],
   ["focus ring on sand-50", "sand-50", "crescent-500", 3.0],
   ["white focus ring on crescent-900", "crescent-900", WHITE, 3.0],
+  ["focus ring on paper", "paper", "crescent-500", 3.0],
+  ["focus ring on paper-deep", "paper-deep", "crescent-500", 3.0],
+  ["input border on paper", "paper", "border-interactive", 3.0],
+  ["input border on paper-deep", "paper-deep", "border-interactive", 3.0],
+  ["accent rule on paper", "paper", "accent-500", 3.0],
 ];
 
 let failures = 0;

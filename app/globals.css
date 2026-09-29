@@ -83,8 +83,38 @@
      the slate-300 it replaces was 1.48:1. */
   --color-control: #7b8697;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  /* ---------------------------------------------------------------------
+   * Ink and paper — the editorial ground the redesign is built on.
+   *
+   * Not a second navy: `ink` IS the crescent navy, exposed under a name that
+   * says what it is for (type, rules, hairlines) so a component reaching for
+   * text colour does not have to pick a number off the brand ramp. Values
+   * 900/700/500 are the three text weights previously living only as
+   * --text-primary / -secondary / -muted, all AA-verified on both grounds.
+   * 400 and below are NON-TEXT: borders, rules, dividers.
+   * ------------------------------------------------------------------- */
+  --color-ink-900: #0f2140; /* headings           15.8:1 on paper */
+  --color-ink-700: #44506a; /* body                8.4:1 on paper */
+  --color-ink-500: #5c6880; /* metadata            5.9:1 on paper */
+  --color-ink-400: #7b8697; /* control boundaries  3.6:1 — non-text only */
+  --color-ink-300: #b9c0cd; /* strong rules        non-text */
+  --color-ink-200: #dcdfe5; /* hairlines           non-text */
+  --color-ink-100: #ebedf1; /* faintest divider    non-text */
+
+  /* Warm paper. The page is never pure white — white is what a generated
+     site defaults to, and it makes photography look pasted on. */
+  --color-paper: #fdfbf7;
+  --color-paper-deep: #f5efe3; /* the one warmer band, used sparingly */
+
+  /* ---------------------------------------------------------------------
+   * Typefaces. Wired in app/layout.tsx via next/font (self-hosted at build).
+   * The fallback stacks are metric-ish neighbours so the swap is quiet.
+   * ------------------------------------------------------------------- */
+  --font-display: var(--font-newsreader), ui-serif, Georgia, Cambria,
+    "Times New Roman", serif;
+  --font-serif: var(--font-display);
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --radius-card: 1.125rem;
 
@@ -234,54 +264,109 @@ summary:focus-visible {
 /* -----------------------------------------------------------------------
  * Type scale.
  *
- * A named scale so headings are consistent across pages instead of each one
- * improvising a size. Uses clamp() so the step between breakpoints is
- * continuous — no jump at a media query — and caps at a size that still
- * looks composed rather than shouty on a wide screen.
+ * A scale with real RANGE is what separates an editorial page from a
+ * generated one. The old scale ran 1.125rem to 4rem in near-even steps, all
+ * in one bold sans — every heading looked like every other heading. This one
+ * spans 0.75rem metadata to 5.5rem display, and splits the work:
+ *
+ *   SERIF (Newsreader)  display, headings, pull quotes, dates — voice
+ *   SANS  (Figtree)     body, nav, buttons, labels — structure
+ *
+ * Headline weights are 400/500, not 700/800. At 80px a serif at 400 already
+ * has all the presence it needs; bolding it is how a headline starts
+ * shouting. Negative tracking only above ~2rem, where it actually helps.
  * --------------------------------------------------------------------- */
 .type-display {
-  font-size: clamp(2.25rem, 1.55rem + 3.1vw, 4rem);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 1.6rem + 5.1vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.021em;
+  font-weight: 400;
 }
 .type-h1 {
-  font-size: clamp(1.875rem, 1.4rem + 2.1vw, 3rem);
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(2.125rem, 1.5rem + 2.8vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  font-weight: 400;
 }
 .type-h2 {
-  font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.125rem);
-  line-height: 1.18;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.4rem + 1.55vw, 2.625rem);
+  line-height: 1.14;
+  letter-spacing: -0.014em;
+  font-weight: 400;
 }
 .type-h3 {
-  font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.12rem + 0.6vw, 1.625rem);
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+  font-weight: 500;
 }
+
+/* A place name, an event day number — display type used as a label rather
+   than as a sentence. Larger than a heading of the same rank would be. */
+.type-place {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.6rem + 2.9vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.024em;
+  font-weight: 400;
+}
+
+/* The opening-statement voice: serif at near-heading size, but set as prose
+   with a reading measure. Used once or twice a page, never as a subheading. */
+.type-statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+  line-height: 1.45;
+  letter-spacing: -0.008em;
+  font-weight: 400;
+  max-width: 34ch;
+}
+
+/* Body. 17px rising to 18px, at a 66-character measure — the range the brief
+   asked for, and the range prose is actually comfortable in. */
+.type-body {
+  font-size: clamp(1.0625rem, 1.02rem + 0.14vw, 1.125rem);
+  line-height: 1.66;
+  max-width: 66ch;
+}
+.type-lead {
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
+  line-height: 1.58;
+  max-width: 60ch;
+}
+
+/* Metadata: genuinely small, and the only place tracking is opened up. A
+   founding year, a city, an institution name under an event title. */
+.type-meta {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * BANNED ON THE HOMEPAGE.
+ *
+ * A small uppercase tracked label above every heading is the clearest single
+ * tell of a generated page, and this site had one on nearly every section.
+ * The homepage redesign removed all of them; if a section there needs a
+ * kicker, it gets a real sentence or a short rule, never a 12px caps label.
+ *
+ * The class survives only because /institutions, /news and /contact still
+ * use it and were not in the redesign's scope. Do not reintroduce it to `/`,
+ * and delete it outright when those pages are reworked.
+ */
 .type-eyebrow {
   font-size: 0.75rem;
   line-height: 1;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-
-/* Body copy: ~68 characters is the readable measure. Applied via a class so
-   prose blocks do not run the full width of a 1280px container. */
-.type-body {
-  font-size: 1rem;
-  line-height: 1.75;
-  max-width: 68ch;
-}
-.type-lead {
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
-  line-height: 1.7;
-  max-width: 62ch;
 }
 
 /* Hero Ken Burns — a slow drift so the image is never quite still. Long and
