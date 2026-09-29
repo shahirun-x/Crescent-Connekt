@@ -440,3 +440,64 @@ a[role="button"]:active {
 }
 
 
+
+/* -----------------------------------------------------------------------
+ * ?shots=1 — the photographer's briefing overlay.
+ *
+ * The briefs are server-rendered inside every image frame and hidden here,
+ * so turning them on is one attribute on <html> (set by ShotsMode) and no
+ * extra JavaScript per slot. They are aria-hidden as well as display:none,
+ * so they are invisible to assistive technology in both states.
+ * --------------------------------------------------------------------- */
+.shot-brief {
+  display: none;
+}
+[data-shots="1"] .shot-brief {
+  display: block;
+}
+
+/* -----------------------------------------------------------------------
+ * Image frames.
+ *
+ * Hover scales the PHOTOGRAPH inside a fixed frame. It does not lift the
+ * container: a card rising on a shadow is the generated-page tell, and it
+ * also moves the thing the reader is looking at. The frame stays put and the
+ * picture breathes. Collapsed to nothing by the global reduced-motion rule.
+ * --------------------------------------------------------------------- */
+.frame-zoom img {
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .frame-zoom:hover img {
+    transform: scale(1.045);
+  }
+}
+
+/* A directional scrim for the hero: dark at the bottom-left where the
+   headline sits, clear at the top-right. A flat overlay would dull the whole
+   photograph to protect one corner of text. */
+.hero-scrim {
+  background:
+    linear-gradient(to top, rgba(9, 20, 40, 0.82) 0%, rgba(9, 20, 40, 0.42) 34%,
+      rgba(9, 20, 40, 0.06) 66%, rgba(9, 20, 40, 0) 100%),
+    linear-gradient(to right, rgba(9, 20, 40, 0.46) 0%, rgba(9, 20, 40, 0.1) 46%,
+      rgba(9, 20, 40, 0) 76%);
+}
+
+/* An underline that belongs to the type rather than sitting under a button.
+   The red accent appears here and in a few short rules — nowhere else. */
+.link-rule {
+  /* inline-flex + min-height so a standalone call to action clears the 44px
+     touch target. These are not inline links inside a sentence, which WCAG
+     2.5.8 exempts — they sit alone at the end of a section and get tapped. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-bottom: 2px solid var(--color-accent-500);
+  padding-bottom: 0.18rem;
+  transition: color 240ms ease, border-color 240ms ease;
+}
+.link-rule:hover {
+  color: var(--color-accent-700);
+  border-color: var(--color-accent-700);
+}

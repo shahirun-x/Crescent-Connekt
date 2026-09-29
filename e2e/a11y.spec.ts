@@ -120,12 +120,21 @@ test.describe("calendar keyboard grid", () => {
     await page.keyboard.press("ArrowLeft");
     expect(await focusedLabel(page), "ArrowLeft should return").toBe(start);
 
+    // ArrowDown can cross a month boundary — from the last week of a month it
+    // always does. That path changes the anchor, re-renders the grid and
+    // restores focus in an effect, so focus is NOT settled on the next tick.
+    // Reading it once passed for three weeks out of four and failed in the
+    // fourth; polling covers the cross-month path properly rather than
+    // avoiding it.
     await page.keyboard.press("ArrowDown");
-    const down = await focusedLabel(page);
-    expect(down, "ArrowDown should move a week").not.toBe(start);
+    await expect
+      .poll(() => focusedLabel(page), { message: "ArrowDown should move a week" })
+      .not.toBe(start);
 
     await page.keyboard.press("ArrowUp");
-    expect(await focusedLabel(page), "ArrowUp should return").toBe(start);
+    await expect
+      .poll(() => focusedLabel(page), { message: "ArrowUp should return" })
+      .toBe(start);
   });
 
   test("Home and End jump to the ends of the week", async ({ page }) => {

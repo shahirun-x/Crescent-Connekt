@@ -47,10 +47,15 @@ export default defineConfig({
     },
     {
       name: "mobile-chromium",
-      // iPhone 13 is 390x844. Using Playwright's descriptor keeps the UA and
-      // touch flags consistent with a real device, which matters for the
+      // iPhone 13 is 390x844. Using Playwright's descriptor keeps the viewport,
+      // UA and touch flags consistent with a real device, which matters for the
       // pointer:coarse rules and the calendar's touch paths.
-      use: { ...devices["iPhone 13"] },
+      //
+      // `browserName` is overridden on purpose. The iPhone descriptor carries
+      // `defaultBrowserType: "webkit"`, so without this the project named
+      // "mobile-chromium" quietly launched WebKit — and failed every test with
+      // "Executable doesn't exist" on any machine that had not installed it.
+      use: { ...devices["iPhone 13"], browserName: "chromium" },
     },
   ],
 

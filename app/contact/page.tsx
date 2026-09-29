@@ -61,10 +61,19 @@ export default function ContactPage() {
             ) : (
               <div
                 aria-hidden="true"
-                className={`absolute inset-0 ${CONTACT_VISUAL.gradient}`}
+                className={`absolute inset-0 ${CONTACT_VISUAL.tone}`}
               />
             )}
-            <p className="absolute inset-x-0 bottom-0 p-5 text-sm font-semibold leading-snug text-white">
+            {/*
+              The caption colour follows the panel. CONTACT_VISUAL used to be
+              a dark navy gradient, so this was white; it is now a light tone
+              block, and white on it measured 1.9:1. axe caught it.
+            */}
+            <p
+              className={`absolute inset-x-0 bottom-0 p-5 text-sm font-semibold leading-snug ${
+                CONTACT_VISUAL.src ? "text-white" : "text-ink-900"
+              }`}
+            >
               Vandalur, Chennai
             </p>
           </div>

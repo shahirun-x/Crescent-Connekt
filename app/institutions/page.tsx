@@ -52,7 +52,7 @@ export default async function InstitutionsPage() {
         ) : (
           <div
             aria-hidden="true"
-            className={`absolute inset-0 -z-10 ${BANNER_INSTITUTIONS.gradient}`}
+            className={`absolute inset-0 -z-10 ${BANNER_INSTITUTIONS.tone}`}
           />
         )}
         <div

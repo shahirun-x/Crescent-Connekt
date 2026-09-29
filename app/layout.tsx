@@ -6,6 +6,7 @@ import MotionProvider from "@/components/MotionProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
+import ShotsMode from "@/components/ShotsMode";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { site, SITE_URL } from "@/lib/site";
 
@@ -110,6 +111,8 @@ export default function RootLayout({
           </main>
           <Footer />
         </MotionProvider>
+        {/* ?shots=1 — reveals the photographer's brief on every image slot. */}
+        <ShotsMode />
         <Analytics />
       </body>
     </html>

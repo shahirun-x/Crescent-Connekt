@@ -61,22 +61,37 @@ function useRovingGrid(
   const refs = useRef(new Map<string, HTMLButtonElement>());
   const pendingFocus = useRef<string | null>(null);
 
+  /**
+   * Register a day button, and claim any focus that was waiting for it.
+   *
+   * Focus restoration happens HERE rather than in an effect keyed on `days`,
+   * and that is the whole point of this callback.
+   *
+   * The grid body is wrapped in `<AnimatePresence mode="wait">`. On a month
+   * change the outgoing grid stays mounted for its exit animation and the new
+   * one is not mounted until that finishes — roughly 240ms later. An effect
+   * keyed on `days` runs long before that, finds nothing in `refs` for the day
+   * it wants, and never runs again, because `days` does not change a second
+   * time. The old buttons unmount, focus falls to <body>, and a keyboard user
+   * who arrows off the end of a month is dumped out of the calendar with no
+   * way back in except Tab.
+   *
+   * A ref callback fires during the commit that mounts the new button, so it
+   * cannot be early. `e2e/a11y.spec.ts` covers the cross-month path.
+   */
   const register = useCallback((iso: string, el: HTMLButtonElement | null) => {
-    if (el) refs.current.set(iso, el);
-    else refs.current.delete(iso);
-  }, []);
-
-  // After the month changes, focus the day we navigated to once it exists.
-  useEffect(() => {
-    const want = pendingFocus.current;
-    if (!want) return;
-    const el = refs.current.get(want);
-    if (el) {
-      el.focus();
-      setFocusedIso(want);
-      pendingFocus.current = null;
+    if (!el) {
+      refs.current.delete(iso);
+      return;
     }
-  }, [days]);
+    refs.current.set(iso, el);
+
+    if (pendingFocus.current === iso) {
+      pendingFocus.current = null;
+      el.focus();
+      setFocusedIso(iso);
+    }
+  }, []);
 
   const moveTo = useCallback(
     (target: Date) => {

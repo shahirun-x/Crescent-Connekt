@@ -166,6 +166,10 @@ const PAIRS = [
   ["ink-300 on crescent-950 (heritage meta)", "crescent-950", "ink-300", 4.5],
   ["crescent-200 on crescent-950 (wordmark)", "crescent-950", "crescent-200", 4.5],
   ["accent-300 on crescent-950 (dark accent)", "crescent-950", "accent-300", 4.5],
+  ["crescent-100 body on crescent-950 (heritage)", "crescent-950", "crescent-100", 4.5],
+  ["accent-400 link on crescent-950 (heritage)", "crescent-950", "accent-400", 4.5],
+  ["crescent-300 label on crescent-950 (footer)", "crescent-950", "crescent-300", 4.5],
+  ["crescent-200 links on crescent-950 (footer)", "crescent-950", "crescent-200", 4.5],
 
   // --- Non-text: UI component boundaries (WCAG 1.4.11, 3:1) --------------
   //
