@@ -358,7 +358,7 @@ function EmptyState({ tab }: { tab: MemberStatus }) {
   const copy: Record<MemberStatus, { title: string; body: string }> = {
     pending: {
       title: "No applications waiting",
-      body: "New Crescent Connect profiles will appear here for review as people sign up.",
+      body: "New Member Network profiles will appear here for review as people sign up.",
     },
     approved: {
       title: "No approved members yet",

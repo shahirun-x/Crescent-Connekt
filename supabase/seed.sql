@@ -1,4 +1,4 @@
--- Crescent Global — seed data (mirrors lib/seed.ts)
+-- Crescent Connekt — seed data (mirrors lib/seed.ts)
 -- Run after schema.sql. Safe to re-run: uses upserts / delete-then-insert.
 
 -- Institutions -------------------------------------------------------------
@@ -40,7 +40,7 @@ insert into public.events
   (id, title, date_start, date_end, institution_id, category, location, description, is_featured)
 values
   ('evt-founders-day-2026','Crescent Founders'' Day','2026-09-05',null,'bsa-crescent-institute','University','Vandalur Campus, Chennai','Annual commemoration of the founding of the Crescent movement.',true),
-  ('evt-alumni-global-meet-2026','Crescent Global Alumni Meet','2026-09-20',null,null,'Alumni','Chennai + Online','A worldwide gathering of Crescent alumni to connect chapters and mentor students.',true),
+  ('evt-alumni-global-meet-2026','Crescent Alumni Meet','2026-09-20',null,null,'Alumni','Chennai + Online','A worldwide gathering of Crescent alumni to connect chapters, mentor students and grow the Member Network.',true),
   ('evt-inter-school-sports-2026','Inter-Crescent Sports Championship','2026-10-10','2026-10-12','crescent-school-vandalur','Sports','Vandalur Campus, Chennai','Athletics, football and kabaddi across every Crescent school.',false),
   ('evt-health-camp-kilakarai-2026','Free Community Health Camp','2026-09-14',null,'yousuf-zulaikha-hospital','Healthcare','Kilakarai, Ramanathapuram','General medicine, eye and dental screening for local families.',false),
   ('evt-research-conclave-2026','Crescent Research & Innovation Conclave','2026-11-03','2026-11-04','crescent-innovation-incubation-centre','Conferences','Vandalur Campus, Chennai','Startup showcase, research papers and industry mentoring.',true),
@@ -55,9 +55,9 @@ delete from public.news where id like 'news-%';
 insert into public.news
   (id, title, summary, content, institution_id, published_at)
 values
-  ('news-cgom-launch','Crescent Global Outreach Mission launches unified portal','A new digital portal will act as a glossary, guide and coordination layer across every institution.','The Crescent Global Outreach Mission (CGOM) has launched Crescent Global, a portal that supplements the individual websites of institutions across the network.',null,'2026-08-20'),
+  ('news-cgom-launch','Crescent Connekt opens a shared portal for the network','One calendar, one news stream and one directory across all sixteen institutions of the Crescent family.','Crescent Connekt is now live: a platform that supplements — but never replaces — the individual websites of the sixteen institutions across Chennai, Kilakarai, Madurai and Nagore.',null,'2026-08-20'),
   ('news-crescent-institute-ranking','Crescent Institute climbs national research rankings','Sustained investment in laboratories and doctoral programmes lifts research output for a third year.','The B.S. Abdur Rahman Crescent Institute reported growth in funded research projects and publications, with new centres in renewable energy and data science.','bsa-crescent-institute','2026-08-12'),
   ('news-tbak-naac','TBAK College for Women completes accreditation review','The Kilakarai college has submitted its self-study report ahead of a peer-team visit.','Thassim Beevi Abdul Kader College for Women has strengthened community outreach and digital-learning facilities in its latest accreditation cycle.','tbak-college-women','2026-08-05'),
   ('news-yz-hospital-camp','Yousuf Zulaikha Medical Centre treats 1,200 at coastal health camp','A weekend screening drive in Kilakarai reached fishing families with free diagnostics and medicines.','Yousuf Zulaikha Medical Centre ran a large community health camp covering general medicine, paediatrics and eye care, supported by nursing-school volunteers.','yousuf-zulaikha-hospital','2026-07-28'),
   ('news-ciic-cohort','CIIC welcomes its largest startup cohort yet','Fifteen ventures — several founded by Crescent alumni — join the incubator''s acceleration track.','The Crescent Innovation & Incubation Centre has onboarded startups spanning agri-tech, health devices and education.','crescent-innovation-incubation-centre','2026-07-15'),
-  ('news-schools-common-calendar','Crescent schools adopt a shared academic calendar','Nine schools have aligned term dates and major events to reduce clashes and enable joint programmes.','Following coordination through Crescent Global, the network''s schools have published a common calendar of examinations, holidays and inter-school events.',null,'2026-07-02');
+  ('news-schools-common-calendar','Crescent schools adopt a shared academic calendar','Nine schools have aligned term dates and major events to reduce clashes and enable joint programmes.','Following coordination through Crescent Connekt, the network''s schools have published a common calendar of examinations, holidays and inter-school events for the coming year.',null,'2026-07-02');

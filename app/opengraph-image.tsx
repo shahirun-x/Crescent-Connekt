@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Crescent Global — One Crescent. One Community. One Global Network.";
+export const alt = "Crescent Connekt — One Crescent. One Community. One Global Network.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -38,7 +38,7 @@ export default function OgImage() {
             ☾
           </div>
           <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: 1 }}>
-            Crescent Global
+            Crescent Connekt
           </div>
         </div>
         <div

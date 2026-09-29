@@ -41,18 +41,20 @@ const absolute = (path: string) =>
 // ---------------------------------------------------------------------------
 
 /**
- * CGOM, the body behind the portal.
+ * Crescent Connekt, the publisher of this site.
  *
- * `sameAs` is deliberately omitted: it takes verified social profile URLs, and
- * we have none on file. Guessing them would be fabricated data.
+ * `alternateName` is deliberately absent: the old "CGOM" value named a
+ * separate organisation, and there is no verified alternate name on file.
+ *
+ * `sameAs` is omitted for the same reason — it takes verified social profile
+ * URLs, and we have none. Guessing either would be fabricated data.
  */
 export function organizationJsonLd(): JsonLdObject {
   return compact({
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
-    name: "Crescent Global Outreach Mission",
-    alternateName: "CGOM",
+    name: site.name,
     url: SITE_URL,
     logo: compact({
       "@type": "ImageObject",
@@ -180,7 +182,7 @@ export function eventJsonLd(event: CrescentEvent): JsonLdObject {
       : undefined,
     organizer: compact({
       "@type": "Organization",
-      name: event.institution_name || "Crescent Global Outreach Mission",
+      name: event.institution_name || "Crescent Connekt",
       url: SITE_URL,
     }),
   });
@@ -220,7 +222,7 @@ export function newsArticleJsonLd(item: NewsItem): JsonLdObject {
     image: item.image_url ?? undefined,
     author: compact({
       "@type": "Organization",
-      name: item.institution_name || "Crescent Global Outreach Mission",
+      name: item.institution_name || "Crescent Connekt",
     }),
     publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization` },
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },

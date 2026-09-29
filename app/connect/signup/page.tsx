@@ -114,7 +114,7 @@ export default function ConnectSignupPage() {
 
   return (
     <AuthShell
-      title="Join Crescent Connect"
+      title="Join the Member Network"
       subtitle="Create your account, then tell us a little about yourself. Profiles are reviewed before joining the directory."
       footer={
         <>

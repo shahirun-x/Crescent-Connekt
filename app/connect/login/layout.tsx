@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Sign in",
   description:
-    "Sign in to Crescent Connect, the members-only network for the Crescent ecosystem.",
+    "Sign in to Member Network, the members-only network for the Crescent ecosystem.",
   robots: { index: false, follow: false },
 };
 

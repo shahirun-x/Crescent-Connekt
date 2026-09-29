@@ -7,14 +7,15 @@ export default function Footer() {
     <footer className="mt-24 border-t border-slate-200 bg-crescent-950 text-slate-300">
       <div className="container-page grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <Logo className="[&_span]:text-white [&_span:last-child]:text-crescent-300" />
+          {/* `mono` rather than a class override: the wordmark is three
+              coloured spans, and navy-on-navy would erase two of them. */}
+          <Logo mono withTagline />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
             {site.description}
           </p>
           <p className="mt-4 text-xs text-slate-400">
-            A Crescent Global Outreach Mission (CGOM) initiative. This portal
-            supplements — it does not replace — the official website of each
-            institution.
+            This platform supplements — it does not replace — the official
+            website of each institution.
           </p>
         </div>
 
@@ -61,7 +62,7 @@ export default function Footer() {
 
       <div className="border-t border-white/10">
         <div className="container-page flex flex-col items-center justify-between gap-2 py-6 text-xs text-slate-400 sm:flex-row">
-          <p>© {new Date().getFullYear()} Crescent Global. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Crescent Connekt. All rights reserved.</p>
           <p>One Crescent. One Community. One Global Network.</p>
         </div>
       </div>

@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with the Crescent Global Outreach Mission — for coordination, partnerships, alumni chapters and portal feedback.",
+    "Get in touch with the Crescent Connekt — for coordination, partnerships, alumni chapters and portal feedback.",
   alternates: { canonical: "/contact" },
 };
 
@@ -17,7 +17,7 @@ export default function ContactPage() {
     <>
       <PageHeader
         eyebrow="Get in touch"
-        title="Contact Crescent Global"
+        title="Contact Crescent Connekt"
         description="For coordination between institutions, partnerships, alumni chapters or feedback on this portal."
       />
 
@@ -71,7 +71,7 @@ export default function ContactPage() {
 
           <div className="rounded-card bg-sand-100 p-6">
             <h2 className="text-base font-semibold text-crescent-800">
-              Crescent Global Outreach Mission
+              Crescent Connekt
             </h2>
             <p className="mt-2 leading-relaxed text-slate-600">
               Crescent Campus, GST Road, Vandalur,

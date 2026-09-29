@@ -29,7 +29,7 @@ export default function Error({
 
   return (
     <section className="container-page flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
-      <Logo withWordmark={false} className="mb-6 scale-150" />
+      <Logo size="text-2xl" className="mb-8" />
 
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent-600">
         Something went wrong

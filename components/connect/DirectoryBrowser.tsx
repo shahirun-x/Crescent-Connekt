@@ -355,7 +355,7 @@ function EmptyState({
             The directory is just getting started
           </h3>
           <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-500">
-            You&apos;re among the first members of Crescent Connect. As more
+            You&apos;re among the first members of Member Network. As more
             profiles are approved, they&apos;ll appear here.
           </p>
         </>

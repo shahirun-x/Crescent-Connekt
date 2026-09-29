@@ -5,7 +5,6 @@ import EventsStrip from "@/components/EventsStrip";
 import Timeline from "@/components/Timeline";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
-import Pipeline from "@/components/Pipeline";
 import InstitutionMapCard from "@/components/InstitutionMapCard";
 import Image from "next/image";
 import { BANNER_ABOUT_MISSION } from "@/lib/images";
@@ -15,14 +14,14 @@ import { getEvents, getInstitutions, getTimeline } from "@/lib/data";
 import type { Metadata } from "next";
 
 /**
- * The layout's default title is "Crescent Global — One Crescent. One Community.
+ * The layout's default title is "Crescent Connekt — One Crescent. One Community.
  * One Global Network." at 66 characters, which Google truncates. `absolute`
- * bypasses the "%s · Crescent Global" template so the homepage gets a title
+ * bypasses the "%s · Crescent Connekt" template so the homepage gets a title
  * that fits, while the full tagline stays as the OG title for social cards,
  * where the length limit is far more generous.
  */
 export const metadata: Metadata = {
-  title: { absolute: "Crescent Global — One Network, Many Institutions" },
+  title: { absolute: "Crescent Connekt — One Network, Many Institutions" },
   alternates: { canonical: "/" },
 };
 
@@ -68,7 +67,6 @@ export default async function HomePage() {
 
           1. Hero            full-bleed editorial
           2. Ecosystem       card grid            <- the one permitted grid
-          3. Pipeline        full-bleed dark centrepiece
           4. Map             overlapping layers (breaks the section boundary)
           5. Events          horizontal rail
           6. Audiences       editorial list (numbered rows, rules, no boxes)
@@ -76,45 +74,11 @@ export default async function HomePage() {
           8. Closing         oversized statement
       */}
 
-      {/* 3 — PIPELINE: full-bleed dark centrepiece. No container, no card. */}
-      <section className="relative isolate overflow-hidden bg-crescent-950 py-20 text-white lg:py-28">
-        <div aria-hidden="true" className="texture-bloom pointer-events-none absolute inset-0 -z-10" />
-        <div className="container-page">
-          <p className="type-eyebrow flex items-center gap-3 text-gold-300">
-            <span aria-hidden="true" className="h-px w-8 bg-gold-300/70" />
-            The CGOM Pipeline
-          </p>
-          <h2 className="type-h1 mt-5 max-w-3xl text-balance text-white">
-            From a classroom in Vandalur to a company in the world
-          </h2>
-          <p className="type-lead mt-5 text-crescent-100">
-            The School-to-Start-up continuum is the backbone of the mission —
-            seven stages, one unbroken pathway.
-          </p>
-
-          <div className="mt-14 lg:mt-20">
-            <Pipeline />
-          </div>
-
-          <Link
-            href="/about#strategic-streams"
-            className="mt-14 inline-flex rounded-full border border-white/45 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-          >
-            See the three strategic streams →
-          </Link>
-        </div>
-      </section>
-
-      {/*
-        4 — MAP: overlapping layers. The map panel is pulled UP so it breaks
-        the boundary between the dark pipeline section and the white one
-        below, sitting across both. -mt on the panel, matching pt on the
-        section, so nothing is clipped and no horizontal scroll is introduced.
-      */}
+      {/* 4 — MAP. */}
       <section className="relative bg-white pb-20 lg:pb-28">
         <div className="container-page">
           <Reveal>
-            <div className="-mt-16 overflow-hidden rounded-card shadow-raised ring-1 ring-slate-200 lg:-mt-24">
+            <div className="overflow-hidden rounded-card shadow-raised ring-1 ring-slate-200">
               <InstitutionMapCard
                 institutions={institutions}
                 className="h-[340px] md:h-[460px]"
@@ -240,7 +204,7 @@ export default async function HomePage() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="type-lead mt-8 text-crescent-100">
-              Crescent Connect links students, alumni, faculty, management,
+              Member Network links students, alumni, faculty, management,
               parents, entrepreneurs and well-wishers — one family, across every
               campus and every generation.
             </p>
@@ -250,7 +214,7 @@ export default async function HomePage() {
               href="/connect"
               className="mt-10 inline-flex items-center justify-center rounded-full bg-gold-300 px-8 py-4 text-sm font-bold text-crescent-950 shadow-raised transition-all hover:bg-gold-200 active:scale-[0.98]"
             >
-              Join Crescent Connect →
+              Join the Member Network →
             </Link>
           </Reveal>
         </div>

@@ -7,7 +7,7 @@ import { getMemberSession } from "@/lib/connect-auth";
 import { MEMBER_ROLES, roleMeta } from "@/lib/roles";
 
 export const metadata: Metadata = {
-  title: "Crescent Connect",
+  title: "Member Network",
   description:
     "A secure, members-only network linking students, alumni, faculty, management, parents, entrepreneurs and well-wishers across the Crescent ecosystem.",
   alternates: { canonical: "/connect" },
@@ -33,7 +33,7 @@ export default async function ConnectPage() {
     <>
       <PageHeader
         eyebrow="The People Layer"
-        title="Crescent Connect"
+        title="Member Network"
         description="A single, secure network where the whole Crescent family can find and help one another — students, alumni, faculty, management, parents, entrepreneurs and well-wishers."
       />
 
@@ -115,7 +115,7 @@ export default async function ConnectPage() {
                   href="/connect/signup"
                   className="rounded-full bg-crescent-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-crescent-800"
                 >
-                  Join Crescent Connect
+                  Join the Member Network
                 </Link>
                 <Link
                   href="/connect/login"
@@ -152,7 +152,7 @@ export default async function ConnectPage() {
               One family, across every campus and every generation.
             </p>
             <p className="mt-2 text-sm leading-relaxed text-crescent-100">
-              Crescent Connect exists to make that practical — not just true.
+              Member Network exists to make that practical — not just true.
             </p>
           </figcaption>
         </figure>
@@ -182,11 +182,10 @@ export default async function ConnectPage() {
             The vision
           </h2>
           <p className="mt-2">
-            Every Crescent institution already has its own community. Crescent
-            Connect links those communities without replacing them — a directory,
-            a mentoring layer and a coordination space, with privacy and consent
-            built in from the start. It is being developed under the Crescent
-            Global Outreach Mission (CGOM).
+            Every Crescent institution already has its own community. The
+            Member Network links those communities without replacing them — a
+            directory, a mentoring layer and a coordination space, with privacy
+            and consent built in from the start.
           </p>
           <p className="mt-3">
             Your contact details stay hidden from other members unless you

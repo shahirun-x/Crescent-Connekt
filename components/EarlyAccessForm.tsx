@@ -51,7 +51,7 @@ export default function EarlyAccessForm() {
         <p className="font-semibold">
           {notice || "You're on the early-access list."}
         </p>
-        <p className="mt-1">We&apos;ll be in touch when Crescent Connect opens.</p>
+        <p className="mt-1">We&apos;ll be in touch when Member Network opens.</p>
       </div>
     );
   }

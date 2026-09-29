@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Reset your password",
   description:
-    "Request a password reset link for your Crescent Connect account.",
+    "Request a password reset link for your Member Network account.",
   robots: { index: false, follow: false },
 };
 

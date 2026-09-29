@@ -16,7 +16,7 @@ export default function AuthShell({
       <div className="w-full max-w-md">
         <div className="rounded-card border border-slate-200 bg-white p-7 shadow-sm sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-crescent-600">
-            Crescent Connect
+            Member Network
           </p>
           <h1 className="mt-1 text-2xl font-bold text-crescent-800">{title}</h1>
           {subtitle && (
@@ -29,7 +29,7 @@ export default function AuthShell({
         )}
         <p className="mt-4 text-center text-xs text-slate-500">
           <Link href="/connect" className="hover:text-slate-600">
-            ← Back to Crescent Connect
+            ← Back to the Member Network
           </Link>
         </p>
       </div>

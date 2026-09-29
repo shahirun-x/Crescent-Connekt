@@ -1,4 +1,4 @@
--- Crescent Global — query performance indexes
+-- Crescent Connekt — query performance indexes
 -- Run AFTER migration-connect.sql. Idempotent and safe to re-run.
 --
 -- DO NOT APPLY BLIND. Read the reasoning per index. Every index here maps to a

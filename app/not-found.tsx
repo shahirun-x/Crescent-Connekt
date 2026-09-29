@@ -8,15 +8,15 @@ import Logo from "@/components/Logo";
  * home page. Distinct title, and explicitly noindex.
  */
 export const metadata: Metadata = {
-  title: { absolute: "Page not found · Crescent Global" },
-  description: "This page isn't part of the Crescent Global network.",
+  title: { absolute: "Page not found · Crescent Connekt" },
+  description: "This page isn't part of the Crescent Connekt network.",
   robots: { index: false, follow: true },
 };
 
 export default function NotFound() {
   return (
     <section className="container-page flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
-      <Logo withWordmark={false} className="mb-6 scale-150" />
+      <Logo size="text-2xl" className="mb-8" />
 
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent-600">
         404

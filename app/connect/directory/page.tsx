@@ -20,7 +20,7 @@ export default async function ConnectDirectoryPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title="Member Directory"
         description="Students, alumni, faculty, management, parents, entrepreneurs and well-wishers from across the Crescent network."
       />

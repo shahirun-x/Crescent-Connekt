@@ -40,7 +40,7 @@ export default async function ConnectProfileEditPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title="Edit your profile"
         description="Update your details any time. Changing your name or institution does not restart the review."
       />

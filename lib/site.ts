@@ -23,8 +23,8 @@ function resolveSiteUrl(): string {
 export const SITE_URL = resolveSiteUrl();
 
 export const site = {
-  name: "Crescent Global",
-  tagline: "One Crescent. One Community. One Global Network.",
+  name: "Crescent Connekt",
+  tagline: "One Crescent. Many institutions. One connected network.",
   /**
    * Used as the site-wide meta description and OG description.
    *
@@ -33,9 +33,9 @@ export const site = {
    * /about, where there is room for it.
    */
   description:
-    "A unified portal for the Crescent ecosystem — a guide and coordination layer across its educational, healthcare and community institutions.",
+    "The platform connecting the sixteen institutions of the Crescent family across Chennai, Kilakarai, Madurai and Nagore.",
   url: SITE_URL,
-  contactEmail: "connect@crescentglobal.org",
+  contactEmail: "connect@crescentconnekt.com",
 };
 
 export const nav = [
@@ -43,8 +43,8 @@ export const nav = [
   { href: "/institutions", label: "Institutions" },
   { href: "/calendar", label: "Central Calendar" },
   { href: "/news", label: "News & Events" },
-  { href: "/connect", label: "Crescent Connect" },
-  { href: "/about", label: "About CGOM" },
+  { href: "/connect", label: "Member Network" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 

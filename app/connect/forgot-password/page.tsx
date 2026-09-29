@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
     return (
       <AuthShell
         title="Check your email"
-        subtitle="If that address has a Crescent Connect account, a reset link is on its way."
+        subtitle="If that address has a Member Network account, a reset link is on its way."
       >
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
           <p className="font-semibold">Reset link sent</p>

@@ -37,15 +37,10 @@ export default function EcosystemGrid({
 
       <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {order.map((cat, idx) => {
-          const isStrategic = cat === "innovation";
           return (
             <Reveal key={cat} delay={idx * 0.06} as="article">
               <Link
-                href={
-                  isStrategic
-                    ? "/about#strategic-streams"
-                    : `/institutions?category=${cat}`
-                }
+                href={`/institutions?category=${cat}`}
                 className={`group flex h-full flex-col overflow-hidden rounded-card border border-slate-200 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-crescent-300 hover:shadow-card-hover ${institutionCategoryStyle[cat].cardGradient}`}
               >
                 {/*
@@ -85,12 +80,10 @@ export default function EcosystemGrid({
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600">
                     {categoryMeta[cat].blurb}
                   </p>
-                <p className="mt-4 text-sm font-semibold text-crescent-600 group-hover:text-crescent-700">
-                  {isStrategic
-                    ? "Explore the strategic streams →"
-                    : `${counts[cat] ?? 0} institution${
-                        (counts[cat] ?? 0) === 1 ? "" : "s"
-                      } →`}
+                  <p className="mt-4 text-sm font-semibold text-crescent-600 group-hover:text-crescent-700">
+                    {`${counts[cat] ?? 0} institution${
+                      (counts[cat] ?? 0) === 1 ? "" : "s"
+                    } →`}
                   </p>
                 </span>
               </Link>
@@ -109,14 +102,14 @@ export default function EcosystemGrid({
                   <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-9 2-9 6v2h18v-2c0-4-5-6-9-6Z" />
                 </svg>
               </span>
-              <h3 className="mt-4 text-lg font-semibold">Alumni & Crescent Connect</h3>
+              <h3 className="mt-4 text-lg font-semibold">Alumni & Member Network</h3>
               <p className="mt-2 text-sm leading-relaxed text-crescent-100">
                 A secure network linking students, alumni, faculty, parents and
                 well-wishers worldwide.
               </p>
             </div>
             <p className="mt-4 text-sm font-semibold text-gold-300">
-              Join Crescent Connect →
+              Join the Member Network →
             </p>
           </Link>
         </Reveal>

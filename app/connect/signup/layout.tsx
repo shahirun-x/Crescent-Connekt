@@ -5,9 +5,9 @@ import type { Metadata } from "next";
  * this layout supplies the noindex the signup page was missing.
  */
 export const metadata: Metadata = {
-  title: "Join Crescent Connect",
+  title: "Join the Member Network",
   description:
-    "Create a Crescent Connect account to join the members-only directory of the Crescent network.",
+    "Create a Member Network account to join the members-only directory of the Crescent network.",
   robots: { index: false, follow: false },
 };
 

@@ -52,7 +52,7 @@ export default function AdminLoginPage() {
             Admin Login
           </h1>
           <p className="mt-2 text-center text-sm text-slate-500">
-            Crescent Global Dashboard
+            Crescent Connekt Dashboard
           </p>
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">

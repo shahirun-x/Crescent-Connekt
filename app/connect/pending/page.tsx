@@ -24,9 +24,9 @@ export default async function ConnectPendingPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title="Your profile is under review"
-        description="Thank you for joining. A member of the Crescent Global team will review your profile shortly."
+        description="Thank you for joining. A member of the Crescent Connekt team will review your profile shortly."
       />
 
       <div className="container-page py-12">

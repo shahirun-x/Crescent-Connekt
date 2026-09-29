@@ -25,7 +25,7 @@ Commit `17ae7a7`. Migration written, **not applied**.
 
 **Decisions locked with the client:** admin approval required; contact details
 hidden unless the member opts in; directory is members-only, never public.
-**Still open:** who at CGOM owns the approval queue. Without a named owner,
+**Still open:** who owns the approval queue. Without a named owner,
 applications pile up and the network stalls.
 
 ---
@@ -112,7 +112,7 @@ Current tiers will not carry a live institutional network.
 | Institution map, hero, visual warmth | `7b13252` → `621589d` |
 | Institution data corrected from official card | `d58d3c7` |
 | Founding year 1968 + 1971 Vandalur move | `1b9a60b` |
-| CGOM vision, mission, strategic streams | `ec07eb3` → `213ece2` |
+| CGOM vision, mission, strategic streams (later removed, DECISIONS #30) | `ec07eb3` → `213ece2` |
 | Supabase admin dashboard + form backends | `1fe7484` |
 | Event schema fix, institution dropdown, uploads | `6d7afcd` |
 | Unified news+events stream, contact form fix | `d74d343` |

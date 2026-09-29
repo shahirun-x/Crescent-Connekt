@@ -10,7 +10,7 @@ export interface AdminUser {
  * Check if the current request is from an authenticated admin.
  *
  * SECURITY: it is not enough that the token belongs to a valid Supabase user.
- * Crescent Connect gives every member a real auth.users account, so "is this a
+ * Member Network gives every member a real auth.users account, so "is this a
  * valid user?" would let any member reach the admin dashboard by moving their
  * token into the admin cookie. Administrator is therefore an explicit grant,
  * recorded in public.admins (see supabase/migration-connect.sql), and is

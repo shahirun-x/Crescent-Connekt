@@ -116,7 +116,7 @@ export const CONNECT_COMMUNITY: SiteImage = {
   src: unsplash("1529156069898-49953e39b3ac", 1600),
   alt: "",
   brief:
-    "Supports the Crescent Connect message. Alumni and students together — a " +
+    "Supports the Member Network message. Alumni and students together — a " +
     "chapter gathering, a reunion, a mentoring moment. Should feel like " +
     "belonging, not like a corporate networking event.",
   placeholder: true,
@@ -130,7 +130,7 @@ export const CONTACT_VISUAL: SiteImage = {
     "bg-[radial-gradient(30rem_20rem_at_25%_15%,rgba(107,206,196,0.35),transparent_65%),linear-gradient(150deg,#12294d_0%,#0f2140_60%,#091428_100%)]",
   alt: "",
   brief:
-    "Sits beside the contact form. Shoot: the CGOM office or reception with " +
+    "Sits beside the contact form. Shoot: a Crescent Connekt reception with " +
     "someone actually present — a person at a desk, a conversation. Calm and " +
     "approachable. Currently a gradient: every candidate stock interior was " +
     "empty and cold, which is worse than no photograph.",

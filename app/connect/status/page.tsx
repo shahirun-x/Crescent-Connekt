@@ -24,7 +24,7 @@ export default async function ConnectStatusPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title={suspended ? "Your membership is suspended" : "Your profile wasn't approved"}
         description={
           suspended
@@ -55,7 +55,7 @@ export default async function ConnectStatusPage() {
             <div className="mt-6 border-t border-slate-100 pt-5 text-sm leading-relaxed text-slate-600">
               <p>
                 If you believe this is an error, or your circumstances have
-                changed, contact the Crescent Global team at{" "}
+                changed, contact the Crescent Connekt team at{" "}
                 <a
                   href={`mailto:${site.contactEmail}`}
                   className="font-semibold text-crescent-700 hover:underline"

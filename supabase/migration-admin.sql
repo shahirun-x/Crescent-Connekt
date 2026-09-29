@@ -1,4 +1,4 @@
--- Crescent Global — schema migration for admin dashboard
+-- Crescent Connekt — schema migration for admin dashboard
 -- Run AFTER schema.sql in the Supabase SQL editor.
 
 -- contacts: track read/unread status

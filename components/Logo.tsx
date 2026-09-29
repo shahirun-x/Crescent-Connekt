@@ -1,43 +1,84 @@
+/**
+ * ============================================================================
+ * THE CRESCENT CONNEKT WORDMARK — the one place the brand mark is defined
+ * ============================================================================
+ *
+ * TO SWAP IN THE CLIENT'S REAL LOGO FILE
+ *
+ * Replace the body of <Wordmark> below with an <Image> (or inline <svg>)
+ * pointing at the supplied asset. That is the whole change — the header,
+ * footer, 404 and error pages all render this component, so nothing else needs
+ * touching:
+ *
+ *   import Image from "next/image";
+ *   import wordmark from "@/public/brand/crescent-connekt.svg";
+ *   ...
+ *   <Image src={wordmark} alt="Crescent Connekt" priority height={32} />
+ *
+ * Keep the accessible name as "Crescent Connekt", and keep `mono` working —
+ * the footer and dark sections render the mark on navy.
+ *
+ * CURRENT MARK
+ *
+ * Typeset rather than an image: "CrescentConneKt" in the display serif,
+ * matching the holding page at crescentconnekt.com — "Crescent" and "Kt" in
+ * navy, "Conne" in red. Typesetting keeps it crisp at any size, costs no
+ * request, and inherits the font the site already loads.
+ */
+
 interface LogoProps {
   className?: string;
-  withWordmark?: boolean;
+  /** Single colour, for dark grounds where the red would vibrate. */
+  mono?: boolean;
+  /** Tagline beneath the mark. Off by default; the footer wants it. */
+  withTagline?: boolean;
+  /** Tailwind text-size class for the mark itself. */
+  size?: string;
 }
 
-/**
- * Crescent Global emblem — a crescent moon over a globe, in Crescent blue with a
- * red accent. Rendered as inline SVG so it costs no extra request and scales
- * crisply at every breakpoint.
- */
-export default function Logo({ className, withWordmark = true }: LogoProps) {
+export default function Logo({
+  className,
+  mono = false,
+  withTagline = false,
+  size = "text-[1.3rem]",
+}: LogoProps) {
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className ?? ""}`}>
-      <svg
-        viewBox="0 0 48 48"
-        role="img"
-        aria-label="Crescent Global"
-        className="h-9 w-9 shrink-0"
-      >
-        <circle cx="24" cy="24" r="22" fill="var(--color-crescent-700)" />
-        <path
-          d="M24 8a16 16 0 1 0 0 32 13 13 0 1 1 0-32Z"
-          fill="#ffffff"
-        />
-        <circle cx="33" cy="15" r="3.4" fill="var(--color-accent-500)" />
-        <g stroke="var(--color-crescent-200)" strokeWidth="1.1" fill="none" opacity="0.55">
-          <ellipse cx="24" cy="24" rx="21" ry="8" />
-          <line x1="3" y1="24" x2="45" y2="24" />
-        </g>
-      </svg>
-      {withWordmark && (
-        <span className="flex flex-col leading-none">
-          <span className="text-[1.05rem] font-bold tracking-tight text-crescent-800">
-            Crescent Global
-          </span>
-          <span className="text-[0.66rem] font-medium uppercase tracking-[0.18em] text-crescent-600">
-            One Network
-          </span>
+    <span className={`inline-flex flex-col leading-none ${className ?? ""}`}>
+      <Wordmark mono={mono} size={size} />
+      {withTagline && (
+        <span
+          className={`mt-2 text-[0.72rem] leading-snug ${
+            mono ? "text-crescent-100" : "text-slate-600"
+          }`}
+        >
+          One Crescent. Many institutions. One connected network.
         </span>
       )}
+    </span>
+  );
+}
+
+function Wordmark({ mono, size }: { mono: boolean; size: string }) {
+  // One accessible name for the whole mark — the coloured spans are
+  // typography, not three separate words.
+  return (
+    <span
+      role="img"
+      aria-label="Crescent Connekt"
+      className={`font-serif font-semibold tracking-[-0.015em] ${size}`}
+    >
+      <span aria-hidden="true" className={mono ? "text-white" : "text-crescent-900"}>
+        Crescent
+      </span>
+      <span
+        aria-hidden="true"
+        className={mono ? "text-crescent-200" : "text-accent-600"}
+      >
+        Conne
+      </span>
+      <span aria-hidden="true" className={mono ? "text-white" : "text-crescent-900"}>
+        Kt
+      </span>
     </span>
   );
 }

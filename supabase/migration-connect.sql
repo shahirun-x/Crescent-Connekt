@@ -1,4 +1,4 @@
--- Crescent Global — Crescent Connect Phase 1
+-- Crescent Connekt — the Member Network Phase 1
 -- Member accounts, profiles and the members-only directory.
 -- Run AFTER schema.sql, migration-admin.sql and migration-images.sql.
 -- Idempotent and safe to re-run.
@@ -8,7 +8,7 @@ create extension if not exists "pgcrypto";
 -- ---------------------------------------------------------------------------
 -- admins
 --
--- SECURITY: before Crescent Connect there was no public signup, so every row
+-- SECURITY: before the Member Network there was no public signup, so every row
 -- in auth.users was an administrator and "is this a valid Supabase user?" was
 -- a sufficient admin check. Public member signup breaks that assumption — any
 -- member would hold a valid token. This table makes administrator a distinct,

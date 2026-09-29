@@ -17,15 +17,15 @@ export const metadata: Metadata = {
   description: site.description,
   applicationName: site.name,
   keywords: [
-    "Crescent Global",
+    "Crescent Connekt",
     "Crescent ecosystem",
     "B.S. Abdur Rahman Crescent Institute",
     "Crescent schools",
     "Crescent alumni",
     "Central Calendar",
-    "CGOM",
+    "Member Network",
   ],
-  authors: [{ name: "Crescent Global Outreach Mission" }],
+  authors: [{ name: "Crescent Connekt" }],
   // og:title and og:description are deliberately NOT set here. When a parent
   // defines them, every child inherits the same value and each page shares as
   // the homepage. Left unset, Next fills them from each page's own title and

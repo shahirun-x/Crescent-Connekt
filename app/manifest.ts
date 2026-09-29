@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Crescent Global",
-    short_name: "Crescent Global",
+    name: "Crescent Connekt",
+    short_name: "Crescent Connekt",
     description:
       "A unified digital portal for the Crescent ecosystem of educational, healthcare and community institutions.",
     start_url: "/",

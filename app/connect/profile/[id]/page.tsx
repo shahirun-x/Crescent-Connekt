@@ -63,7 +63,7 @@ export default async function MemberProfilePage({
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title={m.full_name}
         description={m.headline ?? undefined}
       />

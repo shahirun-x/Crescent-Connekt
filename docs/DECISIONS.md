@@ -216,3 +216,55 @@ instead of hunting for a link that does not exist. The dashboard procedure is in
 Revisit if the admin population grows beyond a handful, or if admins stop having
 Supabase dashboard access — at that point a dedicated admin reset route, with
 its own cookie handling, becomes the smaller risk.
+
+---
+
+**30. Crescent Connekt and CGOM are separate projects; CGOM content was removed,
+not relabelled.**
+
+This site began as a portal for the Crescent Global Outreach Mission. It is now
+Crescent Connekt: a platform connecting the sixteen institutions of the Crescent
+family across Chennai, Kilakarai, Madurai and Nagore. The two are separate
+projects, and the site carries no reference to CGOM, "Crescent Global Outreach
+Mission" or the "Crescent Global" brand.
+
+**Why the content was deleted rather than renamed.** The About page and the
+homepage pipeline were not branding — they were CGOM's *programme*: two vision
+statements, a mission with ten points, three strategic streams, the
+School-to-Start-up continuum, a philosophy, an outcome and a closing tagline.
+That is a strategy document belonging to a different organisation. Swapping the
+name at the top would have left Crescent Connekt claiming work it does not do,
+which is worse than saying nothing. The components existing only to render it
+(`Pipeline`, `PipelineFlow`, `StrategicStreamsSection`, `MissionSection`,
+`VisionSection`, `PhilosophySection`, `OutcomeSection`, `ClosingTagline`,
+`AboutHero`, `PhotoBreak`) went with it, as did
+`docs/2026 Vision Mission CGOM.pdf`. `/about` was rebuilt around what Crescent
+Connekt actually is.
+
+**What deliberately kept the old name.** The rebrand is user-facing only.
+Renaming an internal identifier would break something live for no visible gain,
+so these were left alone and marked as legacy where they appear:
+
+- `cg-member-token` / `cg-member-refresh` cookies — renaming signs out every
+  member in the same deploy.
+- Database tables, columns, views, functions, triggers and policies.
+- Row ids that are primary keys: `news-cgom-launch`,
+  `evt-alumni-global-meet-2026`. Renaming a key orphans the row instead of
+  rebranding it, so only the copy changed.
+- Route paths `/connect/*` and `/admin/*` — auth redirects, the links already
+  sent in emails and the e2e suite all depend on them.
+- Env var names, storage bucket names and storage paths.
+- The Vercel project slug and the GitHub repo name.
+
+**The member feature is the "Member Network" in copy, `/connect` in code.** The
+old UI name was "Crescent Connect", one letter from the new site name and
+guaranteed to confuse. Every route stayed exactly where it was.
+
+**Production rows need a hand-applied migration.** `lib/seed.ts` is only the
+fallback; `lib/data.ts` reads Supabase first, so the rewritten news and event
+copy also exists in the live database. `supabase/migration-rebrand.sql` carries
+the matching UPDATEs, keyed by id and idempotent. It has not been run — see
+CLAUDE.md hard rule 1.
+
+Earlier entries in this log were written under the old framing. They are
+history and were left as written.

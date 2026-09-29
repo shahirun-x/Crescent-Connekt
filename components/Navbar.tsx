@@ -34,7 +34,7 @@ export default function Navbar() {
         className="container-page flex h-16 items-center justify-between"
         aria-label="Primary"
       >
-        <Link href="/" className="rounded-md" aria-label="Crescent Global home">
+        <Link href="/" className="rounded-md" aria-label="Crescent Connekt home">
           <Logo />
         </Link>
 

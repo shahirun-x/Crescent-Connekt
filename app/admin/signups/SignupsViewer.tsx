@@ -36,7 +36,7 @@ export default function SignupsViewer() {
       <div className="mt-4 rounded-lg border border-crescent-200 bg-crescent-50/60 px-4 py-3 text-sm text-crescent-900">
         <p className="font-semibold">Pre-launch early-access list</p>
         <p className="mt-1 leading-relaxed text-crescent-800/90">
-          These are people who registered interest before Crescent Connect
+          These are people who registered interest before Member Network
           opened. They are <strong>not</strong> member accounts — approved
           members live under{" "}
           <a href="/admin/members" className="font-semibold underline">

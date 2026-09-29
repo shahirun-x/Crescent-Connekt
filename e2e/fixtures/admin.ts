@@ -108,7 +108,7 @@ export async function setAdminCookie(
 }
 
 /**
- * An auth user with NO admins row. Represents any Crescent Connect member:
+ * An auth user with NO admins row. Represents any Member Network member:
  * a real, valid Supabase session that must not be admin.
  */
 export async function createNonAdminAuthUser(): Promise<TestAdmin> {

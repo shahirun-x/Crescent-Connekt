@@ -81,13 +81,13 @@ export async function buildApprovalEmail(
 ): Promise<ApprovalEmail> {
   const text = `Assalamu alaikum ${fullName},
 
-Your Crescent Connect profile has been reviewed and approved. You can now browse the member directory and find students, alumni, faculty, management, parents, entrepreneurs and well-wishers from across the Crescent network.
+Your Member Network profile has been reviewed and approved. You can now browse the member directory and find students, alumni, faculty, management, parents, entrepreneurs and well-wishers from across the Crescent network.
 
 Your contact details stay private unless you chose to share them — you can change that any time from your profile.
 
 Open the directory: ${directoryUrl}
 
-— Crescent Global Outreach Mission`;
+— Crescent Connekt`;
 
   const template = await loadTemplate("approval-notification");
   const html = template
@@ -95,7 +95,7 @@ Open the directory: ${directoryUrl}
     : undefined;
 
   return {
-    subject: "Your Crescent Connect profile is approved",
+    subject: "Your Member Network profile is approved",
     html,
     text,
   };

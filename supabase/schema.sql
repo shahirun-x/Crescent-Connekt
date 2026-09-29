@@ -1,4 +1,4 @@
--- Crescent Global — Supabase schema
+-- Crescent Connekt — Supabase schema
 -- Run this in the Supabase SQL editor. The site works without a database
 -- (it falls back to bundled seed data in lib/seed.ts), but this enables live
 -- events, news and the contact / early-access forms.
@@ -74,7 +74,7 @@ create table if not exists public.contacts (
 );
 
 -- ---------------------------------------------------------------------------
--- connect_signups  (Crescent Connect early-access list)
+-- connect_signups  (Member Network early-access list)
 -- ---------------------------------------------------------------------------
 create table if not exists public.connect_signups (
   id         uuid primary key default gen_random_uuid(),

@@ -91,7 +91,7 @@ async function notifyApproved(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Crescent Connect <noreply@crescentglobal.org>",
+        from: "Member Network <noreply@crescentconnekt.com>",
         to: email,
         subject,
         ...(html ? { html } : {}),

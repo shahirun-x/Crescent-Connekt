@@ -4,21 +4,28 @@ Read this first, every session. It is the shared memory for this repo.
 
 ## What this is
 
-**Crescent Global** — a portal for the Crescent Global Outreach Mission (CGOM).
-It **supplements, never replaces** the websites of ~16 institutions under two
-parent trusts. It is a glossary, a guide, and a coordination layer that unifies
-and channels their collective efforts for the betterment of the alma mater.
+**Crescent Connekt** — the platform connecting the sixteen institutions of the
+Crescent family across Chennai, Kilakarai, Madurai and Nagore. It
+**supplements, never replaces** each institution's own website: one shared
+calendar, one directory, one member network, all pointing outward.
 
 Live: https://crescent-global-calender.vercel.app
 Repo: https://github.com/shahirun-x/Crescent-Connekt
+Production domain (planned): crescentconnekt.com
 Supabase project ref: `zxffaohxxzbthspeelpj` (ap-south-1)
 
-The repo was renamed to **Crescent-Connekt** — the generic name, which the
-domain will follow. The Vercel URL still carries the old project slug and is
-**correct as-is** until a custom domain is bought. Do not "fix" it to match the
-repo name: it is the live deployment, and `PRODUCTION_URL` in `lib/site.ts`
-feeds canonical and OG tags. When the domain lands, set `NEXT_PUBLIC_SITE_URL`
-rather than editing that constant.
+**Crescent Connekt and the Crescent Global Outreach Mission (CGOM) are separate
+projects.** No user-facing surface may carry "CGOM", "Crescent Global Outreach
+Mission" or the "Crescent Global" brand. See `docs/DECISIONS.md` #30 for what
+was removed and, just as importantly, which internal identifiers keep the old
+name on purpose (member cookies, table and column names, `/connect` routes, row
+primary keys, env vars, storage buckets, the Vercel slug and the repo name).
+Renaming any of those breaks something live for no visible gain.
+
+The Vercel URL still carries the old project slug and is **correct as-is**
+until the custom domain is bought. Do not "fix" it, and do not edit
+`PRODUCTION_URL` in `lib/site.ts` — it feeds canonical and OG tags. When the
+domain lands, set `NEXT_PUBLIC_SITE_URL` instead.
 
 Built by one person (Shahirun) directing coding agents. There is no second
 engineer to ask. Write code and docs accordingly.

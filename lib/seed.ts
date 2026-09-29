@@ -345,9 +345,9 @@ export const TIMELINE: TimelineEntry[] = [
   },
   {
     year: 2024,
-    title: "Toward one network",
+    title: "One connected network",
     description:
-      "Crescent Global Outreach Mission (CGOM) begins coordinating the ecosystem — leading to this unified digital portal.",
+      "Crescent Connekt brings the institutions onto a single platform — one calendar, one directory, one place to find each other.",
   },
 ];
 
@@ -369,16 +369,18 @@ export const EVENTS: CrescentEvent[] = [
     image_url: null,
   },
   {
+    // Legacy row id — matches the primary key in production. Renaming it
+    // would orphan the row, so only the copy changes.
     id: "evt-alumni-global-meet-2026",
-    title: "Crescent Global Alumni Meet",
+    title: "Crescent Alumni Meet",
     date_start: iso("2026-09-20"),
     date_end: null,
     institution_id: null,
-    institution_name: "Crescent Global Outreach Mission",
+    institution_name: "Crescent Connekt",
     category: "Alumni",
     location: "Chennai + Online",
     description:
-      "A worldwide gathering of Crescent alumni to connect chapters, mentor students and shape the next phase of Crescent Connect.",
+      "A worldwide gathering of Crescent alumni to connect chapters, mentor students and grow the Member Network.",
     is_featured: true,
     image_url: null,
   },
@@ -491,7 +493,7 @@ export const EVENTS: CrescentEvent[] = [
     category: "Schools",
     location: "All campuses",
     description:
-      "Synchronised opening assembly across the network, with a shared message from the Crescent Global Outreach Mission.",
+      "Synchronised opening assembly across every campus, opening the academic year on the same day across the network.",
     is_featured: false,
     image_url: null,
   },
@@ -499,14 +501,16 @@ export const EVENTS: CrescentEvent[] = [
 
 export const NEWS: NewsItem[] = [
   {
+    // Legacy row id — matches the primary key in production. Renaming it
+    // would orphan the row, so only the copy changes.
     id: "news-cgom-launch",
-    title: "Crescent Global Outreach Mission launches unified portal",
+    title: "Crescent Connekt opens a shared portal for the network",
     summary:
-      "A new digital portal will act as a glossary, guide and coordination layer across every institution in the Crescent ecosystem.",
+      "One calendar, one news stream and one directory across all sixteen institutions of the Crescent family.",
     content:
-      "The Crescent Global Outreach Mission (CGOM) has launched Crescent Global, a portal that supplements — but does not replace — the individual websites of institutions across the network. It brings a shared calendar, a unified news stream and a single directory of institutions to help channel the collective efforts of the alma mater.",
+      "Crescent Connekt is now live: a platform that supplements — but never replaces — the individual websites of the sixteen institutions across Chennai, Kilakarai, Madurai and Nagore. It brings a shared calendar so major events stop clashing, a single news stream, and one directory that points outward to each institution's own site.",
     institution_id: null,
-    institution_name: "Crescent Global Outreach Mission",
+    institution_name: "Crescent Connekt",
     published_at: iso("2026-08-20"),
     image_url: null,
   },
@@ -564,7 +568,7 @@ export const NEWS: NewsItem[] = [
     summary:
       "Nine schools across Tamil Nadu have aligned term dates and major events to reduce clashes and enable joint programmes.",
     content:
-      "Following coordination through Crescent Global, the network's schools have published a common calendar of examinations, holidays and inter-school events for the coming year.",
+      "Following coordination through Crescent Connekt, the network's schools have published a common calendar of examinations, holidays and inter-school events for the coming year.",
     institution_id: null,
     institution_name: "All Crescent Institutions",
     published_at: iso("2026-07-02"),

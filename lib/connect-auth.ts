@@ -3,7 +3,7 @@ import { getServiceSupabase } from "./supabase-server";
 import type { MemberRole, MemberStatus } from "./roles";
 
 /**
- * Crescent Connect member sessions.
+ * Member Network member sessions.
  *
  * Members use their own cookie namespace (`cg-member-token`), completely
  * separate from the admin `sb-access-token`. The two surfaces share one

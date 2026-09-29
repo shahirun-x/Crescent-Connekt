@@ -19,9 +19,9 @@ export default async function ConnectSetupPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Crescent Connect"
+        eyebrow="Member Network"
         title="Set up your profile"
-        description="Tell us who you are. Profiles are reviewed by the Crescent Global team before they join the member directory."
+        description="Tell us who you are. Profiles are reviewed by the Crescent Connekt team before they join the member directory."
       />
       <div className="container-page py-12">
         <div className="mx-auto max-w-2xl rounded-card border border-slate-200 bg-white p-6 sm:p-8">

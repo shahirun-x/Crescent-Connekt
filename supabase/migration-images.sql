@@ -1,4 +1,4 @@
--- Crescent Global — image support for events and news
+-- Crescent Connekt — image support for events and news
 -- Run AFTER schema.sql and migration-admin.sql in the Supabase SQL editor.
 
 -- ---------------------------------------------------------------------------

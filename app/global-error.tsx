@@ -46,7 +46,7 @@ export default function GlobalError({
           <svg
             viewBox="0 0 48 48"
             role="img"
-            aria-label="Crescent Global"
+            aria-label="Crescent Connekt"
             style={{ width: 56, height: 56, marginBottom: "1.25rem" }}
           >
             <circle cx="24" cy="24" r="22" fill="#1a3a6b" />
@@ -63,7 +63,7 @@ export default function GlobalError({
               color: "#142d54",
             }}
           >
-            Crescent Global is temporarily unavailable
+            Crescent Connekt is temporarily unavailable
           </h1>
 
           <p

@@ -1,9 +1,10 @@
-# Crescent Global
+# Crescent Connekt
 
-A modern, lightweight, responsive portal that unifies the **Crescent ecosystem** —
-schools, colleges, a university, hospitals and community initiatives across India
-and beyond. It is a **glossary, guide and coordination layer**; it supplements,
-and does not replace, each institution's own website.
+The platform connecting the **sixteen institutions of the Crescent family** —
+schools, colleges, a university, healthcare and community initiatives across
+Chennai, Kilakarai, Madurai and Nagore. One shared calendar, one directory, one
+member network. It supplements, and does not replace, each institution's own
+website.
 
 ## Tech stack
 
@@ -73,10 +74,10 @@ on the two form tables, and members-only access to profiles.
 | `/institutions` | ISR 24h   | Filter by pillar / search; cards link out          |
 | `/calendar`     | ISR 10m   | **Top-level nav.** Today / Week / Month / Year     |
 | `/news`         | ISR 10m   | Unified news **and events** stream, type + institution filters |
-| `/connect`      | Dynamic   | Crescent Connect landing; session-aware CTAs       |
+| `/connect`      | Dynamic   | Member Network landing; session-aware CTAs        |
 | `/connect/*`    | Dynamic   | Members-only: signup, setup, directory, profiles   |
 | `/admin/*`      | Dynamic   | Admin dashboard, auth-gated                        |
-| `/about`        | ISR 24h   | Vision, mission, full timeline, CGOM note          |
+| `/about`        | ISR 24h   | What Crescent Connekt is, the two trusts, timeline |
 | `/contact`      | Static    | Contact form (posts to `/api/contact`)             |
 
 ## Editing content

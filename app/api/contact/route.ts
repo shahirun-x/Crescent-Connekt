@@ -111,8 +111,8 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "Crescent Global <noreply@crescentglobal.org>",
-          to: "connect@crescentglobal.org",
+          from: "Crescent Connekt <noreply@crescentconnekt.com>",
+          to: "connect@crescentconnekt.com",
           subject: `New contact form: ${name}`,
           text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
         }),
