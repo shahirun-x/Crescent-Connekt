@@ -12,7 +12,7 @@ calendar, one directory, one member network, all pointing outward.
 Live: https://crescent-global-calender.vercel.app
 Repo: https://github.com/shahirun-x/Crescent-Connekt
 Production domain (planned): crescentconnekt.com
-Supabase project ref: `zxffaohxxzbthspeelpj` (ap-south-1)
+Supabase project ref: `wrggjorrzqyfxdwvfeab` (ap-southeast-1, dedicated Crescent Connekt account)
 
 **Crescent Connekt and the Crescent Global Outreach Mission (CGOM) are separate
 projects.** No user-facing surface may carry "CGOM", "Crescent Global Outreach

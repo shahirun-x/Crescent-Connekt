@@ -6,10 +6,14 @@ reading this at a bad time.
 ## First-time setup (new Supabase project)
 
 Only needed when standing the backend up from scratch. The live project
-(`zxffaohxxzbthspeelpj`) is already past this.
+(`wrggjorrzqyfxdwvfeab`) is already past this.
+
+On the free tier, Supabase refuses custom email templates (HTTP 400) until a
+custom SMTP provider is configured, so the templates in
+`supabase/email-templates/` can only go in after SMTP is set up.
 
 1. **Create the project** at supabase.com. Note the region — the live one is
-   `ap-south-1`.
+   `ap-southeast-1`.
 2. **Run the SQL files in order**, one at a time, in SQL Editor → new query.
    Order matters: each depends on the last.
 

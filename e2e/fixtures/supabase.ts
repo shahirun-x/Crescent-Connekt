@@ -56,7 +56,7 @@ export function anonClient(): SupabaseClient {
  * every asset URL) and because the cost of a wrong match here is deleting real
  * members. Refuse to run rather than trust the operator's shell.
  */
-const PRODUCTION_REF = "zxffaohxxzbthspeelpj";
+const PRODUCTION_REF = "wrggjorrzqyfxdwvfeab";
 
 export function assertNotProduction() {
   if (!hasTestDb) return;
