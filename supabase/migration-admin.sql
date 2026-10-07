@@ -1,5 +1,9 @@
 -- Crescent Connekt — schema migration for admin dashboard
 -- Run AFTER schema.sql in the Supabase SQL editor.
+--
+-- SUPERSEDED IN PART: the auth.role() = 'authenticated' policies below became
+-- a privilege hole once member signup opened. migration-admin-rls.sql replaces
+-- them with is_admin() checks; always run it after this file (DECISIONS #31).
 
 -- contacts: track read/unread status
 alter table public.contacts add column if not exists is_read boolean not null default false;

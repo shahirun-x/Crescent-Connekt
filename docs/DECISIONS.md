@@ -268,3 +268,53 @@ CLAUDE.md hard rule 1.
 
 Earlier entries in this log were written under the old framing. They are
 history and were left as written.
+
+---
+
+**31. Database policies check `is_admin()`, never just authentication.**
+
+`migration-admin.sql` gated content writes and private reads on
+`auth.role() = 'authenticated'`. That was correct while every account was an
+administrator. Member signup (`migration-connect.sql`) quietly broke it: from
+then on, any member who confirmed an email could, straight through the
+Supabase API:
+
+- insert, update or delete institutions, events and news;
+- read every contact-form submission and the early-access signup list;
+- upload, overwrite or delete any object in the `media` bucket.
+
+Nothing in the app noticed. The admin routes use the service role, which
+bypasses RLS, so the policies were pure exposure, never a dependency. The
+middleware fixed the same mistake for `/admin` (#15). The database policies
+were left behind.
+
+**The rule:** a member session is a valid session. Any policy granting a write
+or a private read checks `public.is_admin()`, a `SECURITY DEFINER` lookup in
+`public.admins` with an empty `search_path`. That's the same grant the
+middleware checks. `auth.role() = 'authenticated'` and `auth.uid() is not null`
+are only acceptable for rules every member is meant to have, like "your own
+row" or "your own avatar folder".
+
+How it is built (`supabase/migration-admin-rls.sql`):
+
+- Admin policies are `to authenticated` and split per command instead of
+  `for all`. So anon reads and inserts never evaluate `is_admin()`, and anon has
+  no `EXECUTE` on it.
+- Storage: admins may write anywhere in `media`. Members may write only under
+  `avatars/<their uid>/`, which is the path `ImageUpload` now builds. Event and
+  news covers are admin-only.
+- Public reads and anonymous form inserts are unchanged. The anon UPDATE policy
+  on `connect_signups` (`public upsert signups`, `using (true)`) was dropped
+  without a replacement. Nothing upserts into that table: `/api/subscribe` does
+  a plain insert and handles duplicates through the unique constraint.
+- The old policies were dropped by the names `pg_policies` reported on the live
+  database, not names guessed from the migration files.
+
+`e2e/rls.spec.ts` is the regression test. It talks to Supabase directly with an
+approved member's session, the way an attacker would, rather than through the
+app's routes. Each denial has a positive control (the member's own avatar
+folder, an admin's write), so a policy that denies everything can't pass as a
+fix.
+
+Found during the move to `wrggjorrzqyfxdwvfeab`. The retired project carried
+the same hole.

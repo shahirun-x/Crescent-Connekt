@@ -52,6 +52,27 @@ applying — see `docs/RUNBOOK.md`.
 
 ## RLS design
 
+### Privileged policies check `is_admin()`, never authentication
+
+The same rule applies inside the database. Any policy granting a write, or a
+read of private data, must check `public.is_admin()` — never
+`auth.role() = 'authenticated'` or `auth.uid() is not null`. A member session is
+a valid session. `migration-admin.sql` got this wrong once signup opened, and
+`migration-admin-rls.sql` replaced every such policy (DECISIONS #31).
+`e2e/rls.spec.ts` tests it straight against Supabase, with a member's own
+session.
+
+Scope admin policies `to authenticated` and give each command its own policy
+rather than `for all`. Then anon reads and inserts never evaluate `is_admin()`,
+and anon can be refused `EXECUTE` on it.
+
+### `pg_trgm` stays in `public`
+
+The advisor flags `extension_in_public` for `pg_trgm`. That's accepted: the
+directory's trigram indexes (`migration-indexes.sql`) depend on its operator
+classes, and moving the extension risks breaking them for a lint warning.
+Revisit only with a tested plan to rebuild those indexes.
+
 ### Recursion trap
 
 "Approved members can see approved profiles" must query `profiles` from inside a
@@ -108,8 +129,8 @@ limit.
 
 The browser uploads **directly** to Supabase Storage; there is no server-side
 upload route. So the checks in `components/admin/ImageUpload.tsx` are for fast
-feedback only — anyone with an authenticated session can call the Storage API
-directly and skip them.
+feedback only — anyone with a session can call the Storage API directly and
+skip them.
 
 The real boundary is the bucket itself. `media` carries:
 
@@ -123,16 +144,11 @@ regardless of what the client sends. This is set in
 `supabase/migration-images.sql`, so a fresh environment gets it on first run,
 and the `on conflict` clause re-applies it if the bucket already exists.
 
-**Do not remove these settings.** The storage RLS policy alone does not
-constrain type or size — it only checks that the caller is authenticated and
-targeting the right bucket:
-
-```sql
-create policy "media authenticated insert" on storage.objects
-  for insert to authenticated with check (bucket_id = 'media');
-```
-
-Without the bucket settings, that policy accepts a 2 GB executable. Tightening
+**Do not remove these settings.** The storage RLS policies decide *where* a
+caller may write, not *what*: admins anywhere in `media`, members only inside
+`avatars/<their own uid>/` (`supabase/migration-admin-rls.sql`). They do not
+constrain type or size. Without the bucket settings, a member could put a 2 GB
+executable in their own avatar folder. Tightening
 the client is not a substitute; the client is the part an attacker controls.
 
 > The bucket permits `image/gif`, which `ImageUpload` does not offer. The

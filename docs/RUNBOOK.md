@@ -24,6 +24,9 @@ custom SMTP provider is configured, so the templates in
    | 3 | `supabase/migration-admin.sql` | `is_read`, `updated_at` triggers, admin RLS |
    | 4 | `supabase/migration-images.sql` | `events.image_url`, `media` bucket + policies |
    | 5 | `supabase/migration-connect.sql` | `profiles`, `admins`, directory view — **read the hazard below first** |
+   | 6 | `supabase/migration-indexes.sql` | Directory and foreign-key indexes, `pg_trgm` |
+   | 7 | `supabase/migration-rebrand.sql` | Crescent Connekt copy on seeded rows |
+   | 8 | `supabase/migration-admin-rls.sql` | `is_admin()`; admin-only writes and private reads; avatar-folder storage rule (DECISIONS #31) |
 
 3. **Create the admin user.** Authentication → Users → Add user → Create new
    user. Tick *Auto Confirm User*. There is no public admin signup by design.

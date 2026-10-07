@@ -29,7 +29,10 @@ export default function ImageUpload({
 }: {
   value: string | null | undefined;
   onChange: (url: string | null) => void;
-  /** Storage folder prefix, e.g. "events" or "news". */
+  /**
+   * Storage folder prefix, e.g. "events" or "news". "avatars" is special: the
+   * upload goes to avatars/<signed-in uid>/.
+   */
   folder: string;
   label?: string;
 }) {
@@ -58,7 +61,22 @@ export default function ImageUpload({
 
     try {
       const supabase = getBrowserSupabase();
-      const path = `${folder}/${Date.now()}-${sanitizeName(file.name)}`;
+
+      // Members may only write inside avatars/<their uid>/ — the storage
+      // policy in migration-admin-rls.sql enforces it; this just builds the
+      // path it accepts. Event and news covers are admin-only.
+      let prefix = folder;
+      if (folder === "avatars") {
+        const { data: auth } = await supabase.auth.getUser();
+        if (!auth.user) {
+          setError("Your session has expired. Please sign in again.");
+          setUploading(false);
+          setProgress(0);
+          return;
+        }
+        prefix = `avatars/${auth.user.id}`;
+      }
+      const path = `${prefix}/${Date.now()}-${sanitizeName(file.name)}`;
 
       setProgress(35);
       const { error: uploadError } = await supabase.storage
