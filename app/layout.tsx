@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Figtree } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import MotionProvider from "@/components/MotionProvider";
 import Navbar from "@/components/Navbar";
@@ -114,6 +115,7 @@ export default function RootLayout({
         {/* ?shots=1 — reveals the photographer's brief on every image slot. */}
         <ShotsMode />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
