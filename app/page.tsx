@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Shot from "@/components/Shot";
 import Hero from "@/components/home/Hero";
 import Places from "@/components/home/Places";
 import WhatItDoes from "@/components/home/WhatItDoes";
@@ -7,7 +6,7 @@ import WhatsOn from "@/components/home/WhatsOn";
 import Heritage from "@/components/home/Heritage";
 import MemberInvite from "@/components/home/MemberInvite";
 import { Rise } from "@/components/home/Figure";
-import { HERO, HERO_MOBILE } from "@/lib/images";
+import { HERO_SLIDES } from "@/lib/images";
 import { getEvents, getInstitutions } from "@/lib/data";
 
 /**
@@ -53,31 +52,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero
-        media={
-          <>
-            {/*
-              Two frames, not one crop. HERO_MOBILE is art-directed for the
-              phone; centre-cropping a 16:9 landscape to 3:4 throws away the
-              composition and usually the subject with it. CSS swaps them at
-              768px, and `sizes` keeps each one from downloading the other's
-              resolution.
-            */}
-            <Shot
-              image={HERO_MOBILE}
-              className="h-full w-full md:hidden"
-              sizes="100vw"
-              priority
-            />
-            <Shot
-              image={HERO}
-              className="hidden h-full w-full md:block"
-              sizes="100vw"
-              priority
-            />
-          </>
-        }
-      />
+      <Hero slides={HERO_SLIDES} />
 
       {/* 2 — OPENING STATEMENT. No image, no eyebrow, no heading. */}
       <section className="bg-paper">

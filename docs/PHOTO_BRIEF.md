@@ -26,8 +26,6 @@ building. This network is not a building.
 
 ## What is missing entirely
 
-- `PLACE_CHENNAI`
-- `PLACE_KILAKARAI`
 - `PLACE_MADURAI`
 - `PLACE_NAGORE`
 - `BANNER_INSTITUTIONS`
@@ -35,7 +33,6 @@ building. This network is not a building.
 - `CONTACT_VISUAL`
 - `PILLAR_HEALTHCARE`
 - `PILLAR_COMMUNITY`
-- `PILLAR_INNOVATION`
 
 These slots have no photograph at all and render a flat toned block instead.
 Four of them are the places themselves — Chennai, Kilakarai, Madurai and
@@ -46,7 +43,7 @@ them.
 
 ### `HERO`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** authentic Crescent photography in place.
 
 - **Where it appears** — Homepage hero, full-bleed, desktop and tablet (768px and up)
 - **Orientation and crop** — Landscape 16:9 or wider. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third free of faces and detail.
@@ -56,7 +53,7 @@ them.
 
 ### `HERO_MOBILE`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** authentic Crescent photography in place.
 
 - **Where it appears** — Homepage hero below 768px — replaces HERO entirely, never crops it
 - **Orientation and crop** — Portrait 4:5 or 3:4. Subject in the UPPER half; the headline occupies the lower half of the frame.
@@ -66,7 +63,7 @@ them.
 
 ### `PLACE_CHENNAI`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** authentic Crescent photography in place.
 
 - **Where it appears** — Homepage, 'The institutions, by place' — Chennai and Vandalur row
 - **Orientation and crop** — Landscape 4:3. Sits beside a typographic list of institutions.
@@ -76,7 +73,7 @@ them.
 
 ### `PLACE_KILAKARAI`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** authentic Crescent photography in place.
 
 - **Where it appears** — Homepage, 'The institutions, by place' — Kilakarai row
 - **Orientation and crop** — Landscape 4:3.
@@ -218,7 +215,7 @@ them.
 
 ### `PILLAR_INNOVATION`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** authentic Crescent photography in place.
 
 - **Where it appears** — Innovation pillar card
 - **Orientation and crop** — Landscape 16:7 band.

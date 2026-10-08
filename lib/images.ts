@@ -95,11 +95,8 @@ export const isTone = (i: SiteImage) => !i.src && !!i.tone;
 // ---------------------------------------------------------------------------
 
 export const HERO: SiteImage = {
-  // A student standing among her classmates in an Indian classroom. Chosen
-  // over every campus-architecture frame because photography is what carries
-  // the emotion here, and a building carries none.
-  src: unsplash("1572847748080-bac263fae977", 2000),
-  alt: "",
+  src: "/images/home/HERO-1D.webp",
+  alt: "Students walking along the tree-lined avenue on the Crescent campus at Vandalur",
   where: "Homepage hero, full-bleed, desktop and tablet (768px and up)",
   crop:
     "Landscape 16:9 or wider. The headline sits BOTTOM-LEFT over a scrim, so " +
@@ -114,15 +111,69 @@ export const HERO: SiteImage = {
     "Empty campus (reads as a brochure for a building), drone shots, rows of " +
     "people posed front-on, harsh midday sun.",
   minResolution: "3000px wide",
-  placeholder: true,
+  placeholder: false,
   priority: true,
 };
 
+export const HERO_2: SiteImage = {
+  src: "/images/home/HERO-2D.webp",
+  alt: "Students playing football at Crescent Residential Matriculation Higher Secondary School",
+  where: "Homepage hero slide 2 — residential school athletics",
+  crop: "Landscape 16:9 or wider.",
+  brief:
+    "Sports and campus activities at Crescent Residential School in Vandalur.",
+  avoid: "Staged posed lineups.",
+  minResolution: "3000px wide",
+  placeholder: false,
+};
+
+export const HERO_3: SiteImage = {
+  src: "/images/home/HERO-3D.webp",
+  alt: "Students in collaborative classroom study at Crescent Girls School",
+  where: "Homepage hero slide 3 — classroom learning",
+  crop: "Landscape 16:9 or wider.",
+  brief:
+    "Collaborative study and discussion inside the classroom.",
+  avoid: "Stiff camera-facing poses.",
+  minResolution: "3000px wide",
+  placeholder: false,
+};
+
+export const HERO_4: SiteImage = {
+  src: "/images/home/HERO-4D.webp",
+  alt: "Students studying in the university central library",
+  where: "Homepage hero slide 4 — central library research",
+  crop: "Landscape 16:9 or wider.",
+  brief:
+    "University library study and research sessions with students at work.",
+  avoid: "Empty library corridors.",
+  minResolution: "3000px wide",
+  placeholder: false,
+};
+
+export const HERO_5: SiteImage = {
+  src: "/images/home/HERO-5D.webp",
+  alt: "Student presenting in the university auditorium",
+  where: "Homepage hero slide 5 — auditorium presentation and symposium",
+  crop: "Landscape 16:9 or wider.",
+  brief:
+    "Student presentation or keynote before an engaged audience.",
+  avoid: "Empty auditorium seats.",
+  minResolution: "3000px wide",
+  placeholder: false,
+};
+
+export const HERO_SLIDES: SiteImage[] = [
+  HERO,
+  HERO_2,
+  HERO_3,
+  HERO_4,
+  HERO_5,
+];
+
 export const HERO_MOBILE: SiteImage = {
-  // Its own frame, not a centre crop of HERO. A 16:9 landscape cropped to a
-  // phone throws away the composition, and usually the subject with it.
-  src: unsplash("1692269725911-87697c558be1", 1200),
-  alt: "",
+  src: "/images/home/HERO-1D.webp",
+  alt: "Students on the Crescent campus at Vandalur",
   where: "Homepage hero below 768px — replaces HERO entirely, never crops it",
   crop:
     "Portrait 4:5 or 3:4. Subject in the UPPER half; the headline occupies " +
@@ -135,16 +186,14 @@ export const HERO_MOBILE: SiteImage = {
     "Cropping the landscape hero instead of shooting this. Wide group shots. " +
     "Detail that only survives at desktop size.",
   minResolution: "1600px wide",
-  placeholder: true,
+  placeholder: false,
 };
 
 // ---------------------------------------------------------------------------
 // Homepage — the institutions, by place
 //
-// All four are tone blocks. See the note at the top of this file: no honest
-// stand-in exists for any of these towns, and a wrong one is worse than none.
-// The tones step from warm sand to cool grey so the four rows are
-// distinguishable without pretending to be photographs.
+// Real photography for Chennai and Kilakarai. Madurai and Nagore step from
+// warm sand to cool grey until client photographs land.
 // ---------------------------------------------------------------------------
 
 const PLACE_AVOID =
@@ -153,8 +202,8 @@ const PLACE_AVOID =
   "town. If the campus is not identifiable in it, it is the wrong frame.";
 
 export const PLACE_CHENNAI: SiteImage = {
-  tone: "bg-[#d8cbb4]",
-  alt: "",
+  src: "/images/home/Chennai__CIIC.webp",
+  alt: "Crescent Innovation & Incubation Council (CIIC) campus at Vandalur, Chennai",
   where: "Homepage, 'The institutions, by place' — Chennai and Vandalur row",
   crop: "Landscape 4:3. Sits beside a typographic list of institutions.",
   brief:
@@ -163,12 +212,12 @@ export const PLACE_CHENNAI: SiteImage = {
     "Students in frame, walking rather than posed.",
   avoid: PLACE_AVOID,
   minResolution: "2400px wide",
-  placeholder: true,
+  placeholder: false,
 };
 
 export const PLACE_KILAKARAI: SiteImage = {
-  tone: "bg-[#b8c6c3]",
-  alt: "",
+  src: "/images/home/Thassim-beevi.webp",
+  alt: "Thassim Beevi Abdul Kader College for Women campus in Kilakarai",
   where: "Homepage, 'The institutions, by place' — Kilakarai row",
   crop: "Landscape 4:3.",
   brief:
@@ -178,7 +227,7 @@ export const PLACE_KILAKARAI: SiteImage = {
     "distinctive; use it.",
   avoid: PLACE_AVOID + " Also avoid empty clinical corridors.",
   minResolution: "2400px wide",
-  placeholder: true,
+  placeholder: false,
 };
 
 export const PLACE_MADURAI: SiteImage = {
@@ -403,8 +452,8 @@ export const PILLAR_COMMUNITY: SiteImage = {
 };
 
 export const PILLAR_INNOVATION: SiteImage = {
-  tone: "bg-[#b2b6bd]",
-  alt: "",
+  src: "/images/home/Chennai__CIIC.webp",
+  alt: "Crescent Innovation & Incubation Council (CIIC) at Vandalur, Chennai",
   where: "Innovation pillar card",
   crop: "Landscape 16:7 band.",
   brief:
@@ -414,7 +463,7 @@ export const PILLAR_INNOVATION: SiteImage = {
     "Circuit-board macros. A close-up of hardware says nothing about the " +
     "people building it. Western founders at laptops.",
   minResolution: "1600px wide",
-  placeholder: true,
+  placeholder: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -433,6 +482,10 @@ export const PILLAR_IMAGES: Record<Category, SiteImage> = {
 export const ALL_IMAGES: Record<string, SiteImage> = {
   HERO,
   HERO_MOBILE,
+  HERO_2,
+  HERO_3,
+  HERO_4,
+  HERO_5,
   PLACE_CHENNAI,
   PLACE_KILAKARAI,
   PLACE_MADURAI,

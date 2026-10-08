@@ -60,6 +60,7 @@ for (const m of src.matchAll(
     avoid: field("avoid"),
     minResolution: field("minResolution"),
     hasPhoto: /\n  src:/.test(body),
+    isReal: /\n  placeholder:\s*false/.test(body),
   });
 }
 
@@ -79,7 +80,9 @@ const section = (title, list) =>
       [
         `### \`${s.name}\``,
         "",
-        s.hasPhoto
+        s.isReal
+          ? "**Currently:** authentic Crescent photography in place."
+          : s.hasPhoto
           ? "**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced."
           : "**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.",
         "",

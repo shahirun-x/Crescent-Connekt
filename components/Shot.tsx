@@ -76,7 +76,11 @@ function ShotBrief({ name, image }: { name: string; image: SiteImage }) {
     >
       <p className="font-mono text-[0.7rem] font-bold uppercase tracking-widest text-gold-300">
         {name}
-        {isTone(image) ? " · no photograph yet" : " · stand-in"}
+        {isTone(image)
+          ? " · no photograph yet"
+          : image.placeholder
+          ? " · stand-in"
+          : " · real photograph"}
       </p>
       <dl className="mt-3 space-y-2 text-[0.78rem] leading-snug">
         <Row label="Where" value={image.where} />
