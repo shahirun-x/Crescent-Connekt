@@ -94,6 +94,7 @@ test.describe("indexing guard (DECISIONS #26)", () => {
     for (const p of [
       "/admin",
       "/api/",
+      "/connect/home",
       "/connect/directory",
       "/connect/profile",
       "/connect/setup",

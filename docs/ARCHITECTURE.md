@@ -68,7 +68,8 @@ fallback, not the mechanism.
 - `profiles` — 1:1 with `auth.users`. `status` ∈ pending | approved | rejected |
   suspended. Consent flags `show_email` / `show_phone`.
 - `directory_profiles` — a **view** that masks email/phone via `CASE` on the
-  consent flags. The directory reads the view, never the table.
+  consent flags. The directory reads the view, never the table. Readable with a
+  member's own session since `migration-directory-email.sql` (DECISIONS #32).
 - `admins` — explicit admin grant. See `docs/SECURITY.md`.
 
 ### Storage

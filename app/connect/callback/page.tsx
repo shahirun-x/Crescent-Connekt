@@ -56,7 +56,7 @@ export default function ConnectCallbackPage() {
         }
 
         if (!json.hasProfile) router.replace("/connect/setup");
-        else if (json.status === "approved") router.replace("/connect/directory");
+        else if (json.status === "approved") router.replace("/connect/home");
         else if (json.status === "pending") router.replace("/connect/pending");
         else router.replace("/connect/status");
       } catch (e) {

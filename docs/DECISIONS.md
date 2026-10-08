@@ -318,3 +318,33 @@ fix.
 
 Found during the move to `wrggjorrzqyfxdwvfeab`. The retired project carried
 the same hole.
+
+---
+
+**32. Member-facing pages read other members with the member's own session.**
+
+`/connect/home` shows other members, and it reads them as the signed-in
+member — publishable key plus their access token (`lib/member-db.ts`) — so
+Row Level Security decides who is visible. A forgotten
+`.eq("status", "approved")` then returns nothing extra, because the profiles
+SELECT policy only exposes approved rows to approved callers. With the service
+role, the same slip would leak every pending, rejected and suspended profile.
+
+This needed a schema change. `directory_profiles` joined `auth.users` for the
+email column, and `authenticated` has no SELECT on `auth.users`, so any
+member-session query on the view failed with "permission denied for table
+users". That is why the directory API and the profile page were built on the
+service role in the first place. `migration-directory-email.sql` moves the
+email lookup into `public.directory_email(id)`, a SECURITY DEFINER function
+with an empty `search_path` that re-applies every rule itself (consent flag,
+caller approved or self, or service role), and resets the view's grants to
+SELECT for `authenticated` and `service_role` only. Supabase's default
+privileges had given `anon` every privilege on the view.
+
+The home page also selects an explicit column list with no `email` or `phone`,
+so contact details never reach the page or its RSC payload, even where a member
+has consented. The profile page is where those belong.
+
+Not yet moved: the directory API and `/connect/profile/[id]` still use the
+service role. They are correct today because they filter on status explicitly;
+moving them onto `getMemberDb()` is a follow-up, not a fix.

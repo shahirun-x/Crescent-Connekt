@@ -46,15 +46,15 @@ export default async function ConnectPage() {
                 Welcome back, {session!.profile!.full_name.split(" ")[0]}
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
-                You&apos;re an approved member. Browse the directory to find and
-                connect with people across the network.
+                You&apos;re an approved member. Your home has what&apos;s coming
+                up at your institution and the people from it.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/connect/directory"
+                  href="/connect/home"
                   className="rounded-full bg-crescent-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-crescent-800"
                 >
-                  Go to Directory →
+                  Go to your home →
                 </Link>
                 <Link
                   href={`/connect/profile/${session!.profile!.id}`}

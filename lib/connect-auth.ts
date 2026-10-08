@@ -85,7 +85,7 @@ export function routeForProfile(profile: MemberProfile | null): string {
   if (!profile) return "/connect/setup";
   switch (profile.status) {
     case "approved":
-      return "/connect/directory";
+      return "/connect/home";
     case "pending":
       return "/connect/pending";
     default:

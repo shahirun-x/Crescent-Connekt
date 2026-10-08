@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         "/admin",
         "/api/",
         // Members-only Connect surfaces.
+        "/connect/home",
         "/connect/directory",
         "/connect/profile",
         "/connect/setup",

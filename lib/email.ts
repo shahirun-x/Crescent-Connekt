@@ -85,7 +85,7 @@ Your Member Network profile has been reviewed and approved. You can now browse t
 
 Your contact details stay private unless you chose to share them — you can change that any time from your profile.
 
-Open the directory: ${directoryUrl}
+Open your Member Network: ${directoryUrl}
 
 — Crescent Connekt`;
 

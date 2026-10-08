@@ -16,7 +16,7 @@ export default async function ConnectStatusPage() {
   if (!session.profile) redirect("/connect/setup");
 
   const { status, rejection_reason } = session.profile;
-  if (status === "approved") redirect("/connect/directory");
+  if (status === "approved") redirect("/connect/home");
   if (status === "pending") redirect("/connect/pending");
 
   const suspended = status === "suspended";

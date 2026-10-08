@@ -81,7 +81,7 @@ async function notifyApproved(
     // template cannot be read the member still gets a readable email.
     const { subject, html, text } = await buildApprovalEmail(
       fullName,
-      `${SITE_URL}/connect/directory`
+      `${SITE_URL}/connect/home`
     );
 
     const res = await fetch("https://api.resend.com/emails", {

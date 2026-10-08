@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import { Avatar } from "@/components/connect/MemberCard";
+import MemberNav from "@/components/connect/MemberNav";
 import { getMemberSession } from "@/lib/connect-auth";
 import { getServiceSupabase } from "@/lib/supabase-server";
 import { roleMeta, type MemberRole } from "@/lib/roles";
@@ -70,12 +71,12 @@ export default async function MemberProfilePage({
 
       <div className="container-page py-12">
         <div className="mx-auto max-w-3xl">
-          <Link
-            href="/connect/directory"
-            className="text-sm font-semibold text-crescent-600 hover:text-crescent-800"
-          >
-            ← Back to directory
-          </Link>
+          {/* Your own profile is "My profile"; anyone else's is reached from
+              the directory, so that is the section it belongs to. */}
+          <MemberNav
+            current={isSelf ? "profile" : "directory"}
+            profileId={session.profile.id}
+          />
 
           <div className="mt-5 rounded-card border border-slate-200 bg-white p-6 sm:p-8">
             <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:text-left">

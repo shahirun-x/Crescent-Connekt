@@ -8,7 +8,7 @@ export const config = {
 const MEMBER_COOKIE = "cg-member-token";
 
 /** Member routes that require a signed-in, approved member. */
-const MEMBER_PROTECTED = ["/connect/directory", "/connect/profile"];
+const MEMBER_PROTECTED = ["/connect/home", "/connect/directory", "/connect/profile"];
 
 /** Member routes that require sign-in but not approval. */
 const MEMBER_AUTHED = ["/connect/setup", "/connect/pending", "/connect/status"];

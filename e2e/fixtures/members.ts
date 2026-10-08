@@ -50,6 +50,9 @@ export async function createMember(opts: {
   headline?: string | null;
   role?: string;
   emailPrefix?: string;
+  /** null = not affiliated with any institution. */
+  institutionId?: string | null;
+  batchYear?: number | null;
 }): Promise<TestMember> {
   const sb = serviceClient();
   const email = uniqueEmail(opts.emailPrefix);
@@ -82,6 +85,8 @@ export async function createMember(opts: {
       current_city: "Chennai",
       current_country: "India",
       phone: opts.phone ?? null,
+      institution_id: opts.institutionId ?? null,
+      batch_year: opts.batchYear ?? null,
       show_email: opts.showEmail ?? false,
       show_phone: opts.showPhone ?? false,
       status: opts.status,
@@ -197,4 +202,20 @@ export async function recordAvatarFromPage(page: Page, member: TestMember) {
     const path = src.split("/storage/v1/object/public/media/")[1]?.split("?")[0];
     if (path) member.avatarPaths.push(decodeURIComponent(path));
   }
+}
+
+/**
+ * A real institution id from the test project, for tests that need members
+ * affiliated with one. Reads the first by sort order; the institutions table is
+ * seeded and never written by the suite.
+ */
+export async function anyInstitutionId(): Promise<string> {
+  const { data, error } = await serviceClient()
+    .from("institutions")
+    .select("id")
+    .order("sort_order", { ascending: true })
+    .limit(1)
+    .single();
+  if (error || !data) throw new Error(`anyInstitutionId: ${error?.message ?? "none seeded"}`);
+  return data.id as string;
 }

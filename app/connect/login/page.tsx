@@ -62,7 +62,7 @@ export default function ConnectLoginPage() {
       }
 
       if (!json.hasProfile) router.push("/connect/setup");
-      else if (json.status === "approved") router.push("/connect/directory");
+      else if (json.status === "approved") router.push("/connect/home");
       else if (json.status === "pending") router.push("/connect/pending");
       else router.push("/connect/status");
       router.refresh();

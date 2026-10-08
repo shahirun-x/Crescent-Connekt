@@ -96,6 +96,15 @@ leak contact details.
 Two layers: masking at the view, row access enforced in the routes. Read the
 view, never the table, for anything member-facing.
 
+### Member pages read as the member
+
+`/connect/home` reads every row through `getMemberDb()` (`lib/member-db.ts`):
+the publishable key plus the member's own access token, so RLS decides what
+comes back. It imports no service-role client. New member-facing pages that
+show other members should follow it, not the older directory API and profile
+page, which still read with the service role and rely on an explicit
+`.eq("status", "approved")`. See DECISIONS #32.
+
 ### The `.select()` trap on anonymous inserts
 
 Anon has INSERT but no SELECT on `contacts` and `connect_signups`. Adding

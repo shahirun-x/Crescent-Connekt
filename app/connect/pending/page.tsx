@@ -15,7 +15,7 @@ export default async function ConnectPendingPage() {
   const session = await getMemberSession();
   if (!session) redirect("/connect/login");
   if (!session.profile) redirect("/connect/setup");
-  if (session.profile.status === "approved") redirect("/connect/directory");
+  if (session.profile.status === "approved") redirect("/connect/home");
   if (session.profile.status !== "pending") redirect("/connect/status");
 
   const p = session.profile;

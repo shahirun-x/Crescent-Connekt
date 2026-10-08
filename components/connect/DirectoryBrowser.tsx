@@ -9,7 +9,16 @@ interface InstitutionOption {
   name: string;
 }
 
-export default function DirectoryBrowser() {
+/**
+ * `initialInstitution` pre-selects the institution filter — the member home
+ * links here as /connect/directory?institution=<id>. It only seeds the filter;
+ * the member can clear or change it like any other.
+ */
+export default function DirectoryBrowser({
+  initialInstitution = "",
+}: {
+  initialInstitution?: string;
+}) {
   const [members, setMembers] = useState<DirectoryMember[]>([]);
   const [institutions, setInstitutions] = useState<InstitutionOption[]>([]);
   const [count, setCount] = useState(0);
@@ -22,7 +31,7 @@ export default function DirectoryBrowser() {
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [roles, setRoles] = useState<MemberRole[]>([]);
-  const [institution, setInstitution] = useState("");
+  const [institution, setInstitution] = useState(initialInstitution);
   const [city, setCity] = useState("");
   const [yearFrom, setYearFrom] = useState("");
   const [yearTo, setYearTo] = useState("");
