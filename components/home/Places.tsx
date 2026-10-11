@@ -74,14 +74,14 @@ export default function Places({
 
   return (
     <section className="bg-paper">
-      <div className="container-page py-24 md:py-32">
+      <div className="container-page py-16 md:py-32">
         <Rise>
           <h2 className="type-h1 max-w-[18ch] text-balance text-ink-900">
             Four towns. One family of institutions.
           </h2>
         </Rise>
 
-        <div className="mt-16 md:mt-20">
+        <div className="mt-10 md:mt-20">
           {rows.map((row, i) => (
             <div
               key={row.name}

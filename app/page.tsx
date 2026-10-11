@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       {/* 2 — OPENING STATEMENT. No image, no eyebrow, no heading. */}
       <section className="bg-paper">
-        <div className="container-page py-24 md:py-32">
+        <div className="container-page py-16 md:py-32">
           <Rise>
             <p className="type-statement text-ink-900">
               Crescent Connekt is one place to see sixteen institutions at

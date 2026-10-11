@@ -19,7 +19,7 @@ import {
 export default function WhatItDoes() {
   return (
     <section className="bg-paper-deep">
-      <div className="container-page py-24 md:py-32">
+      <div className="container-page py-16 md:py-32">
         <Rise>
           <h2 className="type-h1 max-w-[16ch] text-balance text-ink-900">
             What it actually does

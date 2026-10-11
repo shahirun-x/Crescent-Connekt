@@ -26,7 +26,7 @@ export default function WhatsOn({ events }: { events: CrescentEvent[] }) {
   if (upcoming.length === 0) {
     return (
       <section className="bg-paper">
-        <div className="container-page py-24 md:py-32">
+        <div className="container-page py-16 md:py-32">
           <h2 className="type-h1 text-ink-900">What&apos;s on</h2>
           <p className="type-body mt-6 text-ink-700">
             Nothing is scheduled in the shared calendar just now.
@@ -41,7 +41,7 @@ export default function WhatsOn({ events }: { events: CrescentEvent[] }) {
 
   return (
     <section className="bg-paper">
-      <div className="container-page py-24 md:py-32">
+      <div className="container-page py-16 md:py-32">
         <Rise>
           <h2 className="type-h1 text-ink-900">What&apos;s on</h2>
         </Rise>

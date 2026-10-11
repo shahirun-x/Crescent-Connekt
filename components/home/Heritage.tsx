@@ -18,7 +18,7 @@ import { HERITAGE } from "@/lib/images";
 export default function Heritage() {
   return (
     <section className="bg-crescent-950 text-paper">
-      <div className="container-page py-24 md:py-32">
+      <div className="container-page py-16 md:py-32">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
           <Figure>
             <figure className="frame-zoom">

@@ -118,17 +118,24 @@ export default function PlaceRow({
           <Figure className="-mx-5 mt-6 md:hidden">
             <ul
               aria-label={`Photographs of institutions in ${name}`}
-              className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none]"
+              // `relative`, and `relative` on each item: absolutely-positioned
+              // descendants (the sr-only "(opens in a new tab)" spans) must
+              // be contained HERE. Without it, once the reveal's transform
+              // was removed they positioned against the page, sat 1280px to
+              // the right, widened the document, and phones zoomed out.
+              className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-2 [scrollbar-width:none]"
             >
               {withPhoto.map((i) => (
-                <li key={i.id} className="w-[72%] max-w-[18rem] shrink-0 snap-start">
+                <li key={i.id} className="relative w-[72%] max-w-[18rem] shrink-0 snap-start">
                   <a href={i.url} target="_blank" rel="noopener noreferrer" className="group block">
                     <div className="relative aspect-[4/5] overflow-hidden bg-ink-100">
                       <PhotoImage
                         {...single(i.photo!, "mobile")}
                         focal={i.photo!.focal}
                         alt={i.photo!.alt}
-                        sizes="(max-width: 767px) 72vw, 288px"
+                        // 72% of the strip's content box (viewport minus its
+                        // 1.25rem padding each side), capped at 18rem.
+                        sizes="(max-width: 767px) min(calc((100vw - 2.5rem) * 0.72), 288px), 288px"
                       />
                       {i.brief}
                     </div>

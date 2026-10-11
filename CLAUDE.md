@@ -87,12 +87,22 @@ No UI component library. No CSS-in-JS. No state library.
   - Run it alone with `npm run check:contrast`.
   - Decorative borders are deliberately exempt — see `docs/DECISIONS.md` #27
     before "fixing" that.
+  - Text over a photograph sits on a scrim whose alpha is a `--scrim-*` token
+    in `globals.css`. The gate checks it against a near-white patch, the
+    worst case. Never put text on a photo without one.
 - Colours come from the semantic tokens in `globals.css` (`--surface-*`,
   `--text-*`, `--border-*`) and the sand / teal / gold scales. Reach for those
   rather than raw `slate-*` values.
 - Every photograph on the site is a named constant in `lib/images.ts`. Add new
   images there, not inline in a component — swapping placeholders for real
   client photography must stay a one-line change per image.
+  - Client photos live in `public/images/home/` as `<subject>-desktop.webp` /
+    `<subject>-mobile.webp` and are **statically imported** (real dimensions,
+    blur placeholders). Two crops are art-directed with `<picture>` via
+    `components/PhotoImage.tsx`; a single crop needs a `focal` point, chosen
+    by rendering the crop, not guessed.
+  - Assign a photo by **looking at it**. Client filenames have been wrong.
+  - `npm run photo:brief` regenerates `docs/PHOTO_BRIEF.md` from the file.
 - Motion: entrance animations use `whileInView`. Respect `prefers-reduced-motion`
   except where `MotionProvider` deliberately overrides it (see DECISIONS #9).
 

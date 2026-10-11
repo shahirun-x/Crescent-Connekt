@@ -403,6 +403,29 @@ summary:focus-visible {
   transform-origin: left center;
   animation: hero-progress 7s linear forwards;
 }
+/* The hero's text entrance runs in CSS, not JavaScript. The text is the
+   largest thing Chrome counts for LCP (a full-viewport photograph is treated
+   as background), and a JS-driven fade cannot start until hydration — under
+   a throttled phone CPU that held the text invisible for over 4 seconds.
+   CSS starts on first paint. */
+@keyframes hero-line {
+  from { transform: translateY(108%); }
+  to   { transform: none; }
+}
+.hero-line {
+  animation: hero-line 0.82s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-rise {
+  animation: hero-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-line,
+  .hero-rise { animation: none; }
+}
 .hero-paused .hero-zoom,
 .hero-paused .hero-progress-fill {
   animation-play-state: paused;

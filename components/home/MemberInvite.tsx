@@ -23,7 +23,7 @@ export default function MemberInvite() {
         </figure>
       </Figure>
 
-      <div className="container-page py-20 md:py-28">
+      <div className="container-page py-14 md:py-28">
         <div className="max-w-2xl">
           <Rise>
             {/* "The network is only as good as who is in it." now belongs to

@@ -54,6 +54,10 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Next's defaults jump from 384px to 640px. The places strip shows a
+    // ~270px-wide photo, ~470 device pixels on a typical phone, so every one
+    // downloaded a 640px file. 480 fills the gap.
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 480],
     remotePatterns: [
       ...(supabaseHost
         ? [{ protocol: "https" as const, hostname: supabaseHost }]

@@ -73,7 +73,12 @@ export default function Figure({
 
   return (
     <motion.div
-      className={`overflow-hidden ${className ?? ""}`}
+      // `relative` matters as much as `overflow-hidden`: overflow only clips
+      // absolutely-positioned descendants whose containing block is inside
+      // it. When the reveal ends, the inner transform is removed and stops
+      // being a containing block — so without this, anything absolute inside
+      // escapes the clip and can widen the page.
+      className={`relative overflow-hidden ${className ?? ""}`}
       initial="hidden"
       whileInView="shown"
       viewport={{ once: true, margin: "-80px" }}

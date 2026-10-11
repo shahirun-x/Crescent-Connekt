@@ -53,6 +53,18 @@ export default function PhotoImage({
     if (img && !img.complete) setPhase("pending");
   }, [instant]);
 
+  // The blur layer goes once the photograph is in: a CSS blur filter left
+  // behind every image costs paint on every frame something nearby animates,
+  // for a layer nobody can see any more. After the 700ms fade, not before, so
+  // the fade still has something to fade from.
+  const [blurGone, setBlurGone] = useState(false);
+  useEffect(() => {
+    if (phase !== "loaded" && !(phase === "idle" && ref.current?.complete)) return;
+    const t = setTimeout(() => setBlurGone(true), phase === "loaded" ? 800 : 0);
+    return () => clearTimeout(t);
+  }, [phase]);
+
+
   const base = mobile ?? desktop;
   if (!base) return null;
 
@@ -64,7 +76,7 @@ export default function PhotoImage({
     desktop && mobile ? getImageProps({ ...common, src: desktop }).props.srcSet : undefined;
 
   const blurLayer = (src: StaticImageData, cls: string) =>
-    src.blurDataURL ? (
+    src.blurDataURL && !blurGone ? (
       <span
         aria-hidden="true"
         className={`absolute inset-0 ${cls}`}

@@ -2,9 +2,7 @@
 
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { EASE_OUT, useQuietDuration } from "./Figure";
 
 /** 7s on screen, then a 1.5s crossfade into the next. */
 const HOLD_MS = 7000;
@@ -41,7 +39,6 @@ export interface HeroSlide {
  * useQuietDuration in Figure.tsx for why that matters.
  */
 export default function Hero({ slides }: { slides: HeroSlide[] }) {
-  const dur = useQuietDuration();
   const count = slides.length;
 
   const [index, setIndex] = useState(0);
@@ -183,30 +180,34 @@ export default function Hero({ slides }: { slides: HeroSlide[] }) {
       {/* Text, on its own scrim so the darkening follows it at every width. */}
       <div className="scrim-hero-headline pt-32">
         <div className="container-page">
-          <h1 className="type-display max-w-[16ch] text-white">
+          {/*
+            Explicit lines, no ch-based max-width. A `ch` is a different width
+            in the fallback font than in Newsreader, so a ch cap re-wrapped the
+            headline when the real font arrived and, because the block is
+            anchored to the bottom, shifted everything above it (CLS 0.05).
+            On phones "Sixteen / institutions." is two lines on purpose: every
+            line then fits with room to spare in either font.
+          */}
+          <h1 className="type-display text-white">
             <Line delay={0.05}>One Crescent.</Line>
-            <Line delay={0.17}>Sixteen institutions.</Line>
+            <Line delay={0.17}>
+              <span className="block md:inline">Sixteen</span>{" "}
+              <span className="block md:inline">institutions.</span>
+            </Line>
             <Line delay={0.29}>One network.</Line>
           </h1>
         </div>
 
         <div className="scrim-hero-lift mt-6 pb-10 pt-4 md:pb-14">
           <div className="container-page">
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: dur(0.6), delay: dur(0.46), ease: EASE_OUT }}
-              className="type-lead max-w-xl text-white"
-            >
+            <p className="hero-rise type-lead max-w-xl text-white" style={{ animationDelay: "0.46s" }}>
               A shared calendar, a member directory, and one place that points
               outward to every institution&apos;s own work.
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: dur(0.6), delay: dur(0.56), ease: EASE_OUT }}
-              className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3"
+            <div
+              className="hero-rise mt-8 flex flex-wrap items-center gap-x-8 gap-y-3"
+              style={{ animationDelay: "0.56s" }}
             >
               <Link
                 href="/calendar"
@@ -220,7 +221,7 @@ export default function Hero({ slides }: { slides: HeroSlide[] }) {
               >
                 Browse the institutions
               </Link>
-            </motion.div>
+            </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
               <p className="type-meta text-crescent-100">
@@ -268,19 +269,13 @@ export default function Hero({ slides }: { slides: HeroSlide[] }) {
   );
 }
 
+/** One headline line, sliding up out of its own clip box — in CSS (see globals.css). */
 function Line({ children, delay }: { children: ReactNode; delay: number }) {
-  const dur = useQuietDuration();
-
   return (
     <span className="block overflow-hidden pb-[0.06em]">
-      <motion.span
-        className="block"
-        initial={{ y: "108%" }}
-        animate={{ y: "0%" }}
-        transition={{ duration: dur(0.82), delay: dur(delay), ease: EASE_OUT }}
-      >
+      <span className="hero-line block" style={{ animationDelay: `${delay}s` }}>
         {children}
-      </motion.span>
+      </span>
     </span>
   );
 }
