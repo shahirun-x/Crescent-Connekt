@@ -5,10 +5,13 @@
  *
  * HOW TO SWAP IN REAL CLIENT PHOTOGRAPHY
  *
- * Change `src` on the entry below and flip `placeholder` to false. That is the
- * whole job — one line per image, no hunting through components.
+ * Put the file in public/images/home/ as <subject>-desktop.webp and/or
+ * <subject>-mobile.webp, import it below, set `desktop` / `mobile` on the
+ * entry and flip `placeholder` to false. One import and one line per image.
+ * If only one crop exists, set `focal` (CSS object-position) so the subject
+ * survives the other aspect — check it by cropping, not by guessing.
  *
- * For a slot currently rendering a `tone` block, set `src` and delete `tone`.
+ * For a slot currently rendering a `tone` block, add the photo and delete `tone`.
  *
  * SEE THE BRIEFS ON THE LIVE PAGE
  *
@@ -56,8 +59,59 @@
  *  - Remote hosts must be in next.config.ts images.remotePatterns.
  */
 
+import type { StaticImageData } from "next/image";
+
+// ---------------------------------------------------------------------------
+// Client photography — static imports, so next/image knows the real
+// dimensions (no layout shift) and generates a blur placeholder for each.
+// Files live in public/images/home/ as <subject>-desktop.webp /
+// <subject>-mobile.webp; <subject> is the institution id from lib/seed.ts.
+// ---------------------------------------------------------------------------
+import hero1 from "@/public/images/home/hero-1-desktop.webp";
+import hero2 from "@/public/images/home/hero-2-desktop.webp";
+import hero3 from "@/public/images/home/hero-3-desktop.webp";
+import hero4 from "@/public/images/home/hero-4-desktop.webp";
+import hero5 from "@/public/images/home/hero-5-desktop.webp";
+import bsaD from "@/public/images/home/bsa-crescent-institute-desktop.webp";
+import bsaM from "@/public/images/home/bsa-crescent-institute-mobile.webp";
+import ciicD from "@/public/images/home/ciic-desktop.webp";
+import girlsD from "@/public/images/home/crescent-girls-school-desktop.webp";
+import girlsM from "@/public/images/home/crescent-girls-school-mobile.webp";
+import boysD from "@/public/images/home/crescent-residential-boys-school-desktop.webp";
+import cschoolD from "@/public/images/home/crescent-school-vandalur-desktop.webp";
+import cschoolM from "@/public/images/home/crescent-school-vandalur-mobile.webp";
+import bukhariM from "@/public/images/home/buhari-aalim-arabic-college-mobile.webp";
+import tbakD from "@/public/images/home/tbak-college-women-desktop.webp";
+import pearlD from "@/public/images/home/pearl-matriculation-school-desktop.webp";
+import pearlM from "@/public/images/home/pearl-matriculation-school-mobile.webp";
+import educD from "@/public/images/home/crescent-college-education-madurai-desktop.webp";
+import educM from "@/public/images/home/crescent-college-education-madurai-mobile.webp";
+import nursingD from "@/public/images/home/crescent-yz-school-nursing-madurai-desktop.webp";
+import nursingM from "@/public/images/home/crescent-yz-school-nursing-madurai-mobile.webp";
+import maduraiM from "@/public/images/home/madurai-crescent-school-mobile.webp";
+import alMuminD from "@/public/images/home/al-mumin-childrens-home-desktop.webp";
+import alMuminM from "@/public/images/home/al-mumin-childrens-home-mobile.webp";
+import nagoreD from "@/public/images/home/nagore-crescent-school-desktop.webp";
+import nagoreM from "@/public/images/home/nagore-crescent-school-mobile.webp";
+import calendarD from "@/public/images/home/central-calendar-desktop.webp";
+import networkD from "@/public/images/home/member-network-desktop.webp";
+import statementD from "@/public/images/home/network-statement-desktop.webp";
+
 export interface SiteImage {
-  /** Swap this to the real asset. Undefined means the slot uses `tone`. */
+  /**
+   * Client photography, statically imported. When both exist they are two
+   * DIFFERENT crops and are art-directed with <picture> (desktop from 768px),
+   * never one image squeezed into the other's frame.
+   */
+  desktop?: StaticImageData;
+  mobile?: StaticImageData;
+  /**
+   * CSS object-position for a photo that has only ONE crop and must survive
+   * the other aspect (a landscape in a portrait phone frame, or the reverse).
+   * Chosen by looking at the crop, e.g. "52% 50%". Defaults to centre.
+   */
+  focal?: string;
+  /** A remote stand-in (Unsplash). Only for slots with no client photo. */
   src?: string;
   /**
    * Tailwind background classes for a designed neutral panel, used when no
@@ -66,7 +120,7 @@ export interface SiteImage {
    * space. Delete once a real photo lands.
    */
   tone?: string;
-  /** Empty string only for decorative images with adjacent naming text. */
+  /** Describes the actual scene. Empty only when decorative AND named alongside. */
   alt: string;
   /** Where this appears, so a brief can be read in context. */
   where: string;
@@ -78,7 +132,7 @@ export interface SiteImage {
   avoid: string;
   /** Minimum delivered resolution. */
   minResolution: string;
-  /** True while this is a stand-in. Flip to false when the real photo lands. */
+  /** True while this is a stand-in. False once it is the client's own photograph. */
   placeholder: boolean;
   /** Above-the-fold on first paint. At most one per route. */
   priority?: boolean;
@@ -87,197 +141,182 @@ export interface SiteImage {
 const unsplash = (id: string, w = 1600) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
 
-/** True when this slot should render a tone block rather than an <Image>. */
-export const isTone = (i: SiteImage) => !i.src && !!i.tone;
+/** Any photograph at all — client or stand-in. */
+export const hasPhoto = (i: SiteImage) => !!(i.desktop || i.mobile || i.src);
+
+/** True when this slot should render a tone block rather than a photograph. */
+export const isTone = (i: SiteImage) => !hasPhoto(i) && !!i.tone;
+
+/** Shared brief text for client photographs that are already in place. */
+const SUPPLIED = {
+  brief:
+    "Supplied by the client. A later reshoot should keep the same subject and " +
+    "framing, with students or staff in frame where possible.",
+  avoid: "Empty grounds; posed rows facing the lens; harsh midday light.",
+} as const;
 
 // ---------------------------------------------------------------------------
-// Homepage — hero
+// Homepage — hero slideshow. Five desktop frames; no mobile crops were
+// supplied, so each carries a focal point checked against a 9:16 crop.
 // ---------------------------------------------------------------------------
+
+const heroSlide = (
+  n: number,
+  desktop: StaticImageData,
+  focal: string,
+  alt: string
+): SiteImage => ({
+  desktop,
+  focal,
+  alt,
+  where: `Homepage hero, slide ${n} of 5 (full-bleed; phones crop to portrait at the focal point)`,
+  crop:
+    "Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the " +
+    "lower-left third quiet. A portrait 4:5 version would let phones stop cropping.",
+  ...SUPPLIED,
+  minResolution: "2400px wide",
+  placeholder: false,
+});
 
 export const HERO: SiteImage = {
-  src: "/images/home/HERO-1D.webp",
-  alt: "Students walking along the tree-lined avenue on the Crescent campus at Vandalur",
-  where: "Homepage hero, full-bleed, desktop and tablet (768px and up)",
-  crop:
-    "Landscape 16:9 or wider. The headline sits BOTTOM-LEFT over a scrim, so " +
-    "keep the lower-left third free of faces and detail.",
-  brief:
-    "The single most important photograph on the site. Convocation, assembly " +
-    "or an ordinary busy moment at Vandalur — students clearly the subject, " +
-    "campus recognisable behind them. Late-afternoon light. Candid, not lined " +
-    "up for the camera. One frame where someone is mid-sentence beats ten " +
-    "where everyone is smiling at the lens.",
-  avoid:
-    "Empty campus (reads as a brochure for a building), drone shots, rows of " +
-    "people posed front-on, harsh midday sun.",
-  minResolution: "3000px wide",
-  placeholder: false,
+  ...heroSlide(1, hero1, "52% 50%",
+    "Three students in hijabs walking together along a tree-lined campus avenue"),
   priority: true,
 };
+export const HERO_2 = heroSlide(2, hero2, "36% 50%",
+  "Boys in white shirts playing football on a grass field");
+export const HERO_3 = heroSlide(3, hero3, "48% 50%",
+  "Girls in grey school uniform studying together around a classroom table");
+export const HERO_4 = heroSlide(4, hero4, "60% 50%",
+  "Students reading and working on a laptop in a library");
+export const HERO_5 = heroSlide(5, hero5, "64% 40%",
+  "A student presenting on stage to a full auditorium");
 
-export const HERO_2: SiteImage = {
-  src: "/images/home/HERO-2D.webp",
-  alt: "Students playing football at Crescent Residential Matriculation Higher Secondary School",
-  where: "Homepage hero slide 2 — residential school athletics",
-  crop: "Landscape 16:9 or wider.",
-  brief:
-    "Sports and campus activities at Crescent Residential School in Vandalur.",
-  avoid: "Staged posed lineups.",
-  minResolution: "3000px wide",
-  placeholder: false,
-};
-
-export const HERO_3: SiteImage = {
-  src: "/images/home/HERO-3D.webp",
-  alt: "Students in collaborative classroom study at Crescent Girls School",
-  where: "Homepage hero slide 3 — classroom learning",
-  crop: "Landscape 16:9 or wider.",
-  brief:
-    "Collaborative study and discussion inside the classroom.",
-  avoid: "Stiff camera-facing poses.",
-  minResolution: "3000px wide",
-  placeholder: false,
-};
-
-export const HERO_4: SiteImage = {
-  src: "/images/home/HERO-4D.webp",
-  alt: "Students studying in the university central library",
-  where: "Homepage hero slide 4 — central library research",
-  crop: "Landscape 16:9 or wider.",
-  brief:
-    "University library study and research sessions with students at work.",
-  avoid: "Empty library corridors.",
-  minResolution: "3000px wide",
-  placeholder: false,
-};
-
-export const HERO_5: SiteImage = {
-  src: "/images/home/HERO-5D.webp",
-  alt: "Student presenting in the university auditorium",
-  where: "Homepage hero slide 5 — auditorium presentation and symposium",
-  crop: "Landscape 16:9 or wider.",
-  brief:
-    "Student presentation or keynote before an engaged audience.",
-  avoid: "Empty auditorium seats.",
-  minResolution: "3000px wide",
-  placeholder: false,
-};
-
-export const HERO_SLIDES: SiteImage[] = [
-  HERO,
-  HERO_2,
-  HERO_3,
-  HERO_4,
-  HERO_5,
-];
-
-export const HERO_MOBILE: SiteImage = {
-  src: "/images/home/HERO-1D.webp",
-  alt: "Students on the Crescent campus at Vandalur",
-  where: "Homepage hero below 768px — replaces HERO entirely, never crops it",
-  crop:
-    "Portrait 4:5 or 3:4. Subject in the UPPER half; the headline occupies " +
-    "the lower half of the frame.",
-  brief:
-    "Shot for the phone, on the same day as HERO but composed vertically. " +
-    "One or two students rather than a crowd — a wide group becomes " +
-    "unreadable at 390px. Close enough to read a face.",
-  avoid:
-    "Cropping the landscape hero instead of shooting this. Wide group shots. " +
-    "Detail that only survives at desktop size.",
-  minResolution: "1600px wide",
-  placeholder: false,
-};
+export const HERO_SLIDES: SiteImage[] = [HERO, HERO_2, HERO_3, HERO_4, HERO_5];
 
 // ---------------------------------------------------------------------------
-// Homepage — the institutions, by place
+// Homepage — institutions, by place
 //
-// Real photography for Chennai and Kilakarai. Madurai and Nagore step from
-// warm sand to cool grey until client photographs land.
+// One photograph per institution, keyed by the institution id in lib/seed.ts.
+// Assigned by LOOKING at each picture's signage, not by filename — two of the
+// client's filenames were wrong (see docs/PHOTO_BRIEF.md).
 // ---------------------------------------------------------------------------
 
-const PLACE_AVOID =
-  "Temple gopurams, generic city skylines, traffic, tourist landmarks. This " +
-  "is a photograph of an institution in its town, not a photograph of the " +
-  "town. If the campus is not identifiable in it, it is the wrong frame.";
-
-export const PLACE_CHENNAI: SiteImage = {
-  src: "/images/home/Chennai__CIIC.webp",
-  alt: "Crescent Innovation & Incubation Council (CIIC) campus at Vandalur, Chennai",
-  where: "Homepage, 'The institutions, by place' — Chennai and Vandalur row",
-  crop: "Landscape 4:3. Sits beside a typographic list of institutions.",
-  brief:
-    "The Vandalur campus as it actually is — the gate, a main building with " +
-    "people moving through it, or the main block seen from the approach road. " +
-    "Students in frame, walking rather than posed.",
-  avoid: PLACE_AVOID,
-  minResolution: "2400px wide",
+const institution = (
+  name: string,
+  img: { desktop?: StaticImageData; mobile?: StaticImageData; focal?: string },
+  alt: string
+): SiteImage => ({
+  ...img,
+  alt,
+  where: `Homepage, 'The institutions, by place' — ${name}`,
+  crop:
+    img.desktop && img.mobile
+      ? "Desktop 16:9 and mobile 4:5, both supplied."
+      : img.desktop
+        ? "Desktop 16:9 only — a 4:5 portrait would let phones stop cropping."
+        : "Mobile 4:5 only — a 16:9 landscape would let desktop stop cropping.",
+  ...SUPPLIED,
+  minResolution: "2400px wide (desktop), 1200px wide (mobile)",
   placeholder: false,
+});
+
+export const INSTITUTION_PHOTOS: Record<string, SiteImage> = {
+  "bsa-crescent-institute": institution(
+    "B.S. Abdur Rahman Crescent Institute",
+    { desktop: bsaD, mobile: bsaM },
+    "The white arched entrance gate of B.S. Abdur Rahman University with its name board"
+  ),
+  "crescent-innovation-incubation-centre": institution(
+    "CIIC",
+    { desktop: ciicD, focal: "42% 50%" },
+    "The covered entrance of the Crescent innovation and incubation building among tropical planting"
+  ),
+  "crescent-girls-school": institution(
+    "Crescent Matriculation HSS for Girls, Chennai",
+    { desktop: girlsD, mobile: girlsM },
+    "The front of Crescent Matriculation Higher Secondary School for Girls, the Crescent emblem above its entrance"
+  ),
+  "crescent-residential-boys-school": institution(
+    "Crescent Residential Matriculation HSS Boys School",
+    { desktop: boysD, focal: "52% 50%" },
+    "Rows of boys in blue uniform at morning assembly in front of the residential school"
+  ),
+  "crescent-school-vandalur": institution(
+    "Crescent School (CBSE & IGCSE)",
+    { desktop: cschoolD, mobile: cschoolM },
+    "Students in rows at assembly outside the Crescent School building"
+  ),
+  "buhari-aalim-arabic-college": institution(
+    "Kilakarai Bukhari Aalim Arabic College (Vandalur campus)",
+    { mobile: bukhariM, focal: "50% 42%" },
+    "The tall glass-fronted entrance of Kilakarai Bukhari Aalim Arabic College"
+  ),
+  "tbak-college-women": institution(
+    "Thassim Beevi Abdul Kader College for Women",
+    { desktop: tbakD, focal: "24% 50%" },
+    "The main building of Thassim Beevi Abdul Kader College for Women behind its name sign"
+  ),
+  "pearl-matriculation-school": institution(
+    "Pearl Matriculation School",
+    { desktop: pearlD, mobile: pearlM },
+    "Pearl Matriculation School's teal-trimmed building with a yellow school bus outside"
+  ),
+  "crescent-college-education-madurai": institution(
+    "Crescent College of Education for Women",
+    { desktop: educD, mobile: educM },
+    "Students walking through the arched gate of Crescent College of Education for Women"
+  ),
+  "crescent-yz-school-nursing-madurai": institution(
+    "Crescent Yousuf Zulaikha School of Nursing",
+    { desktop: nursingD, mobile: nursingM },
+    "Nursing students in white uniforms outside the Crescent Yousuf Zulaikha School of Nursing"
+  ),
+  "madurai-crescent-school": institution(
+    "Madurai Crescent Matriculation HSS for Girls",
+    { mobile: maduraiM, focal: "50% 45%" },
+    "The rounded white front of Madurai Crescent Matriculation Higher Secondary School for Girls"
+  ),
+  "childrens-homes-community-initiatives": institution(
+    "Al Mumin KTMS Hamid Sahib Children Home for Girls",
+    { desktop: alMuminD, mobile: alMuminM },
+    "The entrance of Al Mumin KTMS Hamid Sahib Children Home for Girls among flowering shrubs"
+  ),
+  "nagore-crescent-school": institution(
+    "Nagore Crescent Matriculation HSS for Girls",
+    { desktop: nagoreD, mobile: nagoreM },
+    "The green and cream front of Nagore Crescent Matriculation Higher Secondary School for Girls"
+  ),
 };
 
-export const PLACE_KILAKARAI: SiteImage = {
-  src: "/images/home/Thassim-beevi.webp",
-  alt: "Thassim Beevi Abdul Kader College for Women campus in Kilakarai",
-  where: "Homepage, 'The institutions, by place' — Kilakarai row",
-  crop: "Landscape 4:3.",
-  brief:
-    "Kilakarai is where the trust's coastal institutions and the medical " +
-    "centre sit. Shoot the school or the medical centre with people present — " +
-    "a clinician with a patient, students at the gate. The coastal light is " +
-    "distinctive; use it.",
-  avoid: PLACE_AVOID + " Also avoid empty clinical corridors.",
-  minResolution: "2400px wide",
-  placeholder: false,
-};
+/**
+ * Each place's lead photograph — shown until a reader hovers or focuses an
+ * institution. A distinct object (not the institution's own entry) so that
+ * `?shots=1` labels it as the place slot.
+ */
+const lead = (place: string, id: string): SiteImage => ({
+  ...INSTITUTION_PHOTOS[id],
+  where: `Homepage, 'The institutions, by place' — ${place} lead photograph`,
+});
 
-export const PLACE_MADURAI: SiteImage = {
-  tone: "bg-[#cdbfa6]",
-  alt: "",
-  where: "Homepage, 'The institutions, by place' — Madurai row",
-  crop: "Landscape 4:3.",
-  brief:
-    "The Madurai institution in its own setting, with students. A classroom " +
-    "through a window, a corridor between classes, the entrance at the start " +
-    "of the day.",
-  avoid: PLACE_AVOID + " Specifically: not the Meenakshi temple.",
-  minResolution: "2400px wide",
-  placeholder: true,
-};
-
-export const PLACE_NAGORE: SiteImage = {
-  tone: "bg-[#b2b6bd]",
-  alt: "",
-  where: "Homepage, 'The institutions, by place' — Nagore row",
-  crop: "Landscape 4:3.",
-  brief:
-    "The Nagore institution, with students or staff in frame. As with the " +
-    "others: the building alone says nothing, the people in it say everything.",
-  avoid: PLACE_AVOID,
-  minResolution: "2400px wide",
-  placeholder: true,
-};
+export const PLACE_CHENNAI = lead("Chennai", "bsa-crescent-institute");
+export const PLACE_KILAKARAI = lead("Kilakarai", "tbak-college-women");
+export const PLACE_MADURAI = lead("Madurai", "crescent-college-education-madurai");
+export const PLACE_NAGORE = lead("Nagore", "nagore-crescent-school");
 
 // ---------------------------------------------------------------------------
 // Homepage — what Crescent Connekt does
 // ---------------------------------------------------------------------------
 
 export const FEATURE_CALENDAR: SiteImage = {
-  // A bright Indian classroom mid-term. The calendar is about term dates and
-  // the rhythm of an academic year, so an ordinary working day is the subject.
-  src: unsplash("1719159381916-062fa9f435a6", 1600),
-  alt: "",
+  desktop: calendarD,
+  focal: "46% 50%",
+  alt: "A packed auditorium facing a stage screen showing the Crescent Connekt logo",
   where: "Homepage, 'What Crescent Connekt does' — the large Calendar feature",
-  crop: "Landscape 3:2. The largest of the three feature images.",
-  brief:
-    "The academic year in motion: an assembly, a prize day, an inter-school " +
-    "fixture, a convocation — something dated, with a crowd. The Central " +
-    "Calendar exists so these stop clashing, so the photograph should look " +
-    "like an event worth not clashing with.",
-  avoid:
-    "Literal calendars, diaries, planners or wall charts. A screen with a " +
-    "calendar app open on it.",
+  crop: "Landscape 16:9 supplied; shown 3:2.",
+  ...SUPPLIED,
   minResolution: "2400px wide",
-  placeholder: true,
+  placeholder: false,
 };
 
 export const FEATURE_NETWORK: SiteImage = {
@@ -337,22 +376,30 @@ export const HERITAGE: SiteImage = {
 };
 
 export const MEMBERS: SiteImage = {
-  // Someone addressing a gathering — a chapter meeting in progress.
-  src: unsplash("1551731409-43eb3e517a1a", 1600),
-  alt: "",
+  desktop: networkD,
+  focal: "60% 50%",
+  alt: "Two professionals shaking hands beside a Crescent Connekt banner while others talk behind them",
   where: "Homepage, the closing Member Network invitation",
-  crop:
-    "Landscape 16:9, wide. Runs nearly full width with the invitation beside " +
-    "or beneath it.",
-  brief:
-    "People together and glad to be — a reunion, a chapter gathering, alumni " +
-    "back on campus. Mixed ages in one frame is what sells a network spanning " +
-    "generations. Warm and candid.",
-  avoid:
-    "A posed group lined up against a wall. Anyone looking at the camera and " +
-    "waiting for the shutter.",
-  minResolution: "3000px wide",
-  placeholder: true,
+  crop: "Landscape 16:9 supplied; runs full width.",
+  ...SUPPLIED,
+  minResolution: "2400px wide",
+  placeholder: false,
+};
+
+/**
+ * The full-width statement moment. The client's filename carried the line
+ * meant to sit over it — "The network is only as good as who is it" — which
+ * the page sets corrected: "…as who is in it."
+ */
+export const STATEMENT: SiteImage = {
+  desktop: statementD,
+  focal: "42% 50%",
+  alt: "Alumni laughing together over coffee at a reception",
+  where: "Homepage, full-width statement between Heritage and the Member Network invitation",
+  crop: "Landscape 3:2 supplied; the line sits over its lower-left.",
+  ...SUPPLIED,
+  minResolution: "2400px wide",
+  placeholder: false,
 };
 
 // ---------------------------------------------------------------------------
@@ -452,8 +499,9 @@ export const PILLAR_COMMUNITY: SiteImage = {
 };
 
 export const PILLAR_INNOVATION: SiteImage = {
-  src: "/images/home/Chennai__CIIC.webp",
-  alt: "Crescent Innovation & Incubation Council (CIIC) at Vandalur, Chennai",
+  desktop: ciicD,
+  focal: "42% 50%",
+  alt: "The covered entrance of the Crescent innovation and incubation building among tropical planting",
   where: "Innovation pillar card",
   crop: "Landscape 16:7 band.",
   brief:
@@ -481,7 +529,6 @@ export const PILLAR_IMAGES: Record<Category, SiteImage> = {
 
 export const ALL_IMAGES: Record<string, SiteImage> = {
   HERO,
-  HERO_MOBILE,
   HERO_2,
   HERO_3,
   HERO_4,
@@ -490,10 +537,14 @@ export const ALL_IMAGES: Record<string, SiteImage> = {
   PLACE_KILAKARAI,
   PLACE_MADURAI,
   PLACE_NAGORE,
+  ...Object.fromEntries(
+    Object.entries(INSTITUTION_PHOTOS).map(([id, img]) => [`INSTITUTION:${id}`, img])
+  ),
   FEATURE_CALENDAR,
   FEATURE_NETWORK,
   FEATURE_INSTITUTIONS,
   HERITAGE,
+  STATEMENT,
   MEMBERS,
   BANNER_INSTITUTIONS,
   CONNECT_COMMUNITY,

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import PhotoImage from "./PhotoImage";
 import { IMAGE_NAMES, isTone, type SiteImage } from "@/lib/images";
 
 /**
@@ -46,6 +47,18 @@ export default function Shot({
            * arrived. Flat is honest.
            */
         />
+      ) : image.desktop || image.mobile ? (
+        // Client photography: art-directed <picture>, blur fading to sharp.
+        <PhotoImage
+          desktop={image.desktop}
+          mobile={image.mobile}
+          focal={image.focal}
+          alt={image.alt}
+          sizes={sizes ?? "100vw"}
+          priority={priority ?? image.priority}
+          instant={priority ?? image.priority}
+          className={imgClassName}
+        />
       ) : (
         <Image
           src={image.src as string}
@@ -68,7 +81,7 @@ export default function Shot({
  * Deliberately verbose — it exists so the client can stand a photographer in
  * front of the live page and say "this frame, here, is the one we need".
  */
-function ShotBrief({ name, image }: { name: string; image: SiteImage }) {
+export function ShotBrief({ name, image }: { name: string; image: SiteImage }) {
   return (
     <div
       aria-hidden="true"

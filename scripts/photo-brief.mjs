@@ -7,93 +7,81 @@
  * the slots the site actually renders. `lib/images.ts` stays the single source
  * of truth; this is a view of it a photographer can read on paper.
  *
- * It parses the TypeScript with a small regex reader instead of importing it,
- * because importing a .ts module from a plain Node script means a build step,
- * and the file is a flat list of object literals with no logic in it.
+ * It IMPORTS lib/images.ts rather than regex-parsing it. Node 24 strips
+ * TypeScript types natively; the two things it cannot do on its own — the
+ * `@/` path alias and `.webp` static imports — are handled by a tiny loader
+ * hook registered below. No new dependency: `module.register` is built in.
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { register } from "node:module";
+import { writeFileSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
-const SRC = path.join(process.cwd(), "lib", "images.ts");
+const root = pathToFileURL(process.cwd() + path.sep).href;
+
+// Loader hooks, inline. `@/x` → <root>/x(.ts); `*.webp` → a stand-in for the
+// StaticImageData Next would produce, carrying the public URL path.
+const hooks = `
+const root = ${JSON.stringify(root)};
+export async function resolve(spec, ctx, next) {
+  if (spec.startsWith("@/")) {
+    const rel = spec.slice(2);
+    const url = new URL(rel, root).href;
+    if (/\\.[a-z]+$/i.test(rel)) return { url, shortCircuit: true };
+    return { url: url + ".ts", shortCircuit: true };
+  }
+  return next(spec, ctx);
+}
+export async function load(url, ctx, next) {
+  if (url.endsWith(".webp")) {
+    const pub = url.slice(url.indexOf("/public/") + "/public".length);
+    return {
+      format: "module",
+      shortCircuit: true,
+      source: "export default " + JSON.stringify({ src: pub }),
+    };
+  }
+  return next(url, ctx);
+}`;
+register("data:text/javascript," + encodeURIComponent(hooks));
+
+const { ALL_IMAGES } = await import(new URL("lib/images.ts", root).href);
+
 const OUT = path.join(process.cwd(), "docs", "PHOTO_BRIEF.md");
 
-const src = readFileSync(SRC, "utf8");
+const slots = Object.entries(ALL_IMAGES).map(([name, img]) => ({
+  name: name.replace(/^INSTITUTION:/, ""),
+  isInstitution: name.startsWith("INSTITUTION:"),
+  ...img,
+  files: [img.desktop?.src, img.mobile?.src].filter(Boolean),
+  status:
+    img.desktop || img.mobile
+      ? img.desktop && img.mobile
+        ? "client photograph — desktop and mobile crops"
+        : img.desktop
+          ? "client photograph — desktop crop only (phones crop it at the focal point)"
+          : "client photograph — mobile crop only (desktop crops it at the focal point)"
+      : img.src
+        ? "STAND-IN — not a Crescent photograph; must be replaced"
+        : "NO PHOTOGRAPH — renders a flat toned block",
+}));
 
-/** Resolve `A + "..." + B` concatenations and the shared PLACE_AVOID const. */
-function literal(raw, consts) {
-  return raw
-    .split("+")
-    .map((part) => {
-      const t = part.trim();
-      const m = t.match(/^"((?:[^"\\]|\\.)*)"$/);
-      if (m) return m[1].replace(/\\"/g, '"').replace(/\\n/g, " ");
-      return consts[t] ?? "";
-    })
-    .join("")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+const missing = slots.filter((s) => !s.desktop && !s.mobile);
+const halfPairs = slots.filter((s) => !!s.desktop !== !!s.mobile);
 
-// Shared string constants declared in the file (currently just PLACE_AVOID).
-const consts = {};
-for (const m of src.matchAll(
-  /^const ([A-Z_]+) =\s*([\s\S]*?);\s*$/gm
-)) {
-  consts[m[1]] = literal(m[2], {});
-}
-
-const slots = [];
-for (const m of src.matchAll(
-  /export const ([A-Z_]+): SiteImage = \{([\s\S]*?)\n\};/g
-)) {
-  const [, name, body] = m;
-  const field = (key) => {
-    const f = body.match(new RegExp(`\\n  ${key}:\\s*([\\s\\S]*?),\\n  [a-zA-Z]`));
-    return f ? literal(f[1], consts) : "";
-  };
-  slots.push({
-    name,
-    where: field("where"),
-    crop: field("crop"),
-    brief: field("brief"),
-    avoid: field("avoid"),
-    minResolution: field("minResolution"),
-    hasPhoto: /\n  src:/.test(body),
-    isReal: /\n  placeholder:\s*false/.test(body),
-  });
-}
-
-if (slots.length === 0) {
-  console.error("✗ no slots parsed from lib/images.ts — did its shape change?");
-  process.exit(2);
-}
-
-const homepage = slots.filter((s) => /Homepage/.test(s.where));
-const other = slots.filter((s) => !/Homepage/.test(s.where));
-
-const section = (title, list) =>
+const entry = (s) =>
   [
-    `## ${title}`,
+    `### \`${s.name}\``,
     "",
-    ...list.map((s) =>
-      [
-        `### \`${s.name}\``,
-        "",
-        s.isReal
-          ? "**Currently:** authentic Crescent photography in place."
-          : s.hasPhoto
-          ? "**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced."
-          : "**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.",
-        "",
-        `- **Where it appears** — ${s.where}`,
-        `- **Orientation and crop** — ${s.crop}`,
-        `- **What to capture** — ${s.brief}`,
-        `- **What to avoid** — ${s.avoid}`,
-        `- **Minimum resolution** — ${s.minResolution}`,
-        "",
-      ].join("\n")
-    ),
+    `**Currently:** ${s.status}.${s.files.length ? ` Files: ${s.files.map((f) => `\`${f}\``).join(", ")}.` : ""}${s.focal ? ` Focal point: \`${s.focal}\`.` : ""}`,
+    "",
+    `- **Where it appears** — ${s.where}`,
+    `- **Orientation and crop** — ${s.crop}`,
+    `- **What to capture** — ${s.brief}`,
+    `- **What to avoid** — ${s.avoid}`,
+    `- **Minimum resolution** — ${s.minResolution}`,
+    "",
   ].join("\n");
 
 const doc = `# Photography brief — Crescent Connekt
@@ -108,31 +96,38 @@ that list, written for whoever is holding the camera.
 
 **See any slot on the live site.** Add \`?shots=1\` to a page — for the homepage,
 <https://crescent-global-calender.vercel.app/?shots=1> — and each brief appears
-over the frame it belongs to. Walk the page top to bottom and you have walked
-the shot list in order, at the size and crop each picture will actually be used.
+over the frame it belongs to.
 
 ## The one rule
 
 **Authentic photographs of the actual campuses matter more than technical
-polish.** A slightly soft frame of the real Vandalur gate with real students
-walking through it is worth more than a perfectly lit photograph of somewhere
-else. Every stand-in currently on the site is a stock photograph of somewhere
-that is not a Crescent institution, and every one of them is a placeholder.
+polish.** People must be in the frame where they can be — an empty campus
+photographs a building, and this network is not a building.
 
-A corollary: **people must be in the frame.** An empty campus photographs a
-building. This network is not a building.
+## Still missing — no client photograph
 
-## What is missing entirely
+${missing.map((s) => `- \`${s.name}\` — ${s.status}`).join("\n")}
 
-${slots.filter((s) => !s.hasPhoto).map((s) => `- \`${s.name}\``).join("\n")}
+The heritage band is the most valuable of these: a genuine archival photograph
+from 1968–1971 has to be found, not shot.
 
-These slots have no photograph at all and render a flat toned block instead.
-Four of them are the places themselves — Chennai, Kilakarai, Madurai and
-Nagore — and they are the highest priority on this list. Nobody else can take
-them.
+## Half pairs — one crop only
 
-${section("Homepage", homepage)}
-${section("Other pages", other)}
+A second crop would let the site stop cropping these to fit the other frame.
+
+${halfPairs.map((s) => `- \`${s.name}\` — ${s.desktop ? "needs a 4:5 portrait for phones" : "needs a 16:9 landscape for desktop"}`).join("\n")}
+
+## Homepage
+
+${slots.filter((s) => /^Homepage/.test(s.where) && !s.isInstitution).map(entry).join("\n")}
+
+## Institutions
+
+${slots.filter((s) => s.isInstitution).map(entry).join("\n")}
+
+## Other pages
+
+${slots.filter((s) => !/^Homepage/.test(s.where)).map(entry).join("\n")}
 
 ## Delivering
 
@@ -140,13 +135,12 @@ ${section("Other pages", other)}
   slot, and a pre-cropped file removes that freedom.
 - Colour: the page applies its own treatment, including the black and white on
   the heritage band. Do not pre-convert.
-- Name each file after the slot it is for, e.g. \`HERO.jpg\`, \`PLACE_MADURAI.jpg\`.
+- Name each file \`<subject>-desktop.webp\` / \`<subject>-mobile.webp\`, where
+  \`<subject>\` is the slot name above.
 - Model releases for anyone identifiable, students especially.
 `;
 
 writeFileSync(OUT, doc, "utf8");
 console.log(
-  `✓ docs/PHOTO_BRIEF.md — ${slots.length} slots (${
-    slots.filter((s) => !s.hasPhoto).length
-  } with no photograph)`
+  `✓ docs/PHOTO_BRIEF.md — ${slots.length} slots, ${missing.length} without a client photograph, ${halfPairs.length} with one crop only`
 );

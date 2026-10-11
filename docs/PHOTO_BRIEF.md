@@ -10,110 +10,154 @@ that list, written for whoever is holding the camera.
 
 **See any slot on the live site.** Add `?shots=1` to a page — for the homepage,
 <https://crescent-global-calender.vercel.app/?shots=1> — and each brief appears
-over the frame it belongs to. Walk the page top to bottom and you have walked
-the shot list in order, at the size and crop each picture will actually be used.
+over the frame it belongs to.
 
 ## The one rule
 
 **Authentic photographs of the actual campuses matter more than technical
-polish.** A slightly soft frame of the real Vandalur gate with real students
-walking through it is worth more than a perfectly lit photograph of somewhere
-else. Every stand-in currently on the site is a stock photograph of somewhere
-that is not a Crescent institution, and every one of them is a placeholder.
+polish.** People must be in the frame where they can be — an empty campus
+photographs a building, and this network is not a building.
 
-A corollary: **people must be in the frame.** An empty campus photographs a
-building. This network is not a building.
+## Still missing — no client photograph
 
-## What is missing entirely
+- `FEATURE_NETWORK` — STAND-IN — not a Crescent photograph; must be replaced
+- `FEATURE_INSTITUTIONS` — STAND-IN — not a Crescent photograph; must be replaced
+- `HERITAGE` — STAND-IN — not a Crescent photograph; must be replaced
+- `BANNER_INSTITUTIONS` — NO PHOTOGRAPH — renders a flat toned block
+- `CONNECT_COMMUNITY` — NO PHOTOGRAPH — renders a flat toned block
+- `CONTACT_VISUAL` — NO PHOTOGRAPH — renders a flat toned block
+- `PILLAR_EDUCATION` — STAND-IN — not a Crescent photograph; must be replaced
+- `PILLAR_HEALTHCARE` — NO PHOTOGRAPH — renders a flat toned block
+- `PILLAR_COMMUNITY` — NO PHOTOGRAPH — renders a flat toned block
 
-- `PLACE_MADURAI`
-- `PLACE_NAGORE`
-- `BANNER_INSTITUTIONS`
-- `CONNECT_COMMUNITY`
-- `CONTACT_VISUAL`
-- `PILLAR_HEALTHCARE`
-- `PILLAR_COMMUNITY`
+The heritage band is the most valuable of these: a genuine archival photograph
+from 1968–1971 has to be found, not shot.
 
-These slots have no photograph at all and render a flat toned block instead.
-Four of them are the places themselves — Chennai, Kilakarai, Madurai and
-Nagore — and they are the highest priority on this list. Nobody else can take
-them.
+## Half pairs — one crop only
+
+A second crop would let the site stop cropping these to fit the other frame.
+
+- `HERO` — needs a 4:5 portrait for phones
+- `HERO_2` — needs a 4:5 portrait for phones
+- `HERO_3` — needs a 4:5 portrait for phones
+- `HERO_4` — needs a 4:5 portrait for phones
+- `HERO_5` — needs a 4:5 portrait for phones
+- `PLACE_KILAKARAI` — needs a 4:5 portrait for phones
+- `crescent-innovation-incubation-centre` — needs a 4:5 portrait for phones
+- `crescent-residential-boys-school` — needs a 4:5 portrait for phones
+- `buhari-aalim-arabic-college` — needs a 16:9 landscape for desktop
+- `tbak-college-women` — needs a 4:5 portrait for phones
+- `madurai-crescent-school` — needs a 16:9 landscape for desktop
+- `FEATURE_CALENDAR` — needs a 4:5 portrait for phones
+- `STATEMENT` — needs a 4:5 portrait for phones
+- `MEMBERS` — needs a 4:5 portrait for phones
+- `PILLAR_INNOVATION` — needs a 4:5 portrait for phones
 
 ## Homepage
 
 ### `HERO`
 
-**Currently:** authentic Crescent photography in place.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/hero-1-desktop.webp`. Focal point: `52% 50%`.
 
-- **Where it appears** — Homepage hero, full-bleed, desktop and tablet (768px and up)
-- **Orientation and crop** — Landscape 16:9 or wider. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third free of faces and detail.
-- **What to capture** — The single most important photograph on the site. Convocation, assembly or an ordinary busy moment at Vandalur — students clearly the subject, campus recognisable behind them. Late-afternoon light. Candid, not lined up for the camera. One frame where someone is mid-sentence beats ten where everyone is smiling at the lens.
-- **What to avoid** — Empty campus (reads as a brochure for a building), drone shots, rows of people posed front-on, harsh midday sun.
-- **Minimum resolution** — 3000px wide
+- **Where it appears** — Homepage hero, slide 1 of 5 (full-bleed; phones crop to portrait at the focal point)
+- **Orientation and crop** — Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third quiet. A portrait 4:5 version would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
 
-### `HERO_MOBILE`
+### `HERO_2`
 
-**Currently:** authentic Crescent photography in place.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/hero-2-desktop.webp`. Focal point: `36% 50%`.
 
-- **Where it appears** — Homepage hero below 768px — replaces HERO entirely, never crops it
-- **Orientation and crop** — Portrait 4:5 or 3:4. Subject in the UPPER half; the headline occupies the lower half of the frame.
-- **What to capture** — Shot for the phone, on the same day as HERO but composed vertically. One or two students rather than a crowd — a wide group becomes unreadable at 390px. Close enough to read a face.
-- **What to avoid** — Cropping the landscape hero instead of shooting this. Wide group shots. Detail that only survives at desktop size.
-- **Minimum resolution** — 1600px wide
+- **Where it appears** — Homepage hero, slide 2 of 5 (full-bleed; phones crop to portrait at the focal point)
+- **Orientation and crop** — Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third quiet. A portrait 4:5 version would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
+
+### `HERO_3`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/hero-3-desktop.webp`. Focal point: `48% 50%`.
+
+- **Where it appears** — Homepage hero, slide 3 of 5 (full-bleed; phones crop to portrait at the focal point)
+- **Orientation and crop** — Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third quiet. A portrait 4:5 version would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
+
+### `HERO_4`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/hero-4-desktop.webp`. Focal point: `60% 50%`.
+
+- **Where it appears** — Homepage hero, slide 4 of 5 (full-bleed; phones crop to portrait at the focal point)
+- **Orientation and crop** — Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third quiet. A portrait 4:5 version would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
+
+### `HERO_5`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/hero-5-desktop.webp`. Focal point: `64% 40%`.
+
+- **Where it appears** — Homepage hero, slide 5 of 5 (full-bleed; phones crop to portrait at the focal point)
+- **Orientation and crop** — Landscape 16:9. The headline sits BOTTOM-LEFT over a scrim, so keep the lower-left third quiet. A portrait 4:5 version would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
 
 ### `PLACE_CHENNAI`
 
-**Currently:** authentic Crescent photography in place.
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/bsa-crescent-institute-desktop.webp`, `/images/home/bsa-crescent-institute-mobile.webp`.
 
-- **Where it appears** — Homepage, 'The institutions, by place' — Chennai and Vandalur row
-- **Orientation and crop** — Landscape 4:3. Sits beside a typographic list of institutions.
-- **What to capture** — The Vandalur campus as it actually is — the gate, a main building with people moving through it, or the main block seen from the approach road. Students in frame, walking rather than posed.
-- **What to avoid** — Temple gopurams, generic city skylines, traffic, tourist landmarks. This is a photograph of an institution in its town, not a photograph of the town. If the campus is not identifiable in it, it is the wrong frame.
-- **Minimum resolution** — 2400px wide
+- **Where it appears** — Homepage, 'The institutions, by place' — Chennai lead photograph
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
 
 ### `PLACE_KILAKARAI`
 
-**Currently:** authentic Crescent photography in place.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/tbak-college-women-desktop.webp`. Focal point: `24% 50%`.
 
-- **Where it appears** — Homepage, 'The institutions, by place' — Kilakarai row
-- **Orientation and crop** — Landscape 4:3.
-- **What to capture** — Kilakarai is where the trust's coastal institutions and the medical centre sit. Shoot the school or the medical centre with people present — a clinician with a patient, students at the gate. The coastal light is distinctive; use it.
-- **What to avoid** — Temple gopurams, generic city skylines, traffic, tourist landmarks. This is a photograph of an institution in its town, not a photograph of the town. If the campus is not identifiable in it, it is the wrong frame. Also avoid empty clinical corridors.
-- **Minimum resolution** — 2400px wide
+- **Where it appears** — Homepage, 'The institutions, by place' — Kilakarai lead photograph
+- **Orientation and crop** — Desktop 16:9 only — a 4:5 portrait would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
 
 ### `PLACE_MADURAI`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/crescent-college-education-madurai-desktop.webp`, `/images/home/crescent-college-education-madurai-mobile.webp`.
 
-- **Where it appears** — Homepage, 'The institutions, by place' — Madurai row
-- **Orientation and crop** — Landscape 4:3.
-- **What to capture** — The Madurai institution in its own setting, with students. A classroom through a window, a corridor between classes, the entrance at the start of the day.
-- **What to avoid** — Temple gopurams, generic city skylines, traffic, tourist landmarks. This is a photograph of an institution in its town, not a photograph of the town. If the campus is not identifiable in it, it is the wrong frame. Specifically: not the Meenakshi temple.
-- **Minimum resolution** — 2400px wide
+- **Where it appears** — Homepage, 'The institutions, by place' — Madurai lead photograph
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
 
 ### `PLACE_NAGORE`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/nagore-crescent-school-desktop.webp`, `/images/home/nagore-crescent-school-mobile.webp`.
 
-- **Where it appears** — Homepage, 'The institutions, by place' — Nagore row
-- **Orientation and crop** — Landscape 4:3.
-- **What to capture** — The Nagore institution, with students or staff in frame. As with the others: the building alone says nothing, the people in it say everything.
-- **What to avoid** — Temple gopurams, generic city skylines, traffic, tourist landmarks. This is a photograph of an institution in its town, not a photograph of the town. If the campus is not identifiable in it, it is the wrong frame.
-- **Minimum resolution** — 2400px wide
+- **Where it appears** — Homepage, 'The institutions, by place' — Nagore lead photograph
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
 
 ### `FEATURE_CALENDAR`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/central-calendar-desktop.webp`. Focal point: `46% 50%`.
 
 - **Where it appears** — Homepage, 'What Crescent Connekt does' — the large Calendar feature
-- **Orientation and crop** — Landscape 3:2. The largest of the three feature images.
-- **What to capture** — The academic year in motion: an assembly, a prize day, an inter-school fixture, a convocation — something dated, with a crowd. The Central Calendar exists so these stop clashing, so the photograph should look like an event worth not clashing with.
-- **What to avoid** — Literal calendars, diaries, planners or wall charts. A screen with a calendar app open on it.
+- **Orientation and crop** — Landscape 16:9 supplied; shown 3:2.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
 - **Minimum resolution** — 2400px wide
 
 ### `FEATURE_NETWORK`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** STAND-IN — not a Crescent photograph; must be replaced.
 
 - **Where it appears** — Homepage, 'What Crescent Connekt does' — Member Network card
 - **Orientation and crop** — Landscape 3:2, smaller than the calendar feature.
@@ -123,7 +167,7 @@ them.
 
 ### `FEATURE_INSTITUTIONS`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** STAND-IN — not a Crescent photograph; must be replaced.
 
 - **Where it appears** — Homepage, 'What Crescent Connekt does' — Institutions card
 - **Orientation and crop** — Landscape 3:2, smaller than the calendar feature.
@@ -133,7 +177,7 @@ them.
 
 ### `HERITAGE`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** STAND-IN — not a Crescent photograph; must be replaced.
 
 - **Where it appears** — Homepage, the dark navy heritage band
 - **Orientation and crop** — Landscape 3:2. Sits on navy at reduced brightness.
@@ -141,21 +185,165 @@ them.
 - **What to avoid** — A modern photograph filtered to look old. Reproductions of documents. Anything undated.
 - **Minimum resolution** — 1600px on the long edge, or the best the original allows
 
+### `STATEMENT`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/network-statement-desktop.webp`. Focal point: `42% 50%`.
+
+- **Where it appears** — Homepage, full-width statement between Heritage and the Member Network invitation
+- **Orientation and crop** — Landscape 3:2 supplied; the line sits over its lower-left.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
+
 ### `MEMBERS`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/member-network-desktop.webp`. Focal point: `60% 50%`.
 
 - **Where it appears** — Homepage, the closing Member Network invitation
-- **Orientation and crop** — Landscape 16:9, wide. Runs nearly full width with the invitation beside or beneath it.
-- **What to capture** — People together and glad to be — a reunion, a chapter gathering, alumni back on campus. Mixed ages in one frame is what sells a network spanning generations. Warm and candid.
-- **What to avoid** — A posed group lined up against a wall. Anyone looking at the camera and waiting for the shutter.
-- **Minimum resolution** — 3000px wide
+- **Orientation and crop** — Landscape 16:9 supplied; runs full width.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide
+
+
+## Institutions
+
+### `bsa-crescent-institute`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/bsa-crescent-institute-desktop.webp`, `/images/home/bsa-crescent-institute-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — B.S. Abdur Rahman Crescent Institute
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-innovation-incubation-centre`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/ciic-desktop.webp`. Focal point: `42% 50%`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — CIIC
+- **Orientation and crop** — Desktop 16:9 only — a 4:5 portrait would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-girls-school`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/crescent-girls-school-desktop.webp`, `/images/home/crescent-girls-school-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Crescent Matriculation HSS for Girls, Chennai
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-residential-boys-school`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/crescent-residential-boys-school-desktop.webp`. Focal point: `52% 50%`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Crescent Residential Matriculation HSS Boys School
+- **Orientation and crop** — Desktop 16:9 only — a 4:5 portrait would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-school-vandalur`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/crescent-school-vandalur-desktop.webp`, `/images/home/crescent-school-vandalur-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Crescent School (CBSE & IGCSE)
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `buhari-aalim-arabic-college`
+
+**Currently:** client photograph — mobile crop only (desktop crops it at the focal point). Files: `/images/home/buhari-aalim-arabic-college-mobile.webp`. Focal point: `50% 42%`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Kilakarai Bukhari Aalim Arabic College (Vandalur campus)
+- **Orientation and crop** — Mobile 4:5 only — a 16:9 landscape would let desktop stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `tbak-college-women`
+
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/tbak-college-women-desktop.webp`. Focal point: `24% 50%`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Thassim Beevi Abdul Kader College for Women
+- **Orientation and crop** — Desktop 16:9 only — a 4:5 portrait would let phones stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `pearl-matriculation-school`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/pearl-matriculation-school-desktop.webp`, `/images/home/pearl-matriculation-school-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Pearl Matriculation School
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-college-education-madurai`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/crescent-college-education-madurai-desktop.webp`, `/images/home/crescent-college-education-madurai-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Crescent College of Education for Women
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `crescent-yz-school-nursing-madurai`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/crescent-yz-school-nursing-madurai-desktop.webp`, `/images/home/crescent-yz-school-nursing-madurai-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Crescent Yousuf Zulaikha School of Nursing
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `madurai-crescent-school`
+
+**Currently:** client photograph — mobile crop only (desktop crops it at the focal point). Files: `/images/home/madurai-crescent-school-mobile.webp`. Focal point: `50% 45%`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Madurai Crescent Matriculation HSS for Girls
+- **Orientation and crop** — Mobile 4:5 only — a 16:9 landscape would let desktop stop cropping.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `childrens-homes-community-initiatives`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/al-mumin-childrens-home-desktop.webp`, `/images/home/al-mumin-childrens-home-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Al Mumin KTMS Hamid Sahib Children Home for Girls
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
+### `nagore-crescent-school`
+
+**Currently:** client photograph — desktop and mobile crops. Files: `/images/home/nagore-crescent-school-desktop.webp`, `/images/home/nagore-crescent-school-mobile.webp`.
+
+- **Where it appears** — Homepage, 'The institutions, by place' — Nagore Crescent Matriculation HSS for Girls
+- **Orientation and crop** — Desktop 16:9 and mobile 4:5, both supplied.
+- **What to capture** — Supplied by the client. A later reshoot should keep the same subject and framing, with students or staff in frame where possible.
+- **What to avoid** — Empty grounds; posed rows facing the lens; harsh midday light.
+- **Minimum resolution** — 2400px wide (desktop), 1200px wide (mobile)
+
 
 ## Other pages
 
 ### `BANNER_INSTITUTIONS`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** NO PHOTOGRAPH — renders a flat toned block.
 
 - **Where it appears** — /institutions page banner, behind the heading under a heavy scrim
 - **Orientation and crop** — Landscape 21:9 or wider. Composition matters more than detail.
@@ -165,7 +353,7 @@ them.
 
 ### `CONNECT_COMMUNITY`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** NO PHOTOGRAPH — renders a flat toned block.
 
 - **Where it appears** — /connect landing, supporting the Member Network message
 - **Orientation and crop** — Landscape 3:2.
@@ -175,7 +363,7 @@ them.
 
 ### `CONTACT_VISUAL`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** NO PHOTOGRAPH — renders a flat toned block.
 
 - **Where it appears** — /contact, beside the form
 - **Orientation and crop** — Portrait 4:5 or square.
@@ -185,7 +373,7 @@ them.
 
 ### `PILLAR_EDUCATION`
 
-**Currently:** a stand-in photograph. It is not of a Crescent institution and must be replaced.
+**Currently:** STAND-IN — not a Crescent photograph; must be replaced.
 
 - **Where it appears** — Education pillar card
 - **Orientation and crop** — Landscape 16:7 band.
@@ -195,7 +383,7 @@ them.
 
 ### `PILLAR_HEALTHCARE`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** NO PHOTOGRAPH — renders a flat toned block.
 
 - **Where it appears** — Healthcare pillar card
 - **Orientation and crop** — Landscape 16:7 band.
@@ -205,7 +393,7 @@ them.
 
 ### `PILLAR_COMMUNITY`
 
-**Currently:** no photograph. The slot renders a flat toned block, on purpose — nothing honest was available, and a wrong picture is worse than none.
+**Currently:** NO PHOTOGRAPH — renders a flat toned block.
 
 - **Where it appears** — Community pillar card
 - **Orientation and crop** — Landscape 16:7 band.
@@ -215,7 +403,7 @@ them.
 
 ### `PILLAR_INNOVATION`
 
-**Currently:** authentic Crescent photography in place.
+**Currently:** client photograph — desktop crop only (phones crop it at the focal point). Files: `/images/home/ciic-desktop.webp`. Focal point: `42% 50%`.
 
 - **Where it appears** — Innovation pillar card
 - **Orientation and crop** — Landscape 16:7 band.
@@ -230,5 +418,6 @@ them.
   slot, and a pre-cropped file removes that freedom.
 - Colour: the page applies its own treatment, including the black and white on
   the heritage band. Do not pre-convert.
-- Name each file after the slot it is for, e.g. `HERO.jpg`, `PLACE_MADURAI.jpg`.
+- Name each file `<subject>-desktop.webp` / `<subject>-mobile.webp`, where
+  `<subject>` is the slot name above.
 - Model releases for anyone identifiable, students especially.
