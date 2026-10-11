@@ -47,8 +47,8 @@ export default function WhatsOn({ events }: { events: CrescentEvent[] }) {
         </Rise>
 
         <ul className="mt-14 border-t border-ink-200">
-          {upcoming.map((event, i) => (
-            <Rise as="li" key={event.id} delay={0.05 * i}>
+          {upcoming.map((event) => (
+            <li key={event.id}>
               <article className="grid grid-cols-[4.5rem_1fr] items-start gap-5 border-b border-ink-200 py-8 sm:grid-cols-[6rem_1fr] sm:gap-8 md:py-10">
                 <EventDate iso={event.date_start} />
 
@@ -79,7 +79,7 @@ export default function WhatsOn({ events }: { events: CrescentEvent[] }) {
                   )}
                 </div>
               </article>
-            </Rise>
+            </li>
           ))}
         </ul>
 

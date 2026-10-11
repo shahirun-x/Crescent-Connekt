@@ -26,8 +26,10 @@ export default function MemberInvite() {
       <div className="container-page py-20 md:py-28">
         <div className="max-w-2xl">
           <Rise>
+            {/* "The network is only as good as who is in it." now belongs to
+                the full-width Statement earlier on the page — said once. */}
             <h2 className="type-h1 text-balance text-ink-900">
-              The network is only as good as who is in it.
+              Find the people you studied with.
             </h2>
           </Rise>
           <Rise delay={0.08}>

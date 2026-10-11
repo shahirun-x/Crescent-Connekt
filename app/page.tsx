@@ -5,6 +5,7 @@ import WhatItDoes from "@/components/home/WhatItDoes";
 import WhatsOn from "@/components/home/WhatsOn";
 import Heritage from "@/components/home/Heritage";
 import MemberInvite from "@/components/home/MemberInvite";
+import Statement from "@/components/home/Statement";
 import { Rise } from "@/components/home/Figure";
 import { ShotBrief } from "@/components/Shot";
 import { HERO_SLIDES, IMAGE_NAMES } from "@/lib/images";
@@ -85,6 +86,7 @@ export default async function HomePage() {
       <Places institutions={institutions} />
       <WhatItDoes />
       <WhatsOn events={events} />
+      <Statement />
       <Heritage />
       <MemberInvite />
     </>
