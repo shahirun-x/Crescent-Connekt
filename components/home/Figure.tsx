@@ -43,12 +43,20 @@ export function useQuietDuration() {
 }
 
 /**
- * A photograph arriving.
+ * A photograph arriving: a clip-path wipe from an 8% inset to the full frame,
+ * while the picture settles from 1.05 to 1. Once, never again on re-entry.
  *
- * Fade plus a 1.04 → 1 settle, which reads as the image coming to rest rather
- * than sliding in from somewhere. 620ms: long enough to be felt, short enough
- * that scrolling never waits for it. Once only — a picture that re-animates
- * every time it passes the viewport is a distraction, not a flourish.
+ * No opacity: the photograph is there from first paint (and without
+ * JavaScript), just slightly inset — the wipe opens it rather than conjuring
+ * it. Nothing slides sideways and nothing bounces.
+ *
+ * Containment: `overflow-hidden` on the clipping box, which never scales. The
+ * 1.05 scale lives on the inner layer, so it can never widen the document —
+ * on phones, transforms that escape their box are the classic cause of
+ * sideways scroll.
+ *
+ * Hydration-safe: `initial` is constant; reduced motion only reaches
+ * `transition` (duration 0), per useQuietDuration above.
  */
 export default function Figure({
   children,
@@ -61,31 +69,31 @@ export default function Figure({
 }) {
   const speed = useMobileSpeed();
   const dur = useQuietDuration();
+  const transition = { delay: dur(delay * speed), ease: EASE_OUT };
 
   return (
-    /*
-     * The clipping wrapper is load-bearing, not decoration.
-     *
-     * The inner box starts at scale 1.04. On a full-bleed image that is 4% of
-     * the viewport wider than the viewport, and until it scrolls into view and
-     * settles, the whole document scrolls sideways — 1425px of content in a
-     * 1454px scroll width, on every phone and desktop alike. Clipping the
-     * overflow at a box that never scales contains it.
-     */
-    <div className={`overflow-hidden ${className ?? ""}`}>
+    <motion.div
+      className={`overflow-hidden ${className ?? ""}`}
+      initial="hidden"
+      whileInView="shown"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={{
+        hidden: { clipPath: "inset(8% 8% 8% 8%)" },
+        shown: {
+          clipPath: "inset(0% 0% 0% 0%)",
+          transition: { ...transition, duration: dur(0.85) },
+        },
+      }}
+    >
       <motion.div
-        initial={{ opacity: 0, scale: 1.04 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{
-          duration: dur(0.62),
-          delay: dur(delay * speed),
-          ease: EASE_OUT,
+        variants={{
+          hidden: { scale: 1.05 },
+          shown: { scale: 1, transition: { ...transition, duration: dur(0.9) } },
         }}
       >
         {children}
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

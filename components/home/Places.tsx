@@ -1,7 +1,10 @@
 import Link from "next/link";
-import Shot from "@/components/Shot";
-import Figure, { Rise } from "./Figure";
+import { ShotBrief } from "@/components/Shot";
+import { Rise } from "./Figure";
+import PlaceRow, { type Photo } from "./PlaceRow";
 import {
+  IMAGE_NAMES,
+  INSTITUTION_PHOTOS,
   PLACE_CHENNAI,
   PLACE_KILAKARAI,
   PLACE_MADURAI,
@@ -84,59 +87,28 @@ export default function Places({
               key={row.name}
               // Hairline between rows, nothing around them. A rule is enough
               // separation; a border on four sides makes a card.
-              className="border-t border-ink-200 py-12 first:border-t-0 first:pt-0 md:py-16 md:first:pt-0"
+              className="border-t border-ink-200 py-12 first:border-t-0 first:pt-0 md:py-16"
             >
-              {/*
-                Images alternate sides on desktop. On mobile the photograph is
-                always first, because a place you cannot picture is just a word.
-              */}
-              <div className="grid gap-8 md:grid-cols-2 md:items-center md:gap-14">
-                <Figure
-                  className={i % 2 === 1 ? "md:order-2" : undefined}
-                  delay={0.04}
-                >
-                  <figure className="frame-zoom">
-                    <Shot
-                      image={row.image}
-                      className="aspect-[4/3] w-full"
-                      sizes="(min-width: 768px) 45vw, 100vw"
-                    />
-                  </figure>
-                </Figure>
-
-                <div>
-                  <Rise>
-                    <h3 className="type-place text-ink-900">{row.name}</h3>
-                    <p className="type-meta mt-3 text-ink-500">{row.note}</p>
-                  </Rise>
-
-                  <ul className="mt-8 divide-y divide-ink-100">
-                    {row.list.map((inst, n) => (
-                      <Rise as="li" key={inst.id} delay={0.03 * n}>
-                        <div className="flex items-center justify-between gap-5">
-                          {/*
-                            Padding belongs on the anchor, not on this row.
-                            On the row it makes a 52px stripe with a 24px
-                            target inside it, which measures fine and taps
-                            badly.
-                          */}
-                          <a
-                            href={inst.external_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex min-h-[3rem] flex-1 items-center py-3 text-ink-900 transition-colors hover:text-accent-700"
-                          >
-                            {inst.name}
-                          </a>
-                          <span className="type-meta shrink-0 text-ink-500">
-                            {inst.established_year ?? "—"}
-                          </span>
-                        </div>
-                      </Rise>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <PlaceRow
+                name={row.name}
+                note={row.note}
+                flip={i % 2 === 1}
+                lead={photo(row.image)}
+                leadBrief={<ShotBrief name={IMAGE_NAMES.get(row.image) ?? row.name} image={row.image} />}
+                items={row.list.map((inst) => {
+                  const img = INSTITUTION_PHOTOS[inst.id];
+                  return {
+                    id: inst.id,
+                    name: inst.name,
+                    year: inst.established_year,
+                    url: inst.external_url,
+                    photo: img ? photo(img) : undefined,
+                    brief: img ? (
+                      <ShotBrief name={IMAGE_NAMES.get(img) ?? inst.id} image={img} />
+                    ) : undefined,
+                  };
+                })}
+              />
             </div>
           ))}
         </div>
@@ -149,4 +121,9 @@ export default function Places({
       </div>
     </section>
   );
+}
+
+/** Only what the client component needs — never the whole registry entry. */
+function photo(img: SiteImage): Photo {
+  return { desktop: img.desktop, mobile: img.mobile, focal: img.focal, alt: img.alt };
 }
