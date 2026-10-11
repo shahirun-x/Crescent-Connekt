@@ -6,7 +6,8 @@ import WhatsOn from "@/components/home/WhatsOn";
 import Heritage from "@/components/home/Heritage";
 import MemberInvite from "@/components/home/MemberInvite";
 import { Rise } from "@/components/home/Figure";
-import { HERO_SLIDES } from "@/lib/images";
+import { ShotBrief } from "@/components/Shot";
+import { HERO_SLIDES, IMAGE_NAMES } from "@/lib/images";
 import { getEvents, getInstitutions } from "@/lib/data";
 
 /**
@@ -52,7 +53,19 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero slides={HERO_SLIDES} />
+      {/*
+        The hero is a client component, so it gets plain data — not the whole
+        image registry — plus each slide's `?shots=1` brief rendered here on
+        the server.
+      */}
+      <Hero
+        slides={HERO_SLIDES.map((img) => ({
+          desktop: img.desktop!,
+          focal: img.focal ?? "50% 50%",
+          alt: img.alt,
+          brief: <ShotBrief name={IMAGE_NAMES.get(img) ?? "HERO"} image={img} />,
+        }))}
+      />
 
       {/* 2 — OPENING STATEMENT. No image, no eyebrow, no heading. */}
       <section className="bg-paper">

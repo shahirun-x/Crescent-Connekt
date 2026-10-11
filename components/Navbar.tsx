@@ -94,7 +94,7 @@ export default function Navbar() {
                   transparent
                     ? isActive(item.href)
                       ? "border-white text-white"
-                      : "border-transparent text-white/80 hover:text-white"
+                      : "border-transparent text-white hover:border-white/60"
                     : isActive(item.href)
                       ? "border-accent-500 text-ink-900"
                       : "border-transparent text-ink-700 hover:text-ink-900"

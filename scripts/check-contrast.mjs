@@ -33,6 +33,10 @@ function readTokens() {
 
 const T = readTokens();
 
+/** `--scrim-name: 0.5;` alpha tokens — the darkening behind text on photos. */
+const S = {};
+for (const m of css.matchAll(/--(scrim-[a-z-]+):\s*([0-9.]+)\s*;/g)) S[m[1]] = Number(m[2]);
+
 function hexToRgb(hex) {
   let h = hex.replace("#", "");
   if (h.length === 3) h = h.split("").map((c) => c + c).join("");
@@ -50,6 +54,27 @@ function luminance(hex) {
 function ratio(a, b) {
   const [l1, l2] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (l1 + 0.05) / (l2 + 0.05);
+}
+
+/**
+ * Text on a photograph: the worst case is the photo's BRIGHTEST point, so the
+ * background is crescent-950 at the scrim alpha(s) over a near-white sample.
+ * Several alphas stack (each layer composites over the last), matching nested
+ * scrim layers in the markup. Blending is in sRGB, as the browser does it.
+ */
+const NEAR_WHITE = "#f5f5f5";
+function overPhoto(...scrims) {
+  let rgb = hexToRgb(NEAR_WHITE);
+  const navy = hexToRgb(T["crescent-950"]);
+  for (const name of scrims) {
+    const a = S[name];
+    if (a === undefined) {
+      console.error(`✗ unknown scrim token: --${name}`);
+      process.exit(2);
+    }
+    rgb = rgb.map((v, i) => Math.round(navy[i] * a + v * (1 - a)));
+  }
+  return "#" + rgb.map((v) => v.toString(16).padStart(2, "0")).join("");
 }
 
 /** `c("sand-50")` resolves a token; a literal hex passes straight through. */
@@ -170,6 +195,18 @@ const PAIRS = [
   ["accent-400 link on crescent-950 (heritage)", "crescent-950", "accent-400", 4.5],
   ["crescent-300 label on crescent-950 (footer)", "crescent-950", "crescent-300", 4.5],
   ["crescent-200 links on crescent-950 (footer)", "crescent-950", "crescent-200", 4.5],
+
+  // --- Text over photographs ---------------------------------------------
+  //
+  // Measured against a near-white patch (#f5f5f5) under the scrim — the
+  // brightest point any photograph can put behind the text. Large text
+  // (the hero headline, the statement line) needs 3:1; everything else 4.5:1.
+  ["hero headline (white, large) — headline scrim", overPhoto("scrim-hero-headline"), WHITE, 3.0],
+  ["hero lead (white) — headline + lift scrims", overPhoto("scrim-hero-headline", "scrim-hero-lift"), WHITE, 4.5],
+  ["hero meta (crescent-100) — headline + lift scrims", overPhoto("scrim-hero-headline", "scrim-hero-lift"), "crescent-100", 4.5],
+  ["hero progress label (white) — headline + lift scrims", overPhoto("scrim-hero-headline", "scrim-hero-lift"), WHITE, 4.5],
+  ["header links over hero (white) — nav scrim", overPhoto("scrim-nav"), WHITE, 4.5],
+  ["statement line (white, large) — statement scrim", overPhoto("scrim-statement"), WHITE, 3.0],
 
   // --- Non-text: UI component boundaries (WCAG 1.4.11, 3:1) --------------
   //

@@ -166,6 +166,15 @@
   --text-secondary: #44506a; /*              — 8.6:1  on white */
   --text-muted: #5c6880; /*                  — 6.0:1  on white */
 
+  /* Scrims over photographs — navy (crescent-950) at these alphas.
+     scripts/check-contrast.mjs reads these numbers and checks the text that
+     sits on each one against a near-white (#f5f5f5) patch of photograph, the
+     worst case. Change a value here and the gate re-checks it. */
+  --scrim-hero-headline: 0.5; /* behind the hero headline (large text, 3:1) */
+  --scrim-hero-lift: 0.4;     /* added under lead, buttons and meta (stacks on the above) */
+  --scrim-nav: 0.62;          /* top of the hero, behind the transparent header */
+  --scrim-statement: 0.62;    /* behind the statement line (large text) */
+
   /* Text on the inverse (navy) surface */
   --text-on-inverse: #ffffff;
   --text-on-inverse-muted: #b9c8e0;
@@ -369,20 +378,38 @@ summary:focus-visible {
   text-transform: uppercase;
 }
 
-/* Hero Ken Burns — a slow drift so the image is never quite still. Long and
-   small on purpose: 8% over 24 seconds is felt rather than seen. The global
-   prefers-reduced-motion rule collapses the duration, freezing it. */
-@keyframes hero-kenburns {
-  from {
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-  to {
-    transform: scale(1.08) translate3d(0, -1.2%, 0);
-  }
+/* -----------------------------------------------------------------------
+ * Hero slideshow.
+ *
+ * Zoom: 1.00 → 1.06 across a slide's whole time on screen (7s shown + 1.5s
+ * fading out), ease-out so it is felt rather than seen. Progress: one thin
+ * line per slide fills over the same 7s. Both pause together when the tab is
+ * hidden or the reader pauses, and both are removed — not shortened — under
+ * reduced motion, where only the first photograph shows, still.
+ * --------------------------------------------------------------------- */
+@keyframes hero-zoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
 }
-.hero-kenburns {
-  animation: hero-kenburns 24s ease-out forwards;
+.hero-zoom {
+  animation: hero-zoom 8.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
   will-change: transform;
+}
+@keyframes hero-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hero-progress-fill {
+  transform-origin: left center;
+  animation: hero-progress 7s linear forwards;
+}
+.hero-paused .hero-zoom,
+.hero-paused .hero-progress-fill {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom,
+  .hero-progress-fill { animation: none; }
 }
 
 /* Card fallback when a news or event item has no image_url. A designed
@@ -473,15 +500,40 @@ a[role="button"]:active {
   }
 }
 
-/* A directional scrim for the hero: dark at the bottom-left where the
-   headline sits, clear at the top-right. A flat overlay would dull the whole
-   photograph to protect one corner of text. */
-.hero-scrim {
-  background:
-    linear-gradient(to top, rgba(9, 20, 40, 0.82) 0%, rgba(9, 20, 40, 0.42) 34%,
-      rgba(9, 20, 40, 0.06) 66%, rgba(9, 20, 40, 0) 100%),
-    linear-gradient(to right, rgba(9, 20, 40, 0.46) 0%, rgba(9, 20, 40, 0.1) 46%,
-      rgba(9, 20, 40, 0) 76%);
+/* Scrims tied to the TEXT, not to the viewport: wherever the text block
+   ends up at a given width, the darkening travels with it. The alphas are
+   the --scrim-* tokens above, so the contrast gate checks them. */
+.scrim-hero-headline {
+  background: linear-gradient(
+    to bottom,
+    rgb(9 20 40 / 0) 0,
+    rgb(9 20 40 / var(--scrim-hero-headline)) 8rem,
+    rgb(9 20 40 / var(--scrim-hero-headline)) 100%
+  );
+}
+.scrim-hero-lift {
+  background: linear-gradient(
+    to bottom,
+    rgb(9 20 40 / 0) 0,
+    rgb(9 20 40 / var(--scrim-hero-lift)) 1.5rem,
+    rgb(9 20 40 / var(--scrim-hero-lift)) 100%
+  );
+}
+.scrim-nav {
+  background: linear-gradient(
+    to bottom,
+    rgb(9 20 40 / var(--scrim-nav)) 0,
+    rgb(9 20 40 / var(--scrim-nav)) 4.5rem,
+    rgb(9 20 40 / 0) 9rem
+  );
+}
+.scrim-statement {
+  background: linear-gradient(
+    to bottom,
+    rgb(9 20 40 / 0) 0,
+    rgb(9 20 40 / var(--scrim-statement)) 7rem,
+    rgb(9 20 40 / var(--scrim-statement)) 100%
+  );
 }
 
 /* An underline that belongs to the type rather than sitting under a button.
